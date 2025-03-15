@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LenguaVivaServidor", "Lengu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServicioContrato", "ServicioContrato\ServicioContrato.csproj", "{81EFDBE4-C03F-4CAC-AC04-C56DFBB02D47}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccesoDatosLV", "..\AccesoDatosLV\AccesoDatosLV.csproj", "{45A1677F-549A-49EE-AD2C-D728E8F5AA14}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccesoDatos", "AccesoDatos\AccesoDatos.csproj", "{536CCD2F-5332-400C-8317-F76C442AACA1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{81EFDBE4-C03F-4CAC-AC04-C56DFBB02D47}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{81EFDBE4-C03F-4CAC-AC04-C56DFBB02D47}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{81EFDBE4-C03F-4CAC-AC04-C56DFBB02D47}.Release|Any CPU.Build.0 = Release|Any CPU
-		{45A1677F-549A-49EE-AD2C-D728E8F5AA14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{45A1677F-549A-49EE-AD2C-D728E8F5AA14}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{45A1677F-549A-49EE-AD2C-D728E8F5AA14}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{45A1677F-549A-49EE-AD2C-D728E8F5AA14}.Release|Any CPU.Build.0 = Release|Any CPU
+		{536CCD2F-5332-400C-8317-F76C442AACA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{536CCD2F-5332-400C-8317-F76C442AACA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{536CCD2F-5332-400C-8317-F76C442AACA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{536CCD2F-5332-400C-8317-F76C442AACA1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
