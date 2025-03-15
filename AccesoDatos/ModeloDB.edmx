@@ -1,0 +1,735 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="LenguaVivaDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Administrador">
+          <Key>
+            <PropertyRef Name="idAdministrador" />
+          </Key>
+          <Property Name="idAdministrador" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombreUsuario" Type="varchar" MaxLength="50" />
+          <Property Name="contrasenia" Type="varchar" MaxLength="100" />
+          <Property Name="nombre" Type="varchar" MaxLength="50" />
+          <Property Name="apellidos" Type="varchar" MaxLength="50" />
+          <Property Name="direccion" Type="varchar" MaxLength="100" />
+          <Property Name="email" Type="varchar" MaxLength="320" />
+        </EntityType>
+        <EntityType Name="Alumno">
+          <Key>
+            <PropertyRef Name="idAlumno" />
+          </Key>
+          <Property Name="idAlumno" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="50" />
+          <Property Name="apellidos" Type="varchar" MaxLength="50" />
+          <Property Name="direccion" Type="varchar" MaxLength="100" />
+          <Property Name="email" Type="varchar" MaxLength="320" />
+        </EntityType>
+        <EntityType Name="Curso">
+          <Key>
+            <PropertyRef Name="idCurso" />
+          </Key>
+          <Property Name="idCurso" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombreCurso" Type="varchar" MaxLength="50" />
+          <Property Name="descripcion" Type="varchar" MaxLength="150" />
+          <Property Name="nivel" Type="int" />
+          <Property Name="cupoMaximo" Type="int" />
+          <Property Name="estado" Type="varchar" MaxLength="12" />
+          <Property Name="fechaInicio" Type="date" />
+          <Property Name="fechaTermino" Type="date" />
+          <Property Name="listaAsistencia" Type="varbinary(max)" />
+          <Property Name="idIdioma" Type="int" Nullable="false" />
+          <Property Name="idProfesor" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Horario">
+          <Key>
+            <PropertyRef Name="idHorario" />
+          </Key>
+          <Property Name="idHorario" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="dia" Type="varchar" MaxLength="10" />
+          <Property Name="horaInicio" Type="time" Precision="0" />
+          <Property Name="horaSalida" Type="time" Precision="0" />
+          <Property Name="idCurso" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Idioma">
+          <Key>
+            <PropertyRef Name="idIdioma" />
+          </Key>
+          <Property Name="idIdioma" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombreIdioma" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'LenguaVivaDB.dbo.Idioma_Alumno' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="Idioma_Alumno">
+          <Key>
+            <PropertyRef Name="idIdioma" />
+            <PropertyRef Name="idAlumno" />
+            <PropertyRef Name="nivel" />
+          </Key>
+          <Property Name="idIdioma" Type="int" Nullable="false" />
+          <Property Name="idAlumno" Type="int" Nullable="false" />
+          <Property Name="nivel" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'LenguaVivaDB.dbo.Idioma_Profesor' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="Idioma_Profesor">
+          <Key>
+            <PropertyRef Name="idIdioma" />
+            <PropertyRef Name="idProfesor" />
+          </Key>
+          <Property Name="idIdioma" Type="int" Nullable="false" />
+          <Property Name="idProfesor" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Inscripcion">
+          <Key>
+            <PropertyRef Name="idInscripcion" />
+          </Key>
+          <Property Name="idInscripcion" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fechaInscripcion" Type="date" />
+          <Property Name="idAlumno" Type="int" Nullable="false" />
+          <Property Name="idCurso" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Pago">
+          <Key>
+            <PropertyRef Name="idPago" />
+          </Key>
+          <Property Name="idPago" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="cantidad" Type="float" />
+          <Property Name="fechaPago" Type="date" />
+          <Property Name="idInscripcion" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Profesor">
+          <Key>
+            <PropertyRef Name="idProfesor" />
+          </Key>
+          <Property Name="idProfesor" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombreUsuario" Type="varchar" MaxLength="50" />
+          <Property Name="contrasenia" Type="varchar" MaxLength="100" />
+          <Property Name="nombre" Type="varchar" MaxLength="50" />
+          <Property Name="apellidos" Type="varchar" MaxLength="50" />
+          <Property Name="direccion" Type="varchar" MaxLength="100" />
+          <Property Name="email" Type="varchar" MaxLength="320" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <Association Name="FK_Curso_Idioma">
+          <End Role="Idioma" Type="Self.Idioma" Multiplicity="1" />
+          <End Role="Curso" Type="Self.Curso" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Idioma">
+              <PropertyRef Name="idIdioma" />
+            </Principal>
+            <Dependent Role="Curso">
+              <PropertyRef Name="idIdioma" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Curso_Profesor">
+          <End Role="Profesor" Type="Self.Profesor" Multiplicity="1" />
+          <End Role="Curso" Type="Self.Curso" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Profesor">
+              <PropertyRef Name="idProfesor" />
+            </Principal>
+            <Dependent Role="Curso">
+              <PropertyRef Name="idProfesor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Horario_Curso">
+          <End Role="Curso" Type="Self.Curso" Multiplicity="1" />
+          <End Role="Horario" Type="Self.Horario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Curso">
+              <PropertyRef Name="idCurso" />
+            </Principal>
+            <Dependent Role="Horario">
+              <PropertyRef Name="idCurso" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Idioma_Alumno_Alumno">
+          <End Role="Alumno" Type="Self.Alumno" Multiplicity="1" />
+          <End Role="Idioma_Alumno" Type="Self.Idioma_Alumno" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Alumno">
+              <PropertyRef Name="idAlumno" />
+            </Principal>
+            <Dependent Role="Idioma_Alumno">
+              <PropertyRef Name="idAlumno" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Idioma_Alumno_Idioma">
+          <End Role="Idioma" Type="Self.Idioma" Multiplicity="1" />
+          <End Role="Idioma_Alumno" Type="Self.Idioma_Alumno" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Idioma">
+              <PropertyRef Name="idIdioma" />
+            </Principal>
+            <Dependent Role="Idioma_Alumno">
+              <PropertyRef Name="idIdioma" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Idioma_Profesor_Idioma">
+          <End Role="Idioma" Type="Self.Idioma" Multiplicity="1" />
+          <End Role="Idioma_Profesor" Type="Self.Idioma_Profesor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Idioma">
+              <PropertyRef Name="idIdioma" />
+            </Principal>
+            <Dependent Role="Idioma_Profesor">
+              <PropertyRef Name="idIdioma" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Idioma_Profesor_Profesor">
+          <End Role="Profesor" Type="Self.Profesor" Multiplicity="1" />
+          <End Role="Idioma_Profesor" Type="Self.Idioma_Profesor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Profesor">
+              <PropertyRef Name="idProfesor" />
+            </Principal>
+            <Dependent Role="Idioma_Profesor">
+              <PropertyRef Name="idProfesor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inscripcion_Alumno">
+          <End Role="Alumno" Type="Self.Alumno" Multiplicity="1" />
+          <End Role="Inscripcion" Type="Self.Inscripcion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Alumno">
+              <PropertyRef Name="idAlumno" />
+            </Principal>
+            <Dependent Role="Inscripcion">
+              <PropertyRef Name="idAlumno" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inscripcion_Curso">
+          <End Role="Curso" Type="Self.Curso" Multiplicity="1" />
+          <End Role="Inscripcion" Type="Self.Inscripcion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Curso">
+              <PropertyRef Name="idCurso" />
+            </Principal>
+            <Dependent Role="Inscripcion">
+              <PropertyRef Name="idCurso" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Pago_Inscripcion">
+          <End Role="Inscripcion" Type="Self.Inscripcion" Multiplicity="1" />
+          <End Role="Pago" Type="Self.Pago" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Inscripcion">
+              <PropertyRef Name="idInscripcion" />
+            </Principal>
+            <Dependent Role="Pago">
+              <PropertyRef Name="idInscripcion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="LenguaVivaDBModelStoreContainer">
+          <EntitySet Name="Administrador" EntityType="Self.Administrador" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Alumno" EntityType="Self.Alumno" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Curso" EntityType="Self.Curso" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Horario" EntityType="Self.Horario" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Idioma" EntityType="Self.Idioma" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Inscripcion" EntityType="Self.Inscripcion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Pago" EntityType="Self.Pago" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Profesor" EntityType="Self.Profesor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Idioma_Alumno" EntityType="Self.Idioma_Alumno" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Idioma_Alumno].[idIdioma] AS [idIdioma], 
+    [Idioma_Alumno].[idAlumno] AS [idAlumno], 
+    [Idioma_Alumno].[nivel] AS [nivel]
+    FROM [dbo].[Idioma_Alumno] AS [Idioma_Alumno]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Idioma_Profesor" EntityType="Self.Idioma_Profesor" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Idioma_Profesor].[idIdioma] AS [idIdioma], 
+    [Idioma_Profesor].[idProfesor] AS [idProfesor]
+    FROM [dbo].[Idioma_Profesor] AS [Idioma_Profesor]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_Curso_Idioma" Association="Self.FK_Curso_Idioma">
+            <End Role="Idioma" EntitySet="Idioma" />
+            <End Role="Curso" EntitySet="Curso" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Curso_Profesor" Association="Self.FK_Curso_Profesor">
+            <End Role="Profesor" EntitySet="Profesor" />
+            <End Role="Curso" EntitySet="Curso" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Horario_Curso" Association="Self.FK_Horario_Curso">
+            <End Role="Curso" EntitySet="Curso" />
+            <End Role="Horario" EntitySet="Horario" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Idioma_Alumno_Alumno" Association="Self.FK_Idioma_Alumno_Alumno">
+            <End Role="Alumno" EntitySet="Alumno" />
+            <End Role="Idioma_Alumno" EntitySet="Idioma_Alumno" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Idioma_Alumno_Idioma" Association="Self.FK_Idioma_Alumno_Idioma">
+            <End Role="Idioma" EntitySet="Idioma" />
+            <End Role="Idioma_Alumno" EntitySet="Idioma_Alumno" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Idioma_Profesor_Idioma" Association="Self.FK_Idioma_Profesor_Idioma">
+            <End Role="Idioma" EntitySet="Idioma" />
+            <End Role="Idioma_Profesor" EntitySet="Idioma_Profesor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Idioma_Profesor_Profesor" Association="Self.FK_Idioma_Profesor_Profesor">
+            <End Role="Profesor" EntitySet="Profesor" />
+            <End Role="Idioma_Profesor" EntitySet="Idioma_Profesor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inscripcion_Alumno" Association="Self.FK_Inscripcion_Alumno">
+            <End Role="Alumno" EntitySet="Alumno" />
+            <End Role="Inscripcion" EntitySet="Inscripcion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inscripcion_Curso" Association="Self.FK_Inscripcion_Curso">
+            <End Role="Curso" EntitySet="Curso" />
+            <End Role="Inscripcion" EntitySet="Inscripcion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Pago_Inscripcion" Association="Self.FK_Pago_Inscripcion">
+            <End Role="Inscripcion" EntitySet="Inscripcion" />
+            <End Role="Pago" EntitySet="Pago" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="LenguaVivaDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Administrador">
+          <Key>
+            <PropertyRef Name="idAdministrador" />
+          </Key>
+          <Property Name="idAdministrador" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombreUsuario" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="contrasenia" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="apellidos" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="direccion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="email" Type="String" MaxLength="320" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Alumno">
+          <Key>
+            <PropertyRef Name="idAlumno" />
+          </Key>
+          <Property Name="idAlumno" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="apellidos" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="direccion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="email" Type="String" MaxLength="320" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Idioma_Alumno" Relationship="Self.FK_Idioma_Alumno_Alumno" FromRole="Alumno" ToRole="Idioma_Alumno" />
+          <NavigationProperty Name="Inscripcion" Relationship="Self.FK_Inscripcion_Alumno" FromRole="Alumno" ToRole="Inscripcion" />
+        </EntityType>
+        <EntityType Name="Curso">
+          <Key>
+            <PropertyRef Name="idCurso" />
+          </Key>
+          <Property Name="idCurso" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombreCurso" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="descripcion" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="nivel" Type="Int32" />
+          <Property Name="cupoMaximo" Type="Int32" />
+          <Property Name="estado" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+          <Property Name="fechaInicio" Type="DateTime" Precision="0" />
+          <Property Name="fechaTermino" Type="DateTime" Precision="0" />
+          <Property Name="listaAsistencia" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="idIdioma" Type="Int32" Nullable="false" />
+          <Property Name="idProfesor" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Idioma" Relationship="Self.FK_Curso_Idioma" FromRole="Curso" ToRole="Idioma" />
+          <NavigationProperty Name="Profesor" Relationship="Self.FK_Curso_Profesor" FromRole="Curso" ToRole="Profesor" />
+          <NavigationProperty Name="Horario" Relationship="Self.FK_Horario_Curso" FromRole="Curso" ToRole="Horario" />
+          <NavigationProperty Name="Inscripcion" Relationship="Self.FK_Inscripcion_Curso" FromRole="Curso" ToRole="Inscripcion" />
+        </EntityType>
+        <EntityType Name="Horario">
+          <Key>
+            <PropertyRef Name="idHorario" />
+          </Key>
+          <Property Name="idHorario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="dia" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="horaInicio" Type="Time" Precision="0" />
+          <Property Name="horaSalida" Type="Time" Precision="0" />
+          <Property Name="idCurso" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Curso" Relationship="Self.FK_Horario_Curso" FromRole="Horario" ToRole="Curso" />
+        </EntityType>
+        <EntityType Name="Idioma">
+          <Key>
+            <PropertyRef Name="idIdioma" />
+          </Key>
+          <Property Name="idIdioma" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombreIdioma" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Curso" Relationship="Self.FK_Curso_Idioma" FromRole="Idioma" ToRole="Curso" />
+          <NavigationProperty Name="Idioma_Alumno" Relationship="Self.FK_Idioma_Alumno_Idioma" FromRole="Idioma" ToRole="Idioma_Alumno" />
+          <NavigationProperty Name="Profesor" Relationship="Self.Idioma_Profesor" FromRole="Idioma" ToRole="Profesor" />
+        </EntityType>
+        <EntityType Name="Inscripcion">
+          <Key>
+            <PropertyRef Name="idInscripcion" />
+          </Key>
+          <Property Name="idInscripcion" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="fechaInscripcion" Type="DateTime" Precision="0" />
+          <Property Name="idAlumno" Type="Int32" Nullable="false" />
+          <Property Name="idCurso" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Alumno" Relationship="Self.FK_Inscripcion_Alumno" FromRole="Inscripcion" ToRole="Alumno" />
+          <NavigationProperty Name="Curso" Relationship="Self.FK_Inscripcion_Curso" FromRole="Inscripcion" ToRole="Curso" />
+          <NavigationProperty Name="Pago" Relationship="Self.FK_Pago_Inscripcion" FromRole="Inscripcion" ToRole="Pago" />
+        </EntityType>
+        <EntityType Name="Pago">
+          <Key>
+            <PropertyRef Name="idPago" />
+          </Key>
+          <Property Name="idPago" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="cantidad" Type="Double" />
+          <Property Name="fechaPago" Type="DateTime" Precision="0" />
+          <Property Name="idInscripcion" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Inscripcion" Relationship="Self.FK_Pago_Inscripcion" FromRole="Pago" ToRole="Inscripcion" />
+        </EntityType>
+        <EntityType Name="Profesor">
+          <Key>
+            <PropertyRef Name="idProfesor" />
+          </Key>
+          <Property Name="idProfesor" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombreUsuario" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="contrasenia" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="apellidos" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="direccion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="email" Type="String" MaxLength="320" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Curso" Relationship="Self.FK_Curso_Profesor" FromRole="Profesor" ToRole="Curso" />
+          <NavigationProperty Name="Idioma" Relationship="Self.Idioma_Profesor" FromRole="Profesor" ToRole="Idioma" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Idioma_Alumno">
+          <Key>
+            <PropertyRef Name="idIdioma" />
+            <PropertyRef Name="idAlumno" />
+            <PropertyRef Name="nivel" />
+          </Key>
+          <Property Name="idIdioma" Type="Int32" Nullable="false" />
+          <Property Name="idAlumno" Type="Int32" Nullable="false" />
+          <Property Name="nivel" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Alumno" Relationship="Self.FK_Idioma_Alumno_Alumno" FromRole="Idioma_Alumno" ToRole="Alumno" />
+          <NavigationProperty Name="Idioma" Relationship="Self.FK_Idioma_Alumno_Idioma" FromRole="Idioma_Alumno" ToRole="Idioma" />
+        </EntityType>
+        <Association Name="FK_Idioma_Alumno_Alumno">
+          <End Role="Alumno" Type="Self.Alumno" Multiplicity="1" />
+          <End Role="Idioma_Alumno" Type="Self.Idioma_Alumno" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Alumno">
+              <PropertyRef Name="idAlumno" />
+            </Principal>
+            <Dependent Role="Idioma_Alumno">
+              <PropertyRef Name="idAlumno" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inscripcion_Alumno">
+          <End Role="Alumno" Type="Self.Alumno" Multiplicity="1" />
+          <End Role="Inscripcion" Type="Self.Inscripcion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Alumno">
+              <PropertyRef Name="idAlumno" />
+            </Principal>
+            <Dependent Role="Inscripcion">
+              <PropertyRef Name="idAlumno" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Curso_Idioma">
+          <End Role="Idioma" Type="Self.Idioma" Multiplicity="1" />
+          <End Role="Curso" Type="Self.Curso" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Idioma">
+              <PropertyRef Name="idIdioma" />
+            </Principal>
+            <Dependent Role="Curso">
+              <PropertyRef Name="idIdioma" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Curso_Profesor">
+          <End Role="Profesor" Type="Self.Profesor" Multiplicity="1" />
+          <End Role="Curso" Type="Self.Curso" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Profesor">
+              <PropertyRef Name="idProfesor" />
+            </Principal>
+            <Dependent Role="Curso">
+              <PropertyRef Name="idProfesor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Horario_Curso">
+          <End Role="Curso" Type="Self.Curso" Multiplicity="1" />
+          <End Role="Horario" Type="Self.Horario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Curso">
+              <PropertyRef Name="idCurso" />
+            </Principal>
+            <Dependent Role="Horario">
+              <PropertyRef Name="idCurso" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inscripcion_Curso">
+          <End Role="Curso" Type="Self.Curso" Multiplicity="1" />
+          <End Role="Inscripcion" Type="Self.Inscripcion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Curso">
+              <PropertyRef Name="idCurso" />
+            </Principal>
+            <Dependent Role="Inscripcion">
+              <PropertyRef Name="idCurso" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Idioma_Alumno_Idioma">
+          <End Role="Idioma" Type="Self.Idioma" Multiplicity="1" />
+          <End Role="Idioma_Alumno" Type="Self.Idioma_Alumno" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Idioma">
+              <PropertyRef Name="idIdioma" />
+            </Principal>
+            <Dependent Role="Idioma_Alumno">
+              <PropertyRef Name="idIdioma" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Pago_Inscripcion">
+          <End Role="Inscripcion" Type="Self.Inscripcion" Multiplicity="1" />
+          <End Role="Pago" Type="Self.Pago" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Inscripcion">
+              <PropertyRef Name="idInscripcion" />
+            </Principal>
+            <Dependent Role="Pago">
+              <PropertyRef Name="idInscripcion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Idioma_Profesor">
+          <End Role="Idioma" Type="Self.Idioma" Multiplicity="*" />
+          <End Role="Profesor" Type="Self.Profesor" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="LenguaVivaDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Administrador" EntityType="Self.Administrador" />
+          <EntitySet Name="Alumno" EntityType="Self.Alumno" />
+          <EntitySet Name="Curso" EntityType="Self.Curso" />
+          <EntitySet Name="Horario" EntityType="Self.Horario" />
+          <EntitySet Name="Idioma" EntityType="Self.Idioma" />
+          <EntitySet Name="Inscripcion" EntityType="Self.Inscripcion" />
+          <EntitySet Name="Pago" EntityType="Self.Pago" />
+          <EntitySet Name="Profesor" EntityType="Self.Profesor" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="Idioma_Alumno" EntityType="Self.Idioma_Alumno" />
+          <AssociationSet Name="FK_Idioma_Alumno_Alumno" Association="Self.FK_Idioma_Alumno_Alumno">
+            <End Role="Alumno" EntitySet="Alumno" />
+            <End Role="Idioma_Alumno" EntitySet="Idioma_Alumno" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inscripcion_Alumno" Association="Self.FK_Inscripcion_Alumno">
+            <End Role="Alumno" EntitySet="Alumno" />
+            <End Role="Inscripcion" EntitySet="Inscripcion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Curso_Idioma" Association="Self.FK_Curso_Idioma">
+            <End Role="Idioma" EntitySet="Idioma" />
+            <End Role="Curso" EntitySet="Curso" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Curso_Profesor" Association="Self.FK_Curso_Profesor">
+            <End Role="Profesor" EntitySet="Profesor" />
+            <End Role="Curso" EntitySet="Curso" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Horario_Curso" Association="Self.FK_Horario_Curso">
+            <End Role="Curso" EntitySet="Curso" />
+            <End Role="Horario" EntitySet="Horario" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inscripcion_Curso" Association="Self.FK_Inscripcion_Curso">
+            <End Role="Curso" EntitySet="Curso" />
+            <End Role="Inscripcion" EntitySet="Inscripcion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Idioma_Alumno_Idioma" Association="Self.FK_Idioma_Alumno_Idioma">
+            <End Role="Idioma" EntitySet="Idioma" />
+            <End Role="Idioma_Alumno" EntitySet="Idioma_Alumno" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Pago_Inscripcion" Association="Self.FK_Pago_Inscripcion">
+            <End Role="Inscripcion" EntitySet="Inscripcion" />
+            <End Role="Pago" EntitySet="Pago" />
+          </AssociationSet>
+          <AssociationSet Name="Idioma_Profesor" Association="Self.Idioma_Profesor">
+            <End Role="Idioma" EntitySet="Idioma" />
+            <End Role="Profesor" EntitySet="Profesor" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="LenguaVivaDBModelStoreContainer" CdmEntityContainer="LenguaVivaDBEntities">
+          <EntitySetMapping Name="Administrador">
+            <EntityTypeMapping TypeName="LenguaVivaDBModel.Administrador">
+              <MappingFragment StoreEntitySet="Administrador">
+                <ScalarProperty Name="idAdministrador" ColumnName="idAdministrador" />
+                <ScalarProperty Name="nombreUsuario" ColumnName="nombreUsuario" />
+                <ScalarProperty Name="contrasenia" ColumnName="contrasenia" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="apellidos" ColumnName="apellidos" />
+                <ScalarProperty Name="direccion" ColumnName="direccion" />
+                <ScalarProperty Name="email" ColumnName="email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Alumno">
+            <EntityTypeMapping TypeName="LenguaVivaDBModel.Alumno">
+              <MappingFragment StoreEntitySet="Alumno">
+                <ScalarProperty Name="idAlumno" ColumnName="idAlumno" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="apellidos" ColumnName="apellidos" />
+                <ScalarProperty Name="direccion" ColumnName="direccion" />
+                <ScalarProperty Name="email" ColumnName="email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Curso">
+            <EntityTypeMapping TypeName="LenguaVivaDBModel.Curso">
+              <MappingFragment StoreEntitySet="Curso">
+                <ScalarProperty Name="idCurso" ColumnName="idCurso" />
+                <ScalarProperty Name="nombreCurso" ColumnName="nombreCurso" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="nivel" ColumnName="nivel" />
+                <ScalarProperty Name="cupoMaximo" ColumnName="cupoMaximo" />
+                <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="fechaInicio" ColumnName="fechaInicio" />
+                <ScalarProperty Name="fechaTermino" ColumnName="fechaTermino" />
+                <ScalarProperty Name="listaAsistencia" ColumnName="listaAsistencia" />
+                <ScalarProperty Name="idIdioma" ColumnName="idIdioma" />
+                <ScalarProperty Name="idProfesor" ColumnName="idProfesor" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Horario">
+            <EntityTypeMapping TypeName="LenguaVivaDBModel.Horario">
+              <MappingFragment StoreEntitySet="Horario">
+                <ScalarProperty Name="idHorario" ColumnName="idHorario" />
+                <ScalarProperty Name="dia" ColumnName="dia" />
+                <ScalarProperty Name="horaInicio" ColumnName="horaInicio" />
+                <ScalarProperty Name="horaSalida" ColumnName="horaSalida" />
+                <ScalarProperty Name="idCurso" ColumnName="idCurso" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Idioma">
+            <EntityTypeMapping TypeName="LenguaVivaDBModel.Idioma">
+              <MappingFragment StoreEntitySet="Idioma">
+                <ScalarProperty Name="idIdioma" ColumnName="idIdioma" />
+                <ScalarProperty Name="nombreIdioma" ColumnName="nombreIdioma" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Inscripcion">
+            <EntityTypeMapping TypeName="LenguaVivaDBModel.Inscripcion">
+              <MappingFragment StoreEntitySet="Inscripcion">
+                <ScalarProperty Name="idInscripcion" ColumnName="idInscripcion" />
+                <ScalarProperty Name="fechaInscripcion" ColumnName="fechaInscripcion" />
+                <ScalarProperty Name="idAlumno" ColumnName="idAlumno" />
+                <ScalarProperty Name="idCurso" ColumnName="idCurso" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Pago">
+            <EntityTypeMapping TypeName="LenguaVivaDBModel.Pago">
+              <MappingFragment StoreEntitySet="Pago">
+                <ScalarProperty Name="idPago" ColumnName="idPago" />
+                <ScalarProperty Name="cantidad" ColumnName="cantidad" />
+                <ScalarProperty Name="fechaPago" ColumnName="fechaPago" />
+                <ScalarProperty Name="idInscripcion" ColumnName="idInscripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Profesor">
+            <EntityTypeMapping TypeName="LenguaVivaDBModel.Profesor">
+              <MappingFragment StoreEntitySet="Profesor">
+                <ScalarProperty Name="idProfesor" ColumnName="idProfesor" />
+                <ScalarProperty Name="nombreUsuario" ColumnName="nombreUsuario" />
+                <ScalarProperty Name="contrasenia" ColumnName="contrasenia" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="apellidos" ColumnName="apellidos" />
+                <ScalarProperty Name="direccion" ColumnName="direccion" />
+                <ScalarProperty Name="email" ColumnName="email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="LenguaVivaDBModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Idioma_Alumno">
+            <EntityTypeMapping TypeName="LenguaVivaDBModel.Idioma_Alumno">
+              <MappingFragment StoreEntitySet="Idioma_Alumno">
+                <ScalarProperty Name="idIdioma" ColumnName="idIdioma" />
+                <ScalarProperty Name="idAlumno" ColumnName="idAlumno" />
+                <ScalarProperty Name="nivel" ColumnName="nivel" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="Idioma_Profesor" TypeName="LenguaVivaDBModel.Idioma_Profesor" StoreEntitySet="Idioma_Profesor">
+            <EndProperty Name="Idioma">
+              <ScalarProperty Name="idIdioma" ColumnName="idIdioma" />
+            </EndProperty>
+            <EndProperty Name="Profesor">
+              <ScalarProperty Name="idProfesor" ColumnName="idProfesor" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

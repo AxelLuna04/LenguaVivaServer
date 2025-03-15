@@ -10,9 +10,16 @@ namespace ServicioContrato
     {
         public bool IniciarSesion(string usuario, string contrasenia)
         {
-            if(usuario == "Axel" && contrasenia == "12345")
-                return true;
-            return false;
+            // Simulación de base de datos
+            Dictionary<string, string> usuarios = new Dictionary<string, string>
+            {
+                { "Axel", "12345" },
+                { "Juan", "qwerty" },
+                { "Maria", "abc123" }
+            };
+
+            return usuarios.ContainsKey(usuario) && usuarios[usuario] == contrasenia;
+
         }
     }
 }
