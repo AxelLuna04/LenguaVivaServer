@@ -59,6 +59,9 @@
     <Compile Include="Curso.cs">
       <DependentUpon>ModeloDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="DAO\CursoDAO.cs" />
+    <Compile Include="DAO\IdiomaDAO.cs" />
+    <Compile Include="DAO\ProfesorDAO.cs" />
     <Compile Include="DAO\UsuarioDAO.cs" />
     <Compile Include="Horario.cs">
       <DependentUpon>ModeloDB.tt</DependentUpon>
