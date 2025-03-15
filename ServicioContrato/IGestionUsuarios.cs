@@ -17,5 +17,19 @@ namespace ServicioContrato
         bool RegistrarAdministrador(string nombreUsuario, string contrasenia, string nombre, string apellidos, string direccion, string email);
 
 
-    }   
+    }
+
+
+
+	public class Administrador
+	{
+		public int Id { get; set; } 
+		public string NombreUsuario { get; set; } 
+		public string Contraseña { get; set; }
+		public string Nombre { get; set; } 
+		public string Apellidos { get; set; } 
+		public string Direccion { get; set; } 
+		public string Correo { get; set; } 
+	}
+
 }
