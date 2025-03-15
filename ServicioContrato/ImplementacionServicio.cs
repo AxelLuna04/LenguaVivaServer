@@ -23,19 +23,11 @@ namespace ServicioContrato
 
         }
 
-        public bool RegistrarAdministrador(string nombreUsuario, string contrasenia, string nombre, string apellidos, string direccion, string email)
-        {
-
-            try
-            {
-                UsuarioDAO usuarioDAO = new UsuarioDAO();
-                return usuarioDAO.RegistrarAdministrador(nombreUsuario, contrasenia, nombre, apellidos, direccion, email);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Error al registrar administrador: " + ex.Message);
-                return false;
-            }
-        }
-    }
+		public bool RegistrarAdministrador(string nombreUsuario, string contrasenia, string nombre, string apellidos, string direccion, string email)
+		{
+			
+		}
+	}
 }
+    
+
