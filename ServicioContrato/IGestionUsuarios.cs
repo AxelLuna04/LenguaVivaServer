@@ -13,7 +13,5 @@ namespace ServicioContrato
         [OperationContract]
         bool IniciarSesion(string usuario, string contrasenia);
 
-        [OperationContract]
-        int hola();
     }
 }
