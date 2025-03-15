@@ -25,7 +25,7 @@ namespace ServicioContrato
 
 		public bool RegistrarAdministrador(string nombreUsuario, string contrasenia, string nombre, string apellidos, string direccion, string email)
 		{
-			
+            return true; //temporal	
 		}
 	}
 }
