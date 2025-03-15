@@ -13,5 +13,9 @@ namespace ServicioContrato
         [OperationContract]
         bool IniciarSesion(string usuario, string contrasenia);
 
-    }
+        [OperationContract]
+        bool RegistrarAdministrador(string nombreUsuario, string contrasenia, string nombre, string apellidos, string direccion, string email);
+
+
+    }   
 }
