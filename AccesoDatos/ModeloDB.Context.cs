@@ -13,6 +13,7 @@ namespace AccesoDatos
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
+    
     public partial class LenguaVivaDBEntities : DbContext
     {
         public LenguaVivaDBEntities()

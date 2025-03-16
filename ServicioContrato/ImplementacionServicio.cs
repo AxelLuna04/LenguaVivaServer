@@ -25,8 +25,17 @@ namespace ServicioContrato
 
 		public bool RegistrarAdministrador(string nombreUsuario, string contrasenia, string nombre, string apellidos, string direccion, string email)
 		{
-            return true; //temporal	
-		}
+            if (nombreUsuario != null || contrasenia != null || nombre != null || apellidos != null || direccion != null || email != null)
+            {
+                Console.WriteLine(nombreUsuario, contrasenia, nombre, apellidos, direccion, email);
+                AccesoDatos.DAO.UsuarioDAO.AgregarAdministrador(nombreUsuario, contrasenia, nombre, apellidos, direccion, email);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 	}
 }
     
