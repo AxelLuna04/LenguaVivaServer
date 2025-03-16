@@ -21,7 +21,6 @@ namespace LenguaVivaServidor
                 {
                     host.Open();
                     Console.WriteLine("Servidor corriendo...");
-                    prueba();
                     Console.ReadLine();
                     
                 }
@@ -34,12 +33,5 @@ namespace LenguaVivaServidor
             }
         }
 
-        public static void prueba()
-        {
-            Idioma idioma = new Idioma();
-            idioma.nombreIdioma = "Ingles";
-            IdiomaDAO.CrearIdioma(idioma);
-            Console.WriteLine("Idioma creado");
-        }
     }
 }
