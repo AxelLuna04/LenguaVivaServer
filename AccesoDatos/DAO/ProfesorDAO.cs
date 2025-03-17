@@ -67,12 +67,14 @@ namespace AccesoDatos.DAO
             }
         }
 
-        public static Profesor ObtenerProfesorPorNombre(string nombre)
+        public static Profesor[] ObtenerProfesoresPorNombre(string nombre)
         {
             using (var contexto = new LenguaVivaDBEntities())
             {
                 contexto.Database.Log = Console.WriteLine;
-                return contexto.Profesor.FirstOrDefault(p => p.nombre == nombre);
+                return contexto.Profesor
+                    .Where(p => p.nombre.Contains(nombre))
+                    .ToArray();
             }
         }
 

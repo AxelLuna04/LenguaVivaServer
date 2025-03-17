@@ -60,27 +60,22 @@
           <Property Name="idIdioma" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="nombreIdioma" Type="varchar" MaxLength="50" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'LenguaVivaDB.dbo.Idioma_Alumno' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="Idioma_Alumno">
           <Key>
-            <PropertyRef Name="idIdioma" />
-            <PropertyRef Name="idAlumno" />
-            <PropertyRef Name="nivel" />
+            <PropertyRef Name="idRelacion" />
           </Key>
           <Property Name="idIdioma" Type="int" Nullable="false" />
           <Property Name="idAlumno" Type="int" Nullable="false" />
           <Property Name="nivel" Type="int" Nullable="false" />
+          <Property Name="idRelacion" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'LenguaVivaDB.dbo.Idioma_Profesor' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="Idioma_Profesor">
           <Key>
-            <PropertyRef Name="idIdioma" />
-            <PropertyRef Name="idProfesor" />
+            <PropertyRef Name="idRelacion" />
           </Key>
           <Property Name="idIdioma" Type="int" Nullable="false" />
           <Property Name="idProfesor" Type="int" Nullable="false" />
+          <Property Name="idRelacion" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
         <EntityType Name="Inscripcion">
           <Key>
@@ -248,23 +243,12 @@ advertencia 6002: La tabla o vista 'LenguaVivaDB.dbo.Idioma_Profesor' no tiene d
           <EntitySet Name="Curso" EntityType="Self.Curso" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Horario" EntityType="Self.Horario" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Idioma" EntityType="Self.Idioma" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Idioma_Alumno" EntityType="Self.Idioma_Alumno" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Idioma_Profesor" EntityType="Self.Idioma_Profesor" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Inscripcion" EntityType="Self.Inscripcion" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Pago" EntityType="Self.Pago" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Profesor" EntityType="Self.Profesor" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Idioma_Alumno" EntityType="Self.Idioma_Alumno" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [Idioma_Alumno].[idIdioma] AS [idIdioma], 
-    [Idioma_Alumno].[idAlumno] AS [idAlumno], 
-    [Idioma_Alumno].[nivel] AS [nivel]
-    FROM [dbo].[Idioma_Alumno] AS [Idioma_Alumno]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="Idioma_Profesor" EntityType="Self.Idioma_Profesor" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [Idioma_Profesor].[idIdioma] AS [idIdioma], 
-    [Idioma_Profesor].[idProfesor] AS [idProfesor]
-    FROM [dbo].[Idioma_Profesor] AS [Idioma_Profesor]</DefiningQuery>
-          </EntitySet>
           <AssociationSet Name="FK_Curso_Idioma" Association="Self.FK_Curso_Idioma">
             <End Role="Idioma" EntitySet="Idioma" />
             <End Role="Curso" EntitySet="Curso" />
@@ -374,7 +358,28 @@ advertencia 6002: La tabla o vista 'LenguaVivaDB.dbo.Idioma_Profesor' no tiene d
           <Property Name="nombreIdioma" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Curso" Relationship="Self.FK_Curso_Idioma" FromRole="Idioma" ToRole="Curso" />
           <NavigationProperty Name="Idioma_Alumno" Relationship="Self.FK_Idioma_Alumno_Idioma" FromRole="Idioma" ToRole="Idioma_Alumno" />
-          <NavigationProperty Name="Profesor" Relationship="Self.Idioma_Profesor" FromRole="Idioma" ToRole="Profesor" />
+          <NavigationProperty Name="Idioma_Profesor" Relationship="Self.FK_Idioma_Profesor_Idioma" FromRole="Idioma" ToRole="Idioma_Profesor" />
+        </EntityType>
+        <EntityType Name="Idioma_Alumno">
+          <Key>
+            <PropertyRef Name="idRelacion" />
+          </Key>
+          <Property Name="idIdioma" Type="Int32" Nullable="false" />
+          <Property Name="idAlumno" Type="Int32" Nullable="false" />
+          <Property Name="nivel" Type="Int32" Nullable="false" />
+          <Property Name="idRelacion" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Alumno" Relationship="Self.FK_Idioma_Alumno_Alumno" FromRole="Idioma_Alumno" ToRole="Alumno" />
+          <NavigationProperty Name="Idioma" Relationship="Self.FK_Idioma_Alumno_Idioma" FromRole="Idioma_Alumno" ToRole="Idioma" />
+        </EntityType>
+        <EntityType Name="Idioma_Profesor">
+          <Key>
+            <PropertyRef Name="idRelacion" />
+          </Key>
+          <Property Name="idIdioma" Type="Int32" Nullable="false" />
+          <Property Name="idProfesor" Type="Int32" Nullable="false" />
+          <Property Name="idRelacion" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Idioma" Relationship="Self.FK_Idioma_Profesor_Idioma" FromRole="Idioma_Profesor" ToRole="Idioma" />
+          <NavigationProperty Name="Profesor" Relationship="Self.FK_Idioma_Profesor_Profesor" FromRole="Idioma_Profesor" ToRole="Profesor" />
         </EntityType>
         <EntityType Name="Inscripcion">
           <Key>
@@ -410,7 +415,7 @@ advertencia 6002: La tabla o vista 'LenguaVivaDB.dbo.Idioma_Profesor' no tiene d
           <Property Name="direccion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="email" Type="String" MaxLength="320" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Curso" Relationship="Self.FK_Curso_Profesor" FromRole="Profesor" ToRole="Curso" />
-          <NavigationProperty Name="Idioma" Relationship="Self.Idioma_Profesor" FromRole="Profesor" ToRole="Idioma" />
+          <NavigationProperty Name="Idioma_Profesor" Relationship="Self.FK_Idioma_Profesor_Profesor" FromRole="Profesor" ToRole="Idioma_Profesor" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -421,18 +426,6 @@ advertencia 6002: La tabla o vista 'LenguaVivaDB.dbo.Idioma_Profesor' no tiene d
           <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="version" Type="Int32" />
           <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
-        </EntityType>
-        <EntityType Name="Idioma_Alumno">
-          <Key>
-            <PropertyRef Name="idIdioma" />
-            <PropertyRef Name="idAlumno" />
-            <PropertyRef Name="nivel" />
-          </Key>
-          <Property Name="idIdioma" Type="Int32" Nullable="false" />
-          <Property Name="idAlumno" Type="Int32" Nullable="false" />
-          <Property Name="nivel" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Alumno" Relationship="Self.FK_Idioma_Alumno_Alumno" FromRole="Idioma_Alumno" ToRole="Alumno" />
-          <NavigationProperty Name="Idioma" Relationship="Self.FK_Idioma_Alumno_Idioma" FromRole="Idioma_Alumno" ToRole="Idioma" />
         </EntityType>
         <Association Name="FK_Idioma_Alumno_Alumno">
           <End Role="Alumno" Type="Self.Alumno" Multiplicity="1" />
@@ -518,6 +511,30 @@ advertencia 6002: La tabla o vista 'LenguaVivaDB.dbo.Idioma_Profesor' no tiene d
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Idioma_Profesor_Idioma">
+          <End Role="Idioma" Type="Self.Idioma" Multiplicity="1" />
+          <End Role="Idioma_Profesor" Type="Self.Idioma_Profesor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Idioma">
+              <PropertyRef Name="idIdioma" />
+            </Principal>
+            <Dependent Role="Idioma_Profesor">
+              <PropertyRef Name="idIdioma" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Idioma_Profesor_Profesor">
+          <End Role="Profesor" Type="Self.Profesor" Multiplicity="1" />
+          <End Role="Idioma_Profesor" Type="Self.Idioma_Profesor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Profesor">
+              <PropertyRef Name="idProfesor" />
+            </Principal>
+            <Dependent Role="Idioma_Profesor">
+              <PropertyRef Name="idProfesor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Pago_Inscripcion">
           <End Role="Inscripcion" Type="Self.Inscripcion" Multiplicity="1" />
           <End Role="Pago" Type="Self.Pago" Multiplicity="*" />
@@ -530,21 +547,18 @@ advertencia 6002: La tabla o vista 'LenguaVivaDB.dbo.Idioma_Profesor' no tiene d
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="Idioma_Profesor">
-          <End Role="Idioma" Type="Self.Idioma" Multiplicity="*" />
-          <End Role="Profesor" Type="Self.Profesor" Multiplicity="*" />
-        </Association>
-        <EntityContainer Name="LenguaVivaDBEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Administrador" EntityType="Self.Administrador" />
           <EntitySet Name="Alumno" EntityType="Self.Alumno" />
           <EntitySet Name="Curso" EntityType="Self.Curso" />
           <EntitySet Name="Horario" EntityType="Self.Horario" />
           <EntitySet Name="Idioma" EntityType="Self.Idioma" />
+          <EntitySet Name="Idioma_Alumno" EntityType="Self.Idioma_Alumno" />
+          <EntitySet Name="Idioma_Profesor" EntityType="Self.Idioma_Profesor" />
           <EntitySet Name="Inscripcion" EntityType="Self.Inscripcion" />
           <EntitySet Name="Pago" EntityType="Self.Pago" />
           <EntitySet Name="Profesor" EntityType="Self.Profesor" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
-          <EntitySet Name="Idioma_Alumno" EntityType="Self.Idioma_Alumno" />
           <AssociationSet Name="FK_Idioma_Alumno_Alumno" Association="Self.FK_Idioma_Alumno_Alumno">
             <End Role="Alumno" EntitySet="Alumno" />
             <End Role="Idioma_Alumno" EntitySet="Idioma_Alumno" />
@@ -573,13 +587,17 @@ advertencia 6002: La tabla o vista 'LenguaVivaDB.dbo.Idioma_Profesor' no tiene d
             <End Role="Idioma" EntitySet="Idioma" />
             <End Role="Idioma_Alumno" EntitySet="Idioma_Alumno" />
           </AssociationSet>
+          <AssociationSet Name="FK_Idioma_Profesor_Idioma" Association="Self.FK_Idioma_Profesor_Idioma">
+            <End Role="Idioma" EntitySet="Idioma" />
+            <End Role="Idioma_Profesor" EntitySet="Idioma_Profesor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Idioma_Profesor_Profesor" Association="Self.FK_Idioma_Profesor_Profesor">
+            <End Role="Profesor" EntitySet="Profesor" />
+            <End Role="Idioma_Profesor" EntitySet="Idioma_Profesor" />
+          </AssociationSet>
           <AssociationSet Name="FK_Pago_Inscripcion" Association="Self.FK_Pago_Inscripcion">
             <End Role="Inscripcion" EntitySet="Inscripcion" />
             <End Role="Pago" EntitySet="Pago" />
-          </AssociationSet>
-          <AssociationSet Name="Idioma_Profesor" Association="Self.Idioma_Profesor">
-            <End Role="Idioma" EntitySet="Idioma" />
-            <End Role="Profesor" EntitySet="Profesor" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -587,7 +605,7 @@ advertencia 6002: La tabla o vista 'LenguaVivaDB.dbo.Idioma_Profesor' no tiene d
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="LenguaVivaDBModelStoreContainer" CdmEntityContainer="LenguaVivaDBEntities">
+        <EntityContainerMapping StorageEntityContainer="LenguaVivaDBModelStoreContainer" CdmEntityContainer="Entities">
           <EntitySetMapping Name="Administrador">
             <EntityTypeMapping TypeName="LenguaVivaDBModel.Administrador">
               <MappingFragment StoreEntitySet="Administrador">
@@ -648,6 +666,25 @@ advertencia 6002: La tabla o vista 'LenguaVivaDB.dbo.Idioma_Profesor' no tiene d
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Idioma_Alumno">
+            <EntityTypeMapping TypeName="LenguaVivaDBModel.Idioma_Alumno">
+              <MappingFragment StoreEntitySet="Idioma_Alumno">
+                <ScalarProperty Name="idIdioma" ColumnName="idIdioma" />
+                <ScalarProperty Name="idAlumno" ColumnName="idAlumno" />
+                <ScalarProperty Name="nivel" ColumnName="nivel" />
+                <ScalarProperty Name="idRelacion" ColumnName="idRelacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Idioma_Profesor">
+            <EntityTypeMapping TypeName="LenguaVivaDBModel.Idioma_Profesor">
+              <MappingFragment StoreEntitySet="Idioma_Profesor">
+                <ScalarProperty Name="idIdioma" ColumnName="idIdioma" />
+                <ScalarProperty Name="idProfesor" ColumnName="idProfesor" />
+                <ScalarProperty Name="idRelacion" ColumnName="idRelacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Inscripcion">
             <EntityTypeMapping TypeName="LenguaVivaDBModel.Inscripcion">
               <MappingFragment StoreEntitySet="Inscripcion">
@@ -692,23 +729,6 @@ advertencia 6002: La tabla o vista 'LenguaVivaDB.dbo.Idioma_Profesor' no tiene d
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Idioma_Alumno">
-            <EntityTypeMapping TypeName="LenguaVivaDBModel.Idioma_Alumno">
-              <MappingFragment StoreEntitySet="Idioma_Alumno">
-                <ScalarProperty Name="idIdioma" ColumnName="idIdioma" />
-                <ScalarProperty Name="idAlumno" ColumnName="idAlumno" />
-                <ScalarProperty Name="nivel" ColumnName="nivel" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <AssociationSetMapping Name="Idioma_Profesor" TypeName="LenguaVivaDBModel.Idioma_Profesor" StoreEntitySet="Idioma_Profesor">
-            <EndProperty Name="Idioma">
-              <ScalarProperty Name="idIdioma" ColumnName="idIdioma" />
-            </EndProperty>
-            <EndProperty Name="Profesor">
-              <ScalarProperty Name="idProfesor" ColumnName="idProfesor" />
-            </EndProperty>
-          </AssociationSetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -19,7 +19,7 @@ namespace AccesoDatos
         {
             this.Curso = new HashSet<Curso>();
             this.Idioma_Alumno = new HashSet<Idioma_Alumno>();
-            this.Profesor = new HashSet<Profesor>();
+            this.Idioma_Profesor = new HashSet<Idioma_Profesor>();
         }
     
         public int idIdioma { get; set; }
@@ -30,6 +30,6 @@ namespace AccesoDatos
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Idioma_Alumno> Idioma_Alumno { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Profesor> Profesor { get; set; }
+        public virtual ICollection<Idioma_Profesor> Idioma_Profesor { get; set; }
     }
 }

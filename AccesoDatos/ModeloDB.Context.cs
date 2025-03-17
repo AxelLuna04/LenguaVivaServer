@@ -30,10 +30,11 @@ namespace AccesoDatos
         public virtual DbSet<Curso> Curso { get; set; }
         public virtual DbSet<Horario> Horario { get; set; }
         public virtual DbSet<Idioma> Idioma { get; set; }
+        public virtual DbSet<Idioma_Alumno> Idioma_Alumno { get; set; }
+        public virtual DbSet<Idioma_Profesor> Idioma_Profesor { get; set; }
         public virtual DbSet<Inscripcion> Inscripcion { get; set; }
         public virtual DbSet<Pago> Pago { get; set; }
         public virtual DbSet<Profesor> Profesor { get; set; }
         public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
-        public virtual DbSet<Idioma_Alumno> Idioma_Alumno { get; set; }
     }
 }

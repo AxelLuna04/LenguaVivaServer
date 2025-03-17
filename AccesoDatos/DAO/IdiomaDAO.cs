@@ -32,7 +32,15 @@ namespace AccesoDatos.DAO
             using (var contexto = new LenguaVivaDBEntities())
             {
                 contexto.Database.Log = Console.WriteLine;
-                return contexto.Idioma.ToArray();
+                List<Idioma> respuesta = new List<Idioma>();
+                
+                foreach (Idioma idioma in contexto.Idioma)
+                {
+                    respuesta.Add(idioma);
+                }
+
+
+                return respuesta.ToArray();
             }
         }
     }
