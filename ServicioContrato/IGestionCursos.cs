@@ -13,7 +13,7 @@ namespace ServicioContrato
     public interface IGestionCursos
     {
         [OperationContract]
-        Curso[] ObtenerCursos(String nombre);
+        CursoDTO[] ObtenerCursosPorNombre(String nombre);
 
         [OperationContract]
         bool RegistrarCurso(CursoDTO cursoDTO);
@@ -22,8 +22,16 @@ namespace ServicioContrato
         ProfesorDTO[] ObtenerProfesoresPorNombre(String nombre);
 
         [OperationContract]
+        ProfesorDTO ObtenerProfesorPorID(int idProfesor);
+
+        [OperationContract]
         IdiomaDTO[] ObtenerIdiomas();
 
+        [OperationContract]
+        IdiomaDTO ObtenerIdiomaPorID(int idIdioma);
+
+        [OperationContract]
+        CursoDTO ObtenerCursoPorID(int idCurso);
 
     }
     [DataContract]

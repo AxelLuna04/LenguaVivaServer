@@ -43,5 +43,14 @@ namespace AccesoDatos.DAO
                 return respuesta.ToArray();
             }
         }
+
+        public static Idioma ObtenerIdiomaPorID(int id)
+        {
+            using (var contexto = new LenguaVivaDBEntities())
+            {
+                contexto.Database.Log = Console.WriteLine;
+                return contexto.Idioma.Find(id);
+            }
+        }
     }
 }

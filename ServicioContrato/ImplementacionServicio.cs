@@ -26,6 +26,35 @@ namespace ServicioContrato
 
         }
 
+        public CursoDTO ObtenerCursoPorID(int idCurso)
+        {
+            Curso curso = CursoDAO.ObtenerCursoPorID(idCurso);
+            if (curso != null)
+            {
+                var cursoDTO = new CursoDTO
+                {
+                    idCurso = curso.idCurso,
+                    nombreCurso = curso.nombreCurso,
+                    descripcion = curso.descripcion,
+                    nivel = (int)curso.nivel,
+                    cupoMaximo = (int)curso.cupoMaximo,
+                    estado = curso.estado,
+                    fechaInicio = (DateTime)curso.fechaInicio,
+                    fechaTermino = (DateTime)curso.fechaTermino,
+                    listaAsistencia = curso.listaAsistencia,
+                    idIdioma = curso.idIdioma,
+                    idProfesor = curso.idProfesor
+                };
+                return cursoDTO;
+
+            }
+            else
+            {
+                Console.WriteLine("No se encontró el curso con id: " + curso.idCurso);
+                return null;
+            }
+        }
+
         // Metodos de IGestionCursos
 
         public Curso[] ObtenerCursos(string nombre)
@@ -38,6 +67,52 @@ namespace ServicioContrato
             else
             {
                 Console.WriteLine("No se encontraron cursos");
+                return null;
+            }
+        }
+
+        public CursoDTO[] ObtenerCursosPorNombre(string nombre)
+        {
+            Curso[] cursos = CursoDAO.ObtenerCursosPorNombre(nombre);
+            if (cursos != null)
+            {
+                var cursosDTO = cursos.Select(c => new CursoDTO
+                {
+                    idCurso = c.idCurso,
+                    nombreCurso = c.nombreCurso,
+                    descripcion = c.descripcion,
+                    nivel = (int)c.nivel,
+                    cupoMaximo = (int)c.cupoMaximo,
+                    estado = c.estado,
+                    fechaInicio = (DateTime)c.fechaInicio,
+                    fechaTermino = (DateTime)c.fechaTermino,
+                    listaAsistencia = c.listaAsistencia,
+                    idIdioma = c.idIdioma,
+                    idProfesor = c.idProfesor
+                }).ToArray();
+                return cursosDTO;
+            }
+            else
+            {
+                Console.WriteLine("No se encontraron cursos");
+                return null;
+            }
+        }
+
+        public IdiomaDTO ObtenerIdiomaPorID(int idIdioma)
+        {
+            Idioma idioma = IdiomaDAO.ObtenerIdiomaPorID(idIdioma);
+            if (idioma != null)
+            {
+                var idiomaDTO = new IdiomaDTO
+                {
+                    idIdioma = idioma.idIdioma,
+                    nombreIdioma = idioma.nombreIdioma
+                };
+                return idiomaDTO;
+            } else
+            {
+                Console.WriteLine("No se encontró el idioma con id: " + idIdioma);
                 return null;
             }
         }
@@ -86,6 +161,29 @@ namespace ServicioContrato
             }
         }
 
+        public ProfesorDTO ObtenerProfesorPorID(int idProfesor)
+        {
+            Profesor profesor = ProfesorDAO.ObtenerProfesorPorId(idProfesor);
+            if (profesor != null)
+            {
+                ProfesorDTO profesorDTO = new ProfesorDTO
+                {
+                    idProfesor = profesor.idProfesor,
+                    nombreUsuario = profesor.nombreUsuario,
+                    nombre = profesor.nombre,
+                    apellidos = profesor.apellidos,
+                    direccion = profesor.direccion,
+                    email = profesor.email
+                };
+                return profesorDTO;
+            }
+            else
+            {
+                Console.WriteLine("No se encontró el profesor con id: " + idProfesor);
+                return null;
+            }
+        }
+
         public bool RegistrarCurso(CursoDTO cursoDTO)
         {
             try
@@ -96,7 +194,7 @@ namespace ServicioContrato
                     descripcion = cursoDTO.descripcion,
                     nivel = cursoDTO.nivel,
                     cupoMaximo = cursoDTO.cupoMaximo,
-                    estado = "Propuesto",
+                    estado = "Propuesto",//TODO: Convertir en Constante ?
                     fechaInicio = cursoDTO.fechaInicio,
                     fechaTermino = cursoDTO.fechaTermino,
                     idIdioma = cursoDTO.idIdioma,

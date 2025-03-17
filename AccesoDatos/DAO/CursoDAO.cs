@@ -49,12 +49,23 @@ namespace AccesoDatos.DAO
 
         }
 
-        public static Curso ObtenerCursoPorNombre(String nombreCurso)
+        public static Curso[] ObtenerCursosPorNombre(String nombreCurso)
         {
             using (var contexto = new LenguaVivaDBEntities())
             {
                 contexto.Database.Log = Console.WriteLine;
-                return contexto.Curso.FirstOrDefault(c => c.nombreCurso == nombreCurso);
+                return contexto.Curso
+                    .Where(c => c.nombreCurso.Contains(nombreCurso))
+                    .ToArray();
+            }
+        }
+
+        public static Curso ObtenerCursoPorID(int id)
+        {
+            using (var contexto = new LenguaVivaDBEntities())
+            {
+                contexto.Database.Log = Console.WriteLine;
+                return contexto.Curso.Find(id);
             }
         }
 
