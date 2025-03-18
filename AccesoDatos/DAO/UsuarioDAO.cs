@@ -37,5 +37,26 @@ namespace AccesoDatos.DAO
             }
         }
 
+        public static void CrearAlumno(Alumno alumno)
+        {
+            using (var contexto = new LenguaVivaDBEntities())
+            {
+                contexto.Database.Log = Console.WriteLine;
+                contexto.Alumno.Add(alumno);
+                contexto.SaveChanges();
+            }
+        }
+
+        public static void CrearRelacionIdiomaAlumno(Idioma_Alumno relacion)
+        {
+            using (var contexto = new LenguaVivaDBEntities())
+            {
+                contexto.Database.Log = Console.WriteLine;
+                contexto.Idioma_Alumno.Add(relacion);
+                contexto.SaveChanges();
+            }
+        }
+
+
     }
 }

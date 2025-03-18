@@ -133,6 +133,39 @@ namespace ServicioContrato
             }
         }
 
+        public bool RegistrarAlumno(AlumnoDTO alumnoDTO, IdiomaNivelDTO[] idiomasNivel)
+        {
+            try
+            {
+                Alumno alumno = new Alumno
+                {
+                    nombre = alumnoDTO.nombre,
+                    apellidos = alumnoDTO.apellidos,
+                    direccion = alumnoDTO.direccion,
+                    email = alumnoDTO.email,
+                };
+
+                UsuarioDAO.CrearAlumno(alumno);
+
+                foreach (var idiomaNivel in idiomasNivel)
+                {
+                    Idioma_Alumno relacion = new Idioma_Alumno
+                    {
+                        idAlumno = alumno.idAlumno,
+                        idIdioma = idiomaNivel.idIdioma,
+                        nivel = idiomaNivel.nivel 
+                    };
+                    UsuarioDAO.CrearRelacionIdiomaAlumno(relacion);
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                return false;
+            }
+        }
 
 
         //Metodos IGestionUsuarios

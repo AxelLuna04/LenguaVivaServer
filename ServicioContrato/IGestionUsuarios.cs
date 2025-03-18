@@ -22,6 +22,9 @@ namespace ServicioContrato
 
         [OperationContract]
         bool RegistrarProfesor(ProfesorDTO profesorDTO, int[] idIdiomas);
+        
+        [OperationContract] 
+        bool RegistrarAlumno(AlumnoDTO alumnoDTO, IdiomaNivelDTO[] idiomasNivel);
 
     }
 
@@ -73,6 +76,40 @@ namespace ServicioContrato
 
         [DataMember]
         public string email { get; set; }
+    }
+
+    [DataContract]
+    public class AlumnoDTO
+    {
+        [DataMember]
+        public int idAlumno { get; set; }
+
+        [DataMember]
+        public string nombre { get; set; }
+
+        [DataMember]
+        public string apellidos { get; set; }
+
+        [DataMember]
+        public string direccion { get; set; }
+
+        [DataMember]
+        public string email { get; set; }
+
+    }
+
+    [DataContract]
+    public class IdiomaNivelDTO
+    {
+        [DataMember]
+        public int idIdioma { get; set; }
+
+        [DataMember]
+        public int nivel { get; set; } 
+
+        [DataMember]
+        public string idiomaNombre { get; set; }
+
     }
 
     [DataContract]
