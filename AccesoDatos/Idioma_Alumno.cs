@@ -17,6 +17,7 @@ namespace AccesoDatos
         public int idIdioma { get; set; }
         public int idAlumno { get; set; }
         public int nivel { get; set; }
+        public int idRelacion { get; set; }
     
         public virtual Alumno Alumno { get; set; }
         public virtual Idioma Idioma { get; set; }

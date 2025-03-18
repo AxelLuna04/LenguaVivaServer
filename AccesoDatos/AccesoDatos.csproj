@@ -15,6 +15,7 @@
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -62,6 +63,9 @@
     <Compile Include="Curso.cs">
       <DependentUpon>ModeloDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="DAO\CursoDAO.cs" />
+    <Compile Include="DAO\IdiomaDAO.cs" />
+    <Compile Include="DAO\ProfesorDAO.cs" />
     <Compile Include="DAO\UsuarioDAO.cs" />
     <Compile Include="Horario.cs">
       <DependentUpon>ModeloDB.tt</DependentUpon>
@@ -70,6 +74,9 @@
       <DependentUpon>ModeloDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Idioma_Alumno.cs">
+      <DependentUpon>ModeloDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Idioma_Profesor.cs">
       <DependentUpon>ModeloDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Inscripcion.cs">
@@ -102,23 +109,24 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.Config" />
     <EntityDeploy Include="ModeloDB.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>ModeloDB.Designer.cs</LastGenOutput>
     </EntityDeploy>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.Config" />
     <None Include="ModeloDB.edmx.diagram">
       <DependentUpon>ModeloDB.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="ModeloDB.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ModeloDB.Context.cs</LastGenOutput>
       <DependentUpon>ModeloDB.edmx</DependentUpon>
+      <LastGenOutput>ModeloDB.Context.cs</LastGenOutput>
     </Content>
     <Content Include="ModeloDB.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

@@ -6,6 +6,9 @@ using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 
+using AccesoDatos;
+using AccesoDatos.DAO;
+
 namespace LenguaVivaServidor
 {
     internal class Program
@@ -19,13 +22,16 @@ namespace LenguaVivaServidor
                     host.Open();
                     Console.WriteLine("Servidor corriendo...");
                     Console.ReadLine();
+                    
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error: {ex.Message}");
                 Console.WriteLine($"StackTrace: {ex.StackTrace}");
+                Console.ReadLine();
             }
         }
+
     }
 }
