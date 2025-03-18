@@ -6,7 +6,6 @@ using System.Linq;
 using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
-using AccesoDatos.DAO;
 
 namespace ServicioContrato
 {
@@ -40,11 +39,7 @@ namespace ServicioContrato
                 return false;
             }
         }
-	}
-}
     
-
-
         public CursoDTO ObtenerCursoPorID(int idCurso)
         {
             try
