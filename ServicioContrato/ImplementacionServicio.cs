@@ -236,5 +236,89 @@ namespace ServicioContrato
             }
 
         }
+
+        public CursoDTO[] ObtenerCursosPorNombreIdioma(string nombreIdioma)
+        {
+            Curso[] cursos = CursoDAO.ObtenerCursosPorNombreIdioma(nombreIdioma);
+            if (cursos != null)
+            {
+                var cursosDTO = cursos.Select(c => new CursoDTO
+                {
+                    idCurso = c.idCurso,
+                    nombreCurso = c.nombreCurso,
+                    descripcion = c.descripcion,
+                    nivel = (int)c.nivel,
+                    cupoMaximo = (int)c.cupoMaximo,
+                    estado = c.estado,
+                    fechaInicio = (DateTime)c.fechaInicio,
+                    fechaTermino = (DateTime)c.fechaTermino,
+                    listaAsistencia = c.listaAsistencia,
+                    idIdioma = c.idIdioma,
+                    idProfesor = c.idProfesor
+                }).ToArray();
+                return cursosDTO;
+            }
+            else
+            {
+                Console.WriteLine("No se encontraron cursos ");
+                return null;
+            }
+        }
+
+        public CursoDTO[] ObtenerCursosPorNivel(int nivel)
+        {
+            Curso[] cursos = CursoDAO.ObtenerCursosPorNivel(nivel);
+            if (cursos != null)
+            {
+                var cursosDTO = cursos.Select(c => new CursoDTO
+                {
+                    idCurso = c.idCurso,
+                    nombreCurso = c.nombreCurso,
+                    descripcion = c.descripcion,
+                    nivel = (int)c.nivel,
+                    cupoMaximo = (int)c.cupoMaximo,
+                    estado = c.estado,
+                    fechaInicio = (DateTime)c.fechaInicio,
+                    fechaTermino = (DateTime)c.fechaTermino,
+                    listaAsistencia = c.listaAsistencia,
+                    idIdioma = c.idIdioma,
+                    idProfesor = c.idProfesor
+                }).ToArray();
+                return cursosDTO;
+            }
+            else
+            {
+                Console.WriteLine("No se encontraron cursos");
+                return null;
+            }
+        }
+
+        public CursoDTO[] ObtenerCursosPorNombreProfesor(string nombreProfesor)
+        {
+            Curso[] cursos = CursoDAO.ObtenerCursosPorNombreProfesor(nombreProfesor);
+            if (cursos != null)
+            {
+                var cursosDTO = cursos.Select(c => new CursoDTO
+                {
+                    idCurso = c.idCurso,
+                    nombreCurso = c.nombreCurso,
+                    descripcion = c.descripcion,
+                    nivel = (int)c.nivel,
+                    cupoMaximo = (int)c.cupoMaximo,
+                    estado = c.estado,
+                    fechaInicio = (DateTime)c.fechaInicio,
+                    fechaTermino = (DateTime)c.fechaTermino,
+                    listaAsistencia = c.listaAsistencia,
+                    idIdioma = c.idIdioma,
+                    idProfesor = c.idProfesor
+                }).ToArray();
+                return cursosDTO;
+            }
+            else
+            {
+                Console.WriteLine("No se encontraron cursos");
+                return null;
+            }
+        }
     }
 }

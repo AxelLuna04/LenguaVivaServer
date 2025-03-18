@@ -16,11 +16,20 @@ namespace ServicioContrato
         CursoDTO[] ObtenerCursosPorNombre(String nombre);
 
         [OperationContract]
+        CursoDTO[] ObtenerCursosPorNombreIdioma(String nombreIdioma);
+
+        [OperationContract]
+        CursoDTO[] ObtenerCursosPorNivel(int nivel);
+
+        [OperationContract]
+        CursoDTO[] ObtenerCursosPorNombreProfesor(String nombreProfesor);
+
+        [OperationContract]
         bool RegistrarCurso(CursoDTO cursoDTO);
 
         [OperationContract]
         ProfesorDTO[] ObtenerProfesoresPorNombre(String nombre);
-
+         
         [OperationContract]
         ProfesorDTO ObtenerProfesorPorID(int idProfesor);
 

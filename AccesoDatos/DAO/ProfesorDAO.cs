@@ -73,7 +73,8 @@ namespace AccesoDatos.DAO
             {
                 contexto.Database.Log = Console.WriteLine;
                 return contexto.Profesor
-                    .Where(p => p.nombre.Contains(nombre))
+                    .Where(p => p.nombre.Contains(nombre) || 
+                    p.apellidos.Contains(nombre))
                     .ToArray();
             }
         }

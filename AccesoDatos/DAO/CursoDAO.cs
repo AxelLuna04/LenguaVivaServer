@@ -69,5 +69,38 @@ namespace AccesoDatos.DAO
             }
         }
 
+        public static Curso[] ObtenerCursosPorNombreIdioma(String nombreIdioma)
+        {
+            using (var contexto = new LenguaVivaDBEntities())
+            {
+                contexto.Database.Log = Console.WriteLine;
+                return contexto.Curso
+                    .Where(c => c.Idioma.nombreIdioma.Contains(nombreIdioma)) 
+                    .ToArray();
+            }
+        }
+
+        public static Curso[] ObtenerCursosPorNombreProfesor(String nombreProfesor)
+        {
+            using (var contexto = new LenguaVivaDBEntities())
+            {
+                contexto.Database.Log = Console.WriteLine;
+                return contexto.Curso
+                    .Where(c => c.Profesor.nombre.Contains(nombreProfesor) ||
+                    c.Profesor.apellidos.Contains(nombreProfesor))
+                    .ToArray();
+            }
+        }
+
+        public static Curso[] ObtenerCursosPorNivel(int nivel)
+        {
+            using (var contexto = new LenguaVivaDBEntities())
+            {
+                contexto.Database.Log = Console.WriteLine;
+                return contexto.Curso
+                    .Where(c => c.nivel == nivel)
+                    .ToArray();
+            }
+        }
     }
 }
