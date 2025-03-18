@@ -28,29 +28,48 @@ namespace ServicioContrato
 
         public CursoDTO ObtenerCursoPorID(int idCurso)
         {
-            Curso curso = CursoDAO.ObtenerCursoPorID(idCurso);
-            if (curso != null)
+            try
             {
-                var cursoDTO = new CursoDTO
+                Curso curso = CursoDAO.ObtenerCursoPorID(idCurso);
+                if (curso != null)
                 {
-                    idCurso = curso.idCurso,
-                    nombreCurso = curso.nombreCurso,
-                    descripcion = curso.descripcion,
-                    nivel = (int)curso.nivel,
-                    cupoMaximo = (int)curso.cupoMaximo,
-                    estado = curso.estado,
-                    fechaInicio = (DateTime)curso.fechaInicio,
-                    fechaTermino = (DateTime)curso.fechaTermino,
-                    listaAsistencia = curso.listaAsistencia,
-                    idIdioma = curso.idIdioma,
-                    idProfesor = curso.idProfesor
-                };
-                return cursoDTO;
+                    var cursoDTO = new CursoDTO
+                    {
+                        idCurso = curso.idCurso,
+                        nombreCurso = curso.nombreCurso,
+                        descripcion = curso.descripcion,
+                        nivel = (int)curso.nivel,
+                        cupoMaximo = (int)curso.cupoMaximo,
+                        estado = curso.estado,
+                        fechaInicio = (DateTime)curso.fechaInicio,
+                        fechaTermino = (DateTime)curso.fechaTermino,
+                        listaAsistencia = curso.listaAsistencia,
+                        idIdioma = curso.idIdioma,
+                        idProfesor = curso.idProfesor
+                    };
+                    return cursoDTO;
+
+                }
+                else
+                {
+                    Console.WriteLine("No se encontró el curso con id: " + curso.idCurso);
+                    return null;
+                }
 
             }
-            else
+            catch (System.Data.Entity.Core.EntityException ex)
             {
-                Console.WriteLine("No se encontró el curso con id: " + curso.idCurso);
+                Console.WriteLine($"Error de Entity Framework: {ex.Message}");
+                return null;
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                Console.WriteLine($"Error de SQL Server: {ex.Message}");
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error inesperado: {ex.Message}");
                 return null;
             }
         }
@@ -59,129 +78,239 @@ namespace ServicioContrato
 
         public Curso[] ObtenerCursos(string nombre)
         {
-            Curso[] cursos = CursoDAO.ObtenerCursos();
-            if (cursos != null)
+            try
             {
-                return cursos;
+                Curso[] cursos = CursoDAO.ObtenerCursos();
+                if (cursos != null)
+                {
+                    return cursos;
+                }
+                else
+                {
+                    Console.WriteLine("No se encontraron cursos");
+                    return null;
+                }
+
             }
-            else
+            catch (System.Data.Entity.Core.EntityException ex)
             {
-                Console.WriteLine("No se encontraron cursos");
+                Console.WriteLine($"Error de Entity Framework: {ex.Message}");
+                return null;
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                Console.WriteLine($"Error de SQL Server: {ex.Message}");
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error inesperado: {ex.Message}");
                 return null;
             }
         }
 
         public CursoDTO[] ObtenerCursosPorNombre(string nombre)
         {
-            Curso[] cursos = CursoDAO.ObtenerCursosPorNombre(nombre);
-            if (cursos != null)
+            try
             {
-                var cursosDTO = cursos.Select(c => new CursoDTO
+                Curso[] cursos = CursoDAO.ObtenerCursosPorNombre(nombre);
+                if (cursos != null)
                 {
-                    idCurso = c.idCurso,
-                    nombreCurso = c.nombreCurso,
-                    descripcion = c.descripcion,
-                    nivel = (int)c.nivel,
-                    cupoMaximo = (int)c.cupoMaximo,
-                    estado = c.estado,
-                    fechaInicio = (DateTime)c.fechaInicio,
-                    fechaTermino = (DateTime)c.fechaTermino,
-                    listaAsistencia = c.listaAsistencia,
-                    idIdioma = c.idIdioma,
-                    idProfesor = c.idProfesor
-                }).ToArray();
-                return cursosDTO;
+                    var cursosDTO = cursos.Select(c => new CursoDTO
+                    {
+                        idCurso = c.idCurso,
+                        nombreCurso = c.nombreCurso,
+                        descripcion = c.descripcion,
+                        nivel = (int)c.nivel,
+                        cupoMaximo = (int)c.cupoMaximo,
+                        estado = c.estado,
+                        fechaInicio = (DateTime)c.fechaInicio,
+                        fechaTermino = (DateTime)c.fechaTermino,
+                        listaAsistencia = c.listaAsistencia,
+                        idIdioma = c.idIdioma,
+                        idProfesor = c.idProfesor
+                    }).ToArray();
+                    return cursosDTO;
+                }
+                else
+                {
+                    Console.WriteLine("No se encontraron cursos");
+                    return null;
+                }
             }
-            else
+            catch (System.Data.Entity.Core.EntityException ex)
             {
-                Console.WriteLine("No se encontraron cursos");
-                return null;
+                Console.WriteLine($"Error de Entity Framework: {ex.Message}");
+                return  null;
             }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                Console.WriteLine($"Error de SQL Server: {ex.Message}");
+                return  null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error inesperado: {ex.Message}");
+                return  null;
+            } 
         }
 
         public IdiomaDTO ObtenerIdiomaPorID(int idIdioma)
         {
-            Idioma idioma = IdiomaDAO.ObtenerIdiomaPorID(idIdioma);
-            if (idioma != null)
+            try
             {
-                var idiomaDTO = new IdiomaDTO
+                Idioma idioma = IdiomaDAO.ObtenerIdiomaPorID(idIdioma);
+                if (idioma != null)
                 {
-                    idIdioma = idioma.idIdioma,
-                    nombreIdioma = idioma.nombreIdioma
-                };
-                return idiomaDTO;
-            } else
+                    var idiomaDTO = new IdiomaDTO
+                    {
+                        idIdioma = idioma.idIdioma,
+                        nombreIdioma = idioma.nombreIdioma
+                    };
+                    return idiomaDTO;
+                }
+                else
+                {
+                    Console.WriteLine("No se encontró el idioma con id: " + idIdioma);
+                    return null;
+                }
+            }
+            catch (System.Data.Entity.Core.EntityException ex)
             {
-                Console.WriteLine("No se encontró el idioma con id: " + idIdioma);
+                Console.WriteLine($"Error de Entity Framework: {ex.Message}");
                 return null;
             }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                Console.WriteLine($"Error de SQL Server: {ex.Message}");
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error inesperado: {ex.Message}");
+                return null;
+            } 
         }
 
         public IdiomaDTO[] ObtenerIdiomas()
         {
-            Idioma[] idiomas = IdiomaDAO.ObtenerIdiomas();
-            if (idiomas != null)
+            try
             {
-                var idiomasDTO = idiomas.Select(i => new IdiomaDTO
+                Idioma[] idiomas = IdiomaDAO.ObtenerIdiomas();
+                if (idiomas != null)
                 {
-                    idIdioma = i.idIdioma,
-                    nombreIdioma = i.nombreIdioma
-                }).ToArray();
+                    var idiomasDTO = idiomas.Select(i => new IdiomaDTO
+                    {
+                        idIdioma = i.idIdioma,
+                        nombreIdioma = i.nombreIdioma
+                    }).ToArray();
 
-                Console.WriteLine(idiomasDTO[0].nombreIdioma);
-                return idiomasDTO;
+                    Console.WriteLine(idiomasDTO[0].nombreIdioma);
+                    return idiomasDTO;
+                }
+                else
+                {
+                    Console.WriteLine("No se encontraron idiomas");
+                    return null;
+                }
             }
-            else
+            catch (System.Data.Entity.Core.EntityException ex)
             {
-                Console.WriteLine("No se encontraron idiomas");
+                Console.WriteLine($"Error de Entity Framework: {ex.Message}");
                 return null;
             }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                Console.WriteLine($"Error de SQL Server: {ex.Message}");
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error inesperado: {ex.Message}");
+                return null;
+            } 
         }
 
         public ProfesorDTO[] ObtenerProfesoresPorNombre(string nombre)
         {
-            Profesor[] profesores = ProfesorDAO.ObtenerProfesoresPorNombre(nombre);
-            if (profesores != null)
+            try
             {
-                var profesoresDTO = profesores.Select(p => new ProfesorDTO
+                Profesor[] profesores = ProfesorDAO.ObtenerProfesoresPorNombre(nombre);
+                if (profesores != null)
                 {
-                    idProfesor = p.idProfesor,
-                    nombreUsuario = p.nombreUsuario,
-                    nombre = p.nombre,
-                    apellidos = p.apellidos,
-                    direccion = p.direccion,
-                    email = p.email
-                }).ToArray();
-                return profesoresDTO;
+                    var profesoresDTO = profesores.Select(p => new ProfesorDTO
+                    {
+                        idProfesor = p.idProfesor,
+                        nombreUsuario = p.nombreUsuario,
+                        nombre = p.nombre,
+                        apellidos = p.apellidos,
+                        direccion = p.direccion,
+                        email = p.email
+                    }).ToArray();
+                    return profesoresDTO;
+                }
+                else
+                {
+                    Console.WriteLine("No se encontraron profesores");
+                    return null;
+                }
             }
-            else
+            catch (System.Data.Entity.Core.EntityException ex)
             {
-                Console.WriteLine("No se encontraron profesores");
+                Console.WriteLine($"Error de Entity Framework: {ex.Message}");
                 return null;
             }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                Console.WriteLine($"Error de SQL Server: {ex.Message}");
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error inesperado: {ex.Message}");
+                return null;
+            } 
         }
 
         public ProfesorDTO ObtenerProfesorPorID(int idProfesor)
         {
-            Profesor profesor = ProfesorDAO.ObtenerProfesorPorId(idProfesor);
-            if (profesor != null)
+            try
             {
-                ProfesorDTO profesorDTO = new ProfesorDTO
+                Profesor profesor = ProfesorDAO.ObtenerProfesorPorId(idProfesor);
+                if (profesor != null)
                 {
-                    idProfesor = profesor.idProfesor,
-                    nombreUsuario = profesor.nombreUsuario,
-                    nombre = profesor.nombre,
-                    apellidos = profesor.apellidos,
-                    direccion = profesor.direccion,
-                    email = profesor.email
-                };
-                return profesorDTO;
+                    ProfesorDTO profesorDTO = new ProfesorDTO
+                    {
+                        idProfesor = profesor.idProfesor,
+                        nombreUsuario = profesor.nombreUsuario,
+                        nombre = profesor.nombre,
+                        apellidos = profesor.apellidos,
+                        direccion = profesor.direccion,
+                        email = profesor.email
+                    };
+                    return profesorDTO;
+                }
+                else
+                {
+                    Console.WriteLine("No se encontró el profesor con id: " + idProfesor);
+                    return null;
+                }
             }
-            else
+            catch (System.Data.Entity.Core.EntityException ex)
             {
-                Console.WriteLine("No se encontró el profesor con id: " + idProfesor);
+                Console.WriteLine($"Error de Entity Framework: {ex.Message}");
                 return null;
             }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                Console.WriteLine($"Error de SQL Server: {ex.Message}");
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error inesperado: {ex.Message}");
+                return null;
+            } 
         }
 
         public bool RegistrarCurso(CursoDTO cursoDTO)
@@ -204,121 +333,202 @@ namespace ServicioContrato
                 CursoDAO.CrearCurso(curso);
                 return true;
             }
-            catch (Exception e)
+            catch (System.Data.Entity.Core.EntityException ex)
             {
-                Console.WriteLine(e.Message);
+                Console.WriteLine($"Error de Entity Framework: {ex.Message}");
                 return false;
             }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                Console.WriteLine($"Error de SQL Server: {ex.Message}");
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error inesperado: {ex.Message}");
+                return false;
+            } 
         }
 
         public bool ModificarCurso(CursoDTO cursoDTO)
         {
-            Curso curso = CursoDAO.ObtenerCursoPorID(cursoDTO.idCurso);
-            if (curso != null)
+            try
             {
-                curso.nombreCurso = cursoDTO.nombreCurso;
-                curso.descripcion = cursoDTO.descripcion;
-                curso.nivel = cursoDTO.nivel;
-                curso.cupoMaximo = cursoDTO.cupoMaximo;
-                curso.estado = cursoDTO.estado;
-                curso.fechaInicio = cursoDTO.fechaInicio;
-                curso.fechaTermino = cursoDTO.fechaTermino;
-                curso.idIdioma = cursoDTO.idIdioma;
-                curso.idProfesor = cursoDTO.idProfesor;
-                
-                CursoDAO.ModificarCurso(curso);
-                return true;
-            } 
-            else
+                Curso curso = CursoDAO.ObtenerCursoPorID(cursoDTO.idCurso);
+                if (curso != null)
+                {
+                    curso.nombreCurso = cursoDTO.nombreCurso;
+                    curso.descripcion = cursoDTO.descripcion;
+                    curso.nivel = cursoDTO.nivel;
+                    curso.cupoMaximo = cursoDTO.cupoMaximo;
+                    curso.estado = cursoDTO.estado;
+                    curso.fechaInicio = cursoDTO.fechaInicio;
+                    curso.fechaTermino = cursoDTO.fechaTermino;
+                    curso.idIdioma = cursoDTO.idIdioma;
+                    curso.idProfesor = cursoDTO.idProfesor;
+
+                    CursoDAO.ModificarCurso(curso);
+                    return true;
+                }
+                else
+                {
+                    Console.WriteLine("No se encontró el curso con id: " + cursoDTO.idCurso);
+                    return false;
+                }
+            }
+            catch (System.Data.Entity.Core.EntityException ex)
             {
-                Console.WriteLine("No se encontró el curso con id: " + cursoDTO.idCurso);
+                Console.WriteLine($"Error de Entity Framework: {ex.Message}");
                 return false;
             }
-
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                Console.WriteLine($"Error de SQL Server: {ex.Message}");
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error inesperado: {ex.Message}");
+                return false;
+            } 
         }
 
         public CursoDTO[] ObtenerCursosPorNombreIdioma(string nombreIdioma)
         {
-            Curso[] cursos = CursoDAO.ObtenerCursosPorNombreIdioma(nombreIdioma);
-            if (cursos != null)
+            try
             {
-                var cursosDTO = cursos.Select(c => new CursoDTO
+                Curso[] cursos = CursoDAO.ObtenerCursosPorNombreIdioma(nombreIdioma);
+                if (cursos != null)
                 {
-                    idCurso = c.idCurso,
-                    nombreCurso = c.nombreCurso,
-                    descripcion = c.descripcion,
-                    nivel = (int)c.nivel,
-                    cupoMaximo = (int)c.cupoMaximo,
-                    estado = c.estado,
-                    fechaInicio = (DateTime)c.fechaInicio,
-                    fechaTermino = (DateTime)c.fechaTermino,
-                    listaAsistencia = c.listaAsistencia,
-                    idIdioma = c.idIdioma,
-                    idProfesor = c.idProfesor
-                }).ToArray();
-                return cursosDTO;
+                    var cursosDTO = cursos.Select(c => new CursoDTO
+                    {
+                        idCurso = c.idCurso,
+                        nombreCurso = c.nombreCurso,
+                        descripcion = c.descripcion,
+                        nivel = (int)c.nivel,
+                        cupoMaximo = (int)c.cupoMaximo,
+                        estado = c.estado,
+                        fechaInicio = (DateTime)c.fechaInicio,
+                        fechaTermino = (DateTime)c.fechaTermino,
+                        listaAsistencia = c.listaAsistencia,
+                        idIdioma = c.idIdioma,
+                        idProfesor = c.idProfesor
+                    }).ToArray();
+                    return cursosDTO;
+                }
+                else
+                { 
+                    return null;
+                }
             }
-            else
+            catch (System.Data.Entity.Core.EntityException ex)
             {
-                Console.WriteLine("No se encontraron cursos ");
+                Console.WriteLine($"Error de Entity Framework: {ex.Message}");
                 return null;
             }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                Console.WriteLine($"Error de SQL Server: {ex.Message}");
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error inesperado: {ex.Message}");
+                return null;
+            }
+            
         }
 
         public CursoDTO[] ObtenerCursosPorNivel(int nivel)
         {
-            Curso[] cursos = CursoDAO.ObtenerCursosPorNivel(nivel);
-            if (cursos != null)
+            try
             {
-                var cursosDTO = cursos.Select(c => new CursoDTO
+                Curso[] cursos = CursoDAO.ObtenerCursosPorNivel(nivel);
+                if (cursos != null)
                 {
-                    idCurso = c.idCurso,
-                    nombreCurso = c.nombreCurso,
-                    descripcion = c.descripcion,
-                    nivel = (int)c.nivel,
-                    cupoMaximo = (int)c.cupoMaximo,
-                    estado = c.estado,
-                    fechaInicio = (DateTime)c.fechaInicio,
-                    fechaTermino = (DateTime)c.fechaTermino,
-                    listaAsistencia = c.listaAsistencia,
-                    idIdioma = c.idIdioma,
-                    idProfesor = c.idProfesor
-                }).ToArray();
-                return cursosDTO;
+                    var cursosDTO = cursos.Select(c => new CursoDTO
+                    {
+                        idCurso = c.idCurso,
+                        nombreCurso = c.nombreCurso,
+                        descripcion = c.descripcion,
+                        nivel = (int)c.nivel,
+                        cupoMaximo = (int)c.cupoMaximo,
+                        estado = c.estado,
+                        fechaInicio = (DateTime)c.fechaInicio,
+                        fechaTermino = (DateTime)c.fechaTermino,
+                        listaAsistencia = c.listaAsistencia,
+                        idIdioma = c.idIdioma,
+                        idProfesor = c.idProfesor
+                    }).ToArray();
+                    return cursosDTO;
+                }
+                else
+                { 
+                    return null;
+                }
             }
-            else
+            catch (System.Data.Entity.Core.EntityException ex)
             {
-                Console.WriteLine("No se encontraron cursos");
+                Console.WriteLine($"Error de Entity Framework: {ex.Message}");
                 return null;
             }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                Console.WriteLine($"Error de SQL Server: {ex.Message}");
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error inesperado: {ex.Message}");
+                return null;
+            }
+            
         }
 
         public CursoDTO[] ObtenerCursosPorNombreProfesor(string nombreProfesor)
         {
-            Curso[] cursos = CursoDAO.ObtenerCursosPorNombreProfesor(nombreProfesor);
-            if (cursos != null)
+            try
             {
-                var cursosDTO = cursos.Select(c => new CursoDTO
+                Curso[] cursos = CursoDAO.ObtenerCursosPorNombreProfesor(nombreProfesor);
+                if (cursos != null)
                 {
-                    idCurso = c.idCurso,
-                    nombreCurso = c.nombreCurso,
-                    descripcion = c.descripcion,
-                    nivel = (int)c.nivel,
-                    cupoMaximo = (int)c.cupoMaximo,
-                    estado = c.estado,
-                    fechaInicio = (DateTime)c.fechaInicio,
-                    fechaTermino = (DateTime)c.fechaTermino,
-                    listaAsistencia = c.listaAsistencia,
-                    idIdioma = c.idIdioma,
-                    idProfesor = c.idProfesor
-                }).ToArray();
-                return cursosDTO;
+                    var cursosDTO = cursos.Select(c => new CursoDTO
+                    {
+                        idCurso = c.idCurso,
+                        nombreCurso = c.nombreCurso,
+                        descripcion = c.descripcion,
+                        nivel = (int)c.nivel,
+                        cupoMaximo = (int)c.cupoMaximo,
+                        estado = c.estado,
+                        fechaInicio = (DateTime)c.fechaInicio,
+                        fechaTermino = (DateTime)c.fechaTermino,
+                        listaAsistencia = c.listaAsistencia,
+                        idIdioma = c.idIdioma,
+                        idProfesor = c.idProfesor
+                    }).ToArray();
+                    return cursosDTO;
+                }
+                else
+                {
+                    return null;
+                }
             }
-            else
+            catch (System.Data.Entity.Core.EntityException ex)
             {
-                Console.WriteLine("No se encontraron cursos");
+                Console.WriteLine($"Error de Entity Framework: {ex.Message}");
                 return null;
             }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                Console.WriteLine($"Error de SQL Server: {ex.Message}");
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error inesperado: {ex.Message}");
+                return null;
+            }
+            
         }
     }
 }
