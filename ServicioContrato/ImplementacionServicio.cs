@@ -209,6 +209,31 @@ namespace ServicioContrato
                 Console.WriteLine(e.Message);
                 return false;
             }
+        }
+
+        public bool ModificarCurso(CursoDTO cursoDTO)
+        {
+            Curso curso = CursoDAO.ObtenerCursoPorID(cursoDTO.idCurso);
+            if (curso != null)
+            {
+                curso.nombreCurso = cursoDTO.nombreCurso;
+                curso.descripcion = cursoDTO.descripcion;
+                curso.nivel = cursoDTO.nivel;
+                curso.cupoMaximo = cursoDTO.cupoMaximo;
+                curso.estado = cursoDTO.estado;
+                curso.fechaInicio = cursoDTO.fechaInicio;
+                curso.fechaTermino = cursoDTO.fechaTermino;
+                curso.idIdioma = cursoDTO.idIdioma;
+                curso.idProfesor = cursoDTO.idProfesor;
+                
+                CursoDAO.ModificarCurso(curso);
+                return true;
+            } 
+            else
+            {
+                Console.WriteLine("No se encontró el curso con id: " + cursoDTO.idCurso);
+                return false;
+            }
 
         }
     }
