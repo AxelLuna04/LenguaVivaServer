@@ -26,20 +26,40 @@ namespace ServicioContrato
 
         }
 
-		public bool RegistrarAdministrador(string nombreUsuario, string contrasenia, string nombre, string apellidos, string direccion, string email)
-		{
-            if (nombreUsuario != null || contrasenia != null || nombre != null || apellidos != null || direccion != null || email != null)
+        public bool RegistrarAdministrador(AdministradorDTO administradorDTO)
+        {
+            try
             {
-                Console.WriteLine(nombreUsuario, contrasenia, nombre, apellidos, direccion, email);
-                AccesoDatos.DAO.UsuarioDAO.AgregarAdministrador(nombreUsuario, contrasenia, nombre, apellidos, direccion, email);
+                Administrador administrador = new Administrador
+                {
+                    nombreUsuario = administradorDTO.nombreUsuario,
+                    contrasenia = administradorDTO.contrasenia,
+                    nombre = administradorDTO.nombre,
+                    apellidos = administradorDTO.apellidos,
+                    direccion = administradorDTO.direccion,
+                    email = administradorDTO.email
+                };
+
+                UsuarioDAO.CrearAdministrador(administrador);
                 return true;
             }
-            else
+            catch (System.Data.Entity.Core.EntityException ex)
             {
+                Console.WriteLine($"Error de Entity Framework: {ex.Message}");
+                return false;
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                Console.WriteLine($"Error de SQL Server: {ex.Message}");
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error inesperado: {ex.Message}");
                 return false;
             }
         }
-    
+
         public CursoDTO ObtenerCursoPorID(int idCurso)
         {
             try

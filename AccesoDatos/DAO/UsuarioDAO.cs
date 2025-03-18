@@ -10,32 +10,13 @@ namespace AccesoDatos.DAO
 {
     public class UsuarioDAO
     {
-        public static void AgregarAdministrador(string nombreUsuario, string contrasenia, string nombre, string apellidos, string direccion, string email)
+        public static void CrearAdministrador(Administrador administrador)
         {
-            using (var contextoBD = new LenguaVivaDBEntities())
+            using (var contexto = new LenguaVivaDBEntities())
             {
-                    var nuevoAdministrador = new Administrador()
-                    {
-                        nombreUsuario = nombreUsuario,
-                        contrasenia = contrasenia,
-                        nombre = nombre,
-                        apellidos = apellidos,
-                        direccion = direccion,
-                        email = email
-                    };
-
-                    contextoBD.Administrador.Add(nuevoAdministrador);
-                    int registrosAfectados = contextoBD.SaveChanges();
-
-                    if (registrosAfectados == 0)
-                    {
-                        Console.WriteLine("No se guardó ningún registro en la base de datos.");
-                    }
-                    else
-                    {
-                        Console.WriteLine($"Se guardaron {registrosAfectados} registros correctamente.");
-                    }
-
+                contexto.Database.Log = Console.WriteLine;
+                contexto.Administrador.Add(administrador);
+                contexto.SaveChanges();
             }
         }
 
