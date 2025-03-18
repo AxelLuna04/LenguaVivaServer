@@ -17,13 +17,19 @@ namespace ServicioContrato
         [OperationContract]
         bool RegistrarAdministrador(AdministradorDTO administradorDTO);
 
+        [OperationContract]
+        IdiomaDTO[] CargarIdiomas();
+
+        [OperationContract]
+        bool RegistrarProfesor(ProfesorDTO profesorDTO, int[] idIdiomas);
+
     }
 
     [DataContract]
     public class AdministradorDTO
     {
         [DataMember]
-        public int idAdministrador { get; set; } 
+        public int idAdministrador { get; set; }
 
         [DataMember]
         public string nombreUsuario { get; set; }
@@ -42,5 +48,43 @@ namespace ServicioContrato
 
         [DataMember]
         public string email { get; set; }
+    }
+
+    [DataContract]
+    public class ProfesorDTO
+    {
+        [DataMember]
+        public int idProfesor { get; set; }
+
+        [DataMember]
+        public string nombreUsuario { get; set; }
+
+        [DataMember]
+        public string contrasenia { get; set; }
+
+        [DataMember]
+        public string nombre { get; set; }
+
+        [DataMember]
+        public string apellidos { get; set; }
+
+        [DataMember]
+        public string direccion { get; set; }
+
+        [DataMember]
+        public string email { get; set; }
+    }
+
+    [DataContract]
+    public class IdiomaDTO
+    {
+        [DataMember]
+        public int idIdioma { get; set; }
+
+        [DataMember]
+        public string nombreIdioma { get; set; }
+        [DataMember]
+        public bool IsSelected { get; set; }
+
     }
 }

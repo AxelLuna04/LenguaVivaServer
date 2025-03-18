@@ -33,7 +33,7 @@ namespace AccesoDatos.DAO
             {
                 contexto.Database.Log = Console.WriteLine;
                 List<Idioma> respuesta = new List<Idioma>();
-                
+
                 foreach (Idioma idioma in contexto.Idioma)
                 {
                     respuesta.Add(idioma);
@@ -50,6 +50,14 @@ namespace AccesoDatos.DAO
             {
                 contexto.Database.Log = Console.WriteLine;
                 return contexto.Idioma.Find(id);
+            }
+        }
+
+        public static Idioma[] CargarIdiomas()
+        {
+            using (var contexto = new LenguaVivaDBEntities())
+            {
+                return contexto.Idioma.ToArray();
             }
         }
     }

@@ -19,8 +19,23 @@ namespace AccesoDatos.DAO
                 contexto.SaveChanges();
             }
         }
-
-
+        public static void CrearProfesor(Profesor profesor)
+        {
+            using (var contexto = new LenguaVivaDBEntities())
+            {
+                contexto.Database.Log = Console.WriteLine;
+                contexto.Profesor.Add(profesor);
+                contexto.SaveChanges();
+            }
+        }
+        public static void CrearRelacion(Idioma_Profesor relacion)
+        {
+            using (var contexto = new LenguaVivaDBEntities())
+            {
+                contexto.Idioma_Profesor.Add(relacion);
+                contexto.SaveChanges();
+            }
+        }
 
     }
 }

@@ -75,7 +75,7 @@ namespace AccesoDatos.DAO
             {
                 contexto.Database.Log = Console.WriteLine;
                 return contexto.Curso
-                    .Where(c => c.Idioma.nombreIdioma.Contains(nombreIdioma)) 
+                    .Where(c => c.Idioma.nombreIdioma.Contains(nombreIdioma))
                     .ToArray();
             }
         }

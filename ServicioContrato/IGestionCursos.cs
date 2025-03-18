@@ -6,6 +6,7 @@ using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.Serialization;
+using AccesoDatos.DAO;
 
 namespace ServicioContrato
 {
@@ -29,7 +30,7 @@ namespace ServicioContrato
 
         [OperationContract]
         ProfesorDTO[] ObtenerProfesoresPorNombre(String nombre);
-         
+
         [OperationContract]
         ProfesorDTO ObtenerProfesorPorID(int idProfesor);
 
@@ -83,37 +84,4 @@ namespace ServicioContrato
         public int idProfesor { get; set; }
     }
 
-    [DataContract]
-    public class ProfesorDTO
-    {
-        [DataMember]
-        public int idProfesor { get; set; }
-
-        [DataMember]
-        public string nombreUsuario { get; set; }
-
-        [DataMember]
-        public string nombre { get; set; }
-
-        [DataMember]
-        public string apellidos { get; set; }
-
-        [DataMember]
-        public string direccion { get; set; }
-
-        [DataMember]
-        public string email { get; set; }
-         
-    }
-
-
-    [DataContract]
-    public class IdiomaDTO
-    {
-        [DataMember]
-        public int idIdioma { get; set; }
-
-        [DataMember]
-        public string nombreIdioma { get; set; }
-    }
 }

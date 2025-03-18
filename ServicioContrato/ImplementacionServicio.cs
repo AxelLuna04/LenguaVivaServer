@@ -2,6 +2,7 @@
 using AccesoDatos.DAO;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core;
 using System.Linq;
 using System.ServiceModel;
 using System.Text;
@@ -26,6 +27,7 @@ namespace ServicioContrato
 
         }
 
+        //Metodos IGestionUsuarios
         public bool RegistrarAdministrador(AdministradorDTO administradorDTO)
         {
             try
@@ -59,6 +61,85 @@ namespace ServicioContrato
                 return false;
             }
         }
+
+        public bool RegistrarProfesor(ProfesorDTO profesorDTO, int[] idIdiomas)
+        {
+            try
+            {
+                Profesor profesor = new Profesor
+                {
+                    nombreUsuario = profesorDTO.nombreUsuario,
+                    contrasenia = profesorDTO.contrasenia,
+                    nombre = profesorDTO.nombre,
+                    apellidos = profesorDTO.apellidos,
+                    direccion = profesorDTO.direccion,
+                    email = profesorDTO.email
+                };
+
+                UsuarioDAO.CrearProfesor(profesor);
+
+                foreach (var idIdioma in idIdiomas)
+                {
+                    Idioma_Profesor relacion = new Idioma_Profesor
+                    {
+                        idProfesor = profesor.idProfesor,
+                        idIdioma = idIdioma
+                    };
+                    UsuarioDAO.CrearRelacion(relacion);
+                }
+
+                return true;
+            }
+            catch (EntityException ex)
+            {
+                Console.WriteLine($"Error de Entity Framework: {ex.Message}");
+                return false;
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                Console.WriteLine($"Error de SQL Server: {ex.Message}");
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error inesperado: {ex.Message}");
+                return false;
+            }
+        }
+
+        public IdiomaDTO[] CargarIdiomas()
+        {
+            try
+            {
+                var idiomas = IdiomaDAO.CargarIdiomas();
+                if (idiomas != null)
+                {
+                    return idiomas.Select(i => new IdiomaDTO
+                    {
+                        idIdioma = i.idIdioma,
+                        nombreIdioma = i.nombreIdioma
+                    }).ToArray();
+                }
+                else
+                {
+                    Console.WriteLine("No se encontraron idiomas.");
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al obtener idiomas: {ex.Message}");
+                return null;
+            }
+        }
+
+
+
+        //Metodos IGestionUsuarios
+
+
+
+
 
         public CursoDTO ObtenerCursoPorID(int idCurso)
         {
@@ -175,18 +256,18 @@ namespace ServicioContrato
             catch (System.Data.Entity.Core.EntityException ex)
             {
                 Console.WriteLine($"Error de Entity Framework: {ex.Message}");
-                return  null;
+                return null;
             }
             catch (System.Data.SqlClient.SqlException ex)
             {
                 Console.WriteLine($"Error de SQL Server: {ex.Message}");
-                return  null;
+                return null;
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error inesperado: {ex.Message}");
-                return  null;
-            } 
+                return null;
+            }
         }
 
         public IdiomaDTO ObtenerIdiomaPorID(int idIdioma)
@@ -223,7 +304,7 @@ namespace ServicioContrato
             {
                 Console.WriteLine($"Error inesperado: {ex.Message}");
                 return null;
-            } 
+            }
         }
 
         public IdiomaDTO[] ObtenerIdiomas()
@@ -262,7 +343,7 @@ namespace ServicioContrato
             {
                 Console.WriteLine($"Error inesperado: {ex.Message}");
                 return null;
-            } 
+            }
         }
 
         public ProfesorDTO[] ObtenerProfesoresPorNombre(string nombre)
@@ -303,7 +384,7 @@ namespace ServicioContrato
             {
                 Console.WriteLine($"Error inesperado: {ex.Message}");
                 return null;
-            } 
+            }
         }
 
         public ProfesorDTO ObtenerProfesorPorID(int idProfesor)
@@ -344,7 +425,7 @@ namespace ServicioContrato
             {
                 Console.WriteLine($"Error inesperado: {ex.Message}");
                 return null;
-            } 
+            }
         }
 
         public bool RegistrarCurso(CursoDTO cursoDTO)
@@ -381,7 +462,7 @@ namespace ServicioContrato
             {
                 Console.WriteLine($"Error inesperado: {ex.Message}");
                 return false;
-            } 
+            }
         }
 
         public bool ModificarCurso(CursoDTO cursoDTO)
@@ -424,7 +505,7 @@ namespace ServicioContrato
             {
                 Console.WriteLine($"Error inesperado: {ex.Message}");
                 return false;
-            } 
+            }
         }
 
         public CursoDTO[] ObtenerCursosPorNombreIdioma(string nombreIdioma)
@@ -451,7 +532,7 @@ namespace ServicioContrato
                     return cursosDTO;
                 }
                 else
-                { 
+                {
                     return null;
                 }
             }
@@ -470,7 +551,7 @@ namespace ServicioContrato
                 Console.WriteLine($"Error inesperado: {ex.Message}");
                 return null;
             }
-            
+
         }
 
         public CursoDTO[] ObtenerCursosPorNivel(int nivel)
@@ -497,7 +578,7 @@ namespace ServicioContrato
                     return cursosDTO;
                 }
                 else
-                { 
+                {
                     return null;
                 }
             }
@@ -516,7 +597,7 @@ namespace ServicioContrato
                 Console.WriteLine($"Error inesperado: {ex.Message}");
                 return null;
             }
-            
+
         }
 
         public CursoDTO[] ObtenerCursosPorNombreProfesor(string nombreProfesor)
@@ -562,7 +643,7 @@ namespace ServicioContrato
                 Console.WriteLine($"Error inesperado: {ex.Message}");
                 return null;
             }
-            
+
         }
     }
 }
