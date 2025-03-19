@@ -13,17 +13,57 @@ namespace ServicioContrato
     [ServiceBehavior]
     public class ImplementacionServicio : IGestionUsuarios, IGestionCursos
     {
-        public bool IniciarSesion(string usuario, string contrasenia)
+        /*public SesionUsuario IniciarSesion(string correo, string contrasenia)
         {
-            // Simulación de base de datos
-            Dictionary<string, string> usuarios = new Dictionary<string, string>
+            SesionUsuario sesionUsuario = new SesionUsuario();
+            sesionUsuario.esValido = false;
+            if(UsuarioDAO.ObtenerTipoUsuario(correo) == 1)
             {
-                { "Axel", "12345" },
-                { "Juan", "qwerty" },
-                { "Maria", "abc123" }
-            };
+                if(Utilidades.VerificarContrasenaAdministrador(contrasenia, UsuarioDAO.ObtenerAdministradorPorCorreo(correo)))
+                {
+                    sesionUsuario.esValido = true;
+                    sesionUsuario.tipoUsuario = 1;
+                    sesionUsuario.correo = UsuarioDAO.ObtenerAdministradorPorCorreo(correo).email;
+                }
+            }
 
-            return usuarios.ContainsKey(usuario) && usuarios[usuario] == contrasenia;
+            if (UsuarioDAO.ObtenerTipoUsuario(correo) == 2)
+            {
+                if (Utilidades.VerificarContrasenaProfesor(contrasenia, UsuarioDAO.ObtenerProfesorPorCorreo(correo)))
+                {
+                    sesionUsuario.esValido = true;
+                    sesionUsuario.tipoUsuario = 2;
+                    sesionUsuario.correo = UsuarioDAO.ObtenerProfesorPorCorreo(correo).email;
+                }
+            }
+            return sesionUsuario;
+
+        }*/
+
+        public SesionUsuario IniciarSesion(string correo, string contrasenia)
+        {
+            SesionUsuario sesionUsuario = new SesionUsuario();
+            sesionUsuario.esValido = false;
+            if (UsuarioDAO.ObtenerTipoUsuario(correo) == 1)
+            {
+                if (UsuarioDAO.ObtenerAdministradorPorCorreo(correo).contrasenia == contrasenia)
+                {
+                    sesionUsuario.esValido = true;
+                    sesionUsuario.tipoUsuario = 1;
+                    sesionUsuario.correo = correo;
+                }
+            }
+
+            if (UsuarioDAO.ObtenerTipoUsuario(correo) == 2)
+            {
+                if (UsuarioDAO.ObtenerProfesorPorCorreo(correo).contrasenia == contrasenia)
+                {
+                    sesionUsuario.esValido = true;
+                    sesionUsuario.tipoUsuario = 2;
+                    sesionUsuario.correo = correo;
+                }
+            }
+            return sesionUsuario;
 
         }
 

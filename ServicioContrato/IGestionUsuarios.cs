@@ -12,7 +12,7 @@ namespace ServicioContrato
     public interface IGestionUsuarios
     {
         [OperationContract]
-        bool IniciarSesion(string usuario, string contrasenia);
+        SesionUsuario IniciarSesion(string usuario, string contrasenia);
 
         [OperationContract]
         bool RegistrarAdministrador(AdministradorDTO administradorDTO);
@@ -124,4 +124,18 @@ namespace ServicioContrato
         public bool IsSelected { get; set; }
 
     }
+
+    [DataContract]
+    public class SesionUsuario
+    {
+        [DataMember]
+        public bool esValido { get; set; }
+
+        [DataMember]
+        public string correo { get; set; }
+
+        [DataMember]
+        public int tipoUsuario { get; set; }
+    }
+
 }

@@ -57,6 +57,46 @@ namespace AccesoDatos.DAO
             }
         }
 
+        public static int ObtenerTipoUsuario(string correo)
+        {
+            int resultado = 0;
 
+            using (var contexto = new LenguaVivaDBEntities())
+            {
+                // Buscar si es Administrador
+                var admin = contexto.Administrador.FirstOrDefault(a => a.email == correo);
+                if (admin != null)
+                {
+                    resultado = 1;
+                }
+
+                // Buscar si es Profesor
+                var profesor = contexto.Profesor.FirstOrDefault(p => p.email == correo);
+                if (profesor != null)
+                {
+                    resultado = 2;
+                }
+            }
+
+            return resultado;
+        }
+
+        public static Administrador ObtenerAdministradorPorCorreo(string correo)
+        {
+            using (var contexto = new LenguaVivaDBEntities())
+            {
+                var admin = contexto.Administrador.FirstOrDefault(a => a.email == correo);
+                return contexto.Administrador.Find(correo);
+            }
+        }
+
+        public static Profesor ObtenerProfesorPorCorreo(string correo)
+        {
+            using (var contexto = new LenguaVivaDBEntities())
+            {
+                var profesor = contexto.Profesor.FirstOrDefault(p => p.email == correo);
+                return profesor;
+            }
+        }
     }
 }
