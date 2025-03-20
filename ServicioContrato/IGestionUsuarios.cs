@@ -54,6 +54,8 @@ namespace ServicioContrato
 
         [DataMember]
         public string email { get; set; }
+        [DataMember]
+        public string telefono { get; set; }
     }
 
     [DataContract]
@@ -79,6 +81,8 @@ namespace ServicioContrato
 
         [DataMember]
         public string email { get; set; }
+        [DataMember]
+        public string telefono { get; set; }
     }
 
     [DataContract]
@@ -98,6 +102,8 @@ namespace ServicioContrato
 
         [DataMember]
         public string email { get; set; }
+        [DataMember]
+        public string telefono { get; set; }
 
     }
 

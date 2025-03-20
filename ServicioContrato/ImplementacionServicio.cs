@@ -79,7 +79,8 @@ namespace ServicioContrato
                     nombre = administradorDTO.nombre,
                     apellidos = administradorDTO.apellidos,
                     direccion = administradorDTO.direccion,
-                    email = administradorDTO.email
+                    email = administradorDTO.email,
+                    telefono = administradorDTO.telefono
                 };
 
                 UsuarioDAO.CrearAdministrador(administrador);
@@ -113,7 +114,8 @@ namespace ServicioContrato
                     nombre = profesorDTO.nombre,
                     apellidos = profesorDTO.apellidos,
                     direccion = profesorDTO.direccion,
-                    email = profesorDTO.email
+                    email = profesorDTO.email,
+                    telefono = profesorDTO.telefono
                 };
 
                 UsuarioDAO.CrearProfesor(profesor);
@@ -183,6 +185,7 @@ namespace ServicioContrato
                     apellidos = alumnoDTO.apellidos,
                     direccion = alumnoDTO.direccion,
                     email = alumnoDTO.email,
+                    telefono = alumnoDTO.telefono
                 };
 
                 UsuarioDAO.CrearAlumno(alumno);
