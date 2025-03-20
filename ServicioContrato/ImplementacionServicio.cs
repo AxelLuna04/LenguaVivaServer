@@ -207,12 +207,135 @@ namespace ServicioContrato
             }
         }
 
+        public UsuarioDTO[] BuscarUsuarios(string criterioBusqueda, int tipoUsuario)
+        {
+            Console.WriteLine(criterioBusqueda);
+            try
+            {
+                using (var contexto = new LenguaVivaDBEntities())
+                {
+                    var resultados = new List<UsuarioDTO>();
+                    string criterioNormalizado = criterioBusqueda.ToLower();
+
+                    if (tipoUsuario == 2)
+                    {
+                        Console.WriteLine("Es profe");
+
+                        var alumnos = contexto.Alumno
+                            .Where(al => al.nombre.ToLower().Contains(criterioNormalizado) ||
+                                         al.apellidos.ToLower().Contains(criterioNormalizado) ||
+                                         al.direccion.ToLower().Contains(criterioNormalizado) ||
+                                         al.email.ToLower().Contains(criterioNormalizado) ||
+                                         al.telefono.Contains(criterioNormalizado) ||
+                                         contexto.Idioma_Alumno
+                                            .Where(ia => ia.idAlumno == al.idAlumno)
+                                            .Select(ia => ia.nivel.ToString())
+                                            .FirstOrDefault()
+                                            .Contains(criterioNormalizado))
+                            .Select(al => new UsuarioDTO
+                            {
+                                nombre = al.nombre,
+                                apellidos = al.apellidos,
+                                direccion = al.direccion,
+                                correo = al.email,
+                                telefono = al.telefono,
+                                nivelIdioma = contexto.Idioma_Alumno
+                                    .Where(ia => ia.idAlumno == al.idAlumno)
+                                    .Select(ia => ia.nivel.ToString())
+                                    .FirstOrDefault()
+                            }).ToList();
+
+                        resultados.AddRange(alumnos);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Es admin");
+
+                        var administradores = contexto.Administrador
+                            .Where(a => a.nombre.ToLower().Contains(criterioNormalizado) ||
+                                        a.apellidos.ToLower().Contains(criterioNormalizado) ||
+                                        a.direccion.ToLower().Contains(criterioNormalizado) ||
+                                        a.telefono.Contains(criterioNormalizado) ||
+                                        a.email.ToLower().Contains(criterioNormalizado))
+                            .Select(a => new UsuarioDTO
+                            {
+                                nombre = a.nombre,
+                                apellidos = a.apellidos,
+                                direccion = a.direccion,
+                                correo = a.email,
+                                telefono = a.telefono,
+                                nivelIdioma = null
+                            }).ToList();
+
+                        resultados.AddRange(administradores);
+
+                        var profesores = contexto.Profesor
+                            .Where(p => p.nombre.ToLower().Contains(criterioNormalizado) ||
+                                        p.apellidos.ToLower().Contains(criterioNormalizado) ||
+                                        p.direccion.ToLower().Contains(criterioNormalizado) ||
+                                        p.telefono.Contains(criterioNormalizado) ||
+                                        p.email.ToLower().Contains(criterioNormalizado))
+                            .Select(p => new UsuarioDTO
+                            {
+                                nombre = p.nombre,
+                                apellidos = p.apellidos,
+                                direccion = p.direccion,
+                                correo = p.email,
+                                telefono= p.telefono,
+                                nivelIdioma = null
+                            }).ToList();
+
+                        resultados.AddRange(profesores);
+
+                        var alumnos = contexto.Alumno
+                            .Where(al => al.nombre.ToLower().Contains(criterioNormalizado) ||
+                                         al.apellidos.ToLower().Contains(criterioNormalizado) ||
+                                         al.direccion.ToLower().Contains(criterioNormalizado) ||
+                                         al.email.ToLower().Contains(criterioNormalizado) ||
+                                         al.telefono.Contains(criterioNormalizado) ||
+                                         contexto.Idioma_Alumno
+                                            .Where(ia => ia.idAlumno == al.idAlumno)
+                                            .Select(ia => ia.nivel.ToString())
+                                            .FirstOrDefault()
+                                            .Contains(criterioNormalizado))
+                            .Select(al => new UsuarioDTO
+                            {
+                                nombre = al.nombre,
+                                apellidos = al.apellidos,
+                                direccion = al.direccion,
+                                correo = al.email,
+                                telefono = al.telefono,
+                                nivelIdioma = contexto.Idioma_Alumno
+                                    .Where(ia => ia.idAlumno == al.idAlumno)
+                                    .Select(ia => ia.nivel.ToString())
+                                    .FirstOrDefault()
+                            }).ToList();
+
+                        resultados.AddRange(alumnos);
+                    }
+
+                    if (resultados.Count == 0)
+                    {
+                        Console.WriteLine("No hay resultados");
+                    }
+
+                    foreach (var resultado in resultados)
+                    {
+                        Console.WriteLine("Resultados: " + resultado.nombre);
+                    }
+
+                    return resultados.ToArray();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al buscar usuarios: {ex.Message}");
+                return null;
+            }
+        }
+
 
         //Metodos IGestionUsuarios
-
-
-
-
 
         public CursoDTO ObtenerCursoPorID(int idCurso)
         {

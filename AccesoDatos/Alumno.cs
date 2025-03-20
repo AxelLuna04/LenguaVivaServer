@@ -26,6 +26,7 @@ namespace AccesoDatos
         public string apellidos { get; set; }
         public string direccion { get; set; }
         public string email { get; set; }
+        public string telefono { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Idioma_Alumno> Idioma_Alumno { get; set; }

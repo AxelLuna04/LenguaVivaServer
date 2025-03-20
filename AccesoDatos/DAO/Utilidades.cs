@@ -37,5 +37,25 @@ namespace AccesoDatos.DAO
             var hashContrasena = HashearContrasena(contrasena, usuario.salt);
             return hashContrasena == usuario.contrasenia;
         }
+
+        public static string NormalizarTexto(string texto)
+        {
+            if (string.IsNullOrEmpty(texto))
+                return texto;
+
+            // Convertir a minúsculas
+            texto = texto.ToLower();
+
+            // Reemplazar abreviaturas comunes
+            texto = texto.Replace("col.", "colonia")
+                         .Replace("av.", "avenida")
+                         .Replace("cd.", "ciudad")
+                         .Replace("cp.", "código postal");
+
+            // Eliminar caracteres especiales
+            texto = new string(texto.Where(c => char.IsLetterOrDigit(c) || char.IsWhiteSpace(c)).ToArray());
+
+            return texto;
+        }
     }
 }

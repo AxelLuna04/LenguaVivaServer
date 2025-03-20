@@ -26,6 +26,9 @@ namespace ServicioContrato
         [OperationContract] 
         bool RegistrarAlumno(AlumnoDTO alumnoDTO, IdiomaNivelDTO[] idiomasNivel);
 
+        [OperationContract]
+        UsuarioDTO[] BuscarUsuarios(string criterioBusqueda, int tipoUsuario);
+
     }
 
     [DataContract]
@@ -136,6 +139,29 @@ namespace ServicioContrato
 
         [DataMember]
         public int tipoUsuario { get; set; }
+    }
+
+    [DataContract]
+    public class UsuarioDTO
+    {
+        [DataMember]
+        public string nombre { get; set; }
+
+        [DataMember]
+        public string apellidos { get; set; }
+
+        [DataMember]
+        public string correo { get; set; }
+
+        [DataMember]
+        public string telefono { get; set; }
+
+        [DataMember]
+        public string direccion { get; set; }
+
+        [DataMember]
+        public string nivelIdioma { get; set; }
+
     }
 
 }

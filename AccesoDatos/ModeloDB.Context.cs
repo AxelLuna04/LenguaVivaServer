@@ -13,7 +13,6 @@ namespace AccesoDatos
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    
     public partial class LenguaVivaDBEntities : DbContext
     {
         public LenguaVivaDBEntities()
@@ -36,6 +35,5 @@ namespace AccesoDatos
         public virtual DbSet<Inscripcion> Inscripcion { get; set; }
         public virtual DbSet<Pago> Pago { get; set; }
         public virtual DbSet<Profesor> Profesor { get; set; }
-        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
     }
 }

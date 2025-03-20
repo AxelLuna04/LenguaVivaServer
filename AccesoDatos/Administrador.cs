@@ -21,5 +21,7 @@ namespace AccesoDatos
         public string apellidos { get; set; }
         public string direccion { get; set; }
         public string email { get; set; }
+        public string salt { get; set; }
+        public string telefono { get; set; }
     }
 }

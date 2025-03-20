@@ -21,6 +21,5 @@ namespace AccesoDatos
     
         public virtual Alumno Alumno { get; set; }
         public virtual Idioma Idioma { get; set; }
-
     }
 }

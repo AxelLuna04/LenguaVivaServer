@@ -86,7 +86,7 @@ namespace AccesoDatos.DAO
             using (var contexto = new LenguaVivaDBEntities())
             {
                 var admin = contexto.Administrador.FirstOrDefault(a => a.email == correo);
-                return contexto.Administrador.Find(correo);
+                return admin;
             }
         }
 

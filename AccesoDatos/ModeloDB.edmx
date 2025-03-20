@@ -11,11 +11,13 @@
           </Key>
           <Property Name="idAdministrador" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="nombreUsuario" Type="varchar" MaxLength="50" />
-          <Property Name="contrasenia" Type="varchar" MaxLength="100" />
+          <Property Name="contrasenia" Type="nvarchar(max)" />
           <Property Name="nombre" Type="varchar" MaxLength="50" />
           <Property Name="apellidos" Type="varchar" MaxLength="50" />
           <Property Name="direccion" Type="varchar" MaxLength="100" />
           <Property Name="email" Type="varchar" MaxLength="320" />
+          <Property Name="salt" Type="nvarchar(max)" />
+          <Property Name="telefono" Type="varchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="Alumno">
           <Key>
@@ -26,6 +28,7 @@
           <Property Name="apellidos" Type="varchar" MaxLength="50" />
           <Property Name="direccion" Type="varchar" MaxLength="100" />
           <Property Name="email" Type="varchar" MaxLength="320" />
+          <Property Name="telefono" Type="varchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="Curso">
           <Key>
@@ -101,21 +104,13 @@
           </Key>
           <Property Name="idProfesor" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="nombreUsuario" Type="varchar" MaxLength="50" />
-          <Property Name="contrasenia" Type="varchar" MaxLength="100" />
+          <Property Name="contrasenia" Type="nvarchar(max)" />
           <Property Name="nombre" Type="varchar" MaxLength="50" />
           <Property Name="apellidos" Type="varchar" MaxLength="50" />
           <Property Name="direccion" Type="varchar" MaxLength="100" />
           <Property Name="email" Type="varchar" MaxLength="320" />
-        </EntityType>
-        <EntityType Name="sysdiagrams">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="principal_id" Type="int" Nullable="false" />
-          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="version" Type="int" />
-          <Property Name="definition" Type="varbinary(max)" />
+          <Property Name="salt" Type="nvarchar(max)" />
+          <Property Name="telefono" Type="varchar" MaxLength="10" />
         </EntityType>
         <Association Name="FK_Curso_Idioma">
           <End Role="Idioma" Type="Self.Idioma" Multiplicity="1" />
@@ -248,7 +243,6 @@
           <EntitySet Name="Inscripcion" EntityType="Self.Inscripcion" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Pago" EntityType="Self.Pago" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Profesor" EntityType="Self.Profesor" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Curso_Idioma" Association="Self.FK_Curso_Idioma">
             <End Role="Idioma" EntitySet="Idioma" />
             <End Role="Curso" EntitySet="Curso" />
@@ -301,11 +295,13 @@
           </Key>
           <Property Name="idAdministrador" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="nombreUsuario" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="contrasenia" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="contrasenia" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="apellidos" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="direccion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="email" Type="String" MaxLength="320" FixedLength="false" Unicode="false" />
+          <Property Name="salt" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="telefono" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Alumno">
           <Key>
@@ -316,6 +312,7 @@
           <Property Name="apellidos" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="direccion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="email" Type="String" MaxLength="320" FixedLength="false" Unicode="false" />
+          <Property Name="telefono" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Idioma_Alumno" Relationship="Self.FK_Idioma_Alumno_Alumno" FromRole="Alumno" ToRole="Idioma_Alumno" />
           <NavigationProperty Name="Inscripcion" Relationship="Self.FK_Inscripcion_Alumno" FromRole="Alumno" ToRole="Inscripcion" />
         </EntityType>
@@ -409,23 +406,15 @@
           </Key>
           <Property Name="idProfesor" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="nombreUsuario" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="contrasenia" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="contrasenia" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="apellidos" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="direccion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="email" Type="String" MaxLength="320" FixedLength="false" Unicode="false" />
+          <Property Name="salt" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="telefono" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Curso" Relationship="Self.FK_Curso_Profesor" FromRole="Profesor" ToRole="Curso" />
           <NavigationProperty Name="Idioma_Profesor" Relationship="Self.FK_Idioma_Profesor_Profesor" FromRole="Profesor" ToRole="Idioma_Profesor" />
-        </EntityType>
-        <EntityType Name="sysdiagrams">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="principal_id" Type="Int32" Nullable="false" />
-          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="version" Type="Int32" />
-          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
         <Association Name="FK_Idioma_Alumno_Alumno">
           <End Role="Alumno" Type="Self.Alumno" Multiplicity="1" />
@@ -558,7 +547,6 @@
           <EntitySet Name="Inscripcion" EntityType="Self.Inscripcion" />
           <EntitySet Name="Pago" EntityType="Self.Pago" />
           <EntitySet Name="Profesor" EntityType="Self.Profesor" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
           <AssociationSet Name="FK_Idioma_Alumno_Alumno" Association="Self.FK_Idioma_Alumno_Alumno">
             <End Role="Alumno" EntitySet="Alumno" />
             <End Role="Idioma_Alumno" EntitySet="Idioma_Alumno" />
@@ -616,6 +604,8 @@
                 <ScalarProperty Name="apellidos" ColumnName="apellidos" />
                 <ScalarProperty Name="direccion" ColumnName="direccion" />
                 <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="salt" ColumnName="salt" />
+                <ScalarProperty Name="telefono" ColumnName="telefono" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -627,6 +617,7 @@
                 <ScalarProperty Name="apellidos" ColumnName="apellidos" />
                 <ScalarProperty Name="direccion" ColumnName="direccion" />
                 <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="telefono" ColumnName="telefono" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -715,17 +706,8 @@
                 <ScalarProperty Name="apellidos" ColumnName="apellidos" />
                 <ScalarProperty Name="direccion" ColumnName="direccion" />
                 <ScalarProperty Name="email" ColumnName="email" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="LenguaVivaDBModel.sysdiagrams">
-              <MappingFragment StoreEntitySet="sysdiagrams">
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="salt" ColumnName="salt" />
+                <ScalarProperty Name="telefono" ColumnName="telefono" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
