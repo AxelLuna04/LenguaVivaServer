@@ -4,12 +4,13 @@ using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AccesoDatos.Interfaces;
 
 namespace AccesoDatos.DAO
 {
-    public class CursoDAO
+    public class CursoDAO : ICursoDAO
     {
-        public static void CrearCurso(Curso curso)
+        public   void CrearCurso(Curso curso)
         {
             using (var contexto = new LenguaVivaDBEntities())
             {
@@ -19,7 +20,7 @@ namespace AccesoDatos.DAO
             }
         }
 
-        public static void ModificarCurso(Curso curso)
+        public   void ModificarCurso(Curso curso)
         {
             using (var contexto = new LenguaVivaDBEntities())
             {
@@ -29,7 +30,7 @@ namespace AccesoDatos.DAO
             }
         }
 
-        public static void EliminarCurso(Curso curso)
+        public   void EliminarCurso(Curso curso)
         {
             using (var contexto = new LenguaVivaDBEntities())
             {
@@ -39,7 +40,7 @@ namespace AccesoDatos.DAO
             }
         }
 
-        public static Curso[] ObtenerCursos()
+        public   Curso[] ObtenerCursos()
         {
             using (var contexto = new LenguaVivaDBEntities())
             {
@@ -49,7 +50,7 @@ namespace AccesoDatos.DAO
 
         }
 
-        public static Curso[] ObtenerCursosPorNombre(String nombreCurso)
+        public   Curso[] ObtenerCursosPorNombre(String nombreCurso)
         {
             using (var contexto = new LenguaVivaDBEntities())
             {
@@ -60,7 +61,7 @@ namespace AccesoDatos.DAO
             }
         }
 
-        public static Curso ObtenerCursoPorID(int id)
+        public   Curso ObtenerCursoPorID(int id)
         {
             using (var contexto = new LenguaVivaDBEntities())
             {
@@ -69,7 +70,7 @@ namespace AccesoDatos.DAO
             }
         }
 
-        public static Curso[] ObtenerCursosPorNombreIdioma(String nombreIdioma)
+        public   Curso[] ObtenerCursosPorNombreIdioma(String nombreIdioma)
         {
             using (var contexto = new LenguaVivaDBEntities())
             {
@@ -80,7 +81,7 @@ namespace AccesoDatos.DAO
             }
         }
 
-        public static Curso[] ObtenerCursosPorNombreProfesor(String nombreProfesor)
+        public   Curso[] ObtenerCursosPorNombreProfesor(String nombreProfesor)
         {
             using (var contexto = new LenguaVivaDBEntities())
             {
@@ -92,7 +93,7 @@ namespace AccesoDatos.DAO
             }
         }
 
-        public static Curso[] ObtenerCursosPorNivel(int nivel)
+        public   Curso[] ObtenerCursosPorNivel(int nivel)
         {
             using (var contexto = new LenguaVivaDBEntities())
             {

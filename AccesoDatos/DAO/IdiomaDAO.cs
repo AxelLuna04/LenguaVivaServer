@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AccesoDatos.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace AccesoDatos.DAO
 {
-    public class IdiomaDAO
+    public class IdiomaDAO : IIdiomaDAO
     {
-        public static void CrearIdioma(Idioma idioma)
+        public   void CrearIdioma(Idioma idioma)
         {
             using (var contexto = new LenguaVivaDBEntities())
             {
@@ -18,7 +19,7 @@ namespace AccesoDatos.DAO
             }
         }
 
-        public static Idioma ObtenerIdiomaPorNombre(String nombreIdioma)
+        public   Idioma ObtenerIdiomaPorNombre(String nombreIdioma)
         {
             using (var contexto = new LenguaVivaDBEntities())
             {
@@ -27,7 +28,7 @@ namespace AccesoDatos.DAO
             }
         }
 
-        public static Idioma[] ObtenerIdiomas()
+        public   Idioma[] ObtenerIdiomas()
         {
             using (var contexto = new LenguaVivaDBEntities())
             {
@@ -44,7 +45,7 @@ namespace AccesoDatos.DAO
             }
         }
 
-        public static Idioma ObtenerIdiomaPorID(int id)
+        public   Idioma ObtenerIdiomaPorID(int id)
         {
             using (var contexto = new LenguaVivaDBEntities())
             {
@@ -53,7 +54,7 @@ namespace AccesoDatos.DAO
             }
         }
 
-        public static Idioma[] CargarIdiomas()
+        public   Idioma[] CargarIdiomas()
         {
             using (var contexto = new LenguaVivaDBEntities())
             {

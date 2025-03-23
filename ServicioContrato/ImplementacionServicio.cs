@@ -1,5 +1,6 @@
 ﻿using AccesoDatos;
 using AccesoDatos.DAO;
+using AccesoDatos.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Core;
@@ -12,33 +13,23 @@ namespace ServicioContrato
 {
     [ServiceBehavior]
     public class ImplementacionServicio : IGestionUsuarios, IGestionCursos
-    {
-        /*public SesionUsuario IniciarSesion(string correo, string contrasenia)
+    { 
+        private readonly IIdiomaDAO idiomaDAO;
+        private readonly ICursoDAO cursoDAO;
+
+        //Constructor por defecto para la implementacion real
+        public ImplementacionServicio()
         {
-            SesionUsuario sesionUsuario = new SesionUsuario();
-            sesionUsuario.esValido = false;
-            if(UsuarioDAO.ObtenerTipoUsuario(correo) == 1)
-            {
-                if(Utilidades.VerificarContrasenaAdministrador(contrasenia, UsuarioDAO.ObtenerAdministradorPorCorreo(correo)))
-                {
-                    sesionUsuario.esValido = true;
-                    sesionUsuario.tipoUsuario = 1;
-                    sesionUsuario.correo = UsuarioDAO.ObtenerAdministradorPorCorreo(correo).email;
-                }
-            }
+            idiomaDAO = new IdiomaDAO();
+            cursoDAO = new CursoDAO();
+        }
 
-            if (UsuarioDAO.ObtenerTipoUsuario(correo) == 2)
-            {
-                if (Utilidades.VerificarContrasenaProfesor(contrasenia, UsuarioDAO.ObtenerProfesorPorCorreo(correo)))
-                {
-                    sesionUsuario.esValido = true;
-                    sesionUsuario.tipoUsuario = 2;
-                    sesionUsuario.correo = UsuarioDAO.ObtenerProfesorPorCorreo(correo).email;
-                }
-            }
-            return sesionUsuario;
-
-        }*/
+        //Constructor para mockear las pruebas
+        public ImplementacionServicio(IIdiomaDAO idiomaDAO, ICursoDAO cursoDAO)
+        {
+            this.idiomaDAO = idiomaDAO;
+            this.cursoDAO = cursoDAO;
+        }
 
         public SesionUsuario IniciarSesion(string correo, string contrasenia)
         {
@@ -153,7 +144,7 @@ namespace ServicioContrato
         {
             try
             {
-                var idiomas = IdiomaDAO.CargarIdiomas();
+                var idiomas = idiomaDAO.CargarIdiomas();
                 if (idiomas != null)
                 {
                     return idiomas.Select(i => new IdiomaDTO
@@ -344,7 +335,7 @@ namespace ServicioContrato
         {
             try
             {
-                Curso curso = CursoDAO.ObtenerCursoPorID(idCurso);
+                Curso curso = cursoDAO.ObtenerCursoPorID(idCurso);
                 if (curso != null)
                 {
                     var cursoDTO = new CursoDTO
@@ -394,7 +385,7 @@ namespace ServicioContrato
         {
             try
             {
-                Curso[] cursos = CursoDAO.ObtenerCursos();
+                Curso[] cursos = cursoDAO.ObtenerCursos();
                 if (cursos != null)
                 {
                     return cursos;
@@ -427,7 +418,7 @@ namespace ServicioContrato
         {
             try
             {
-                Curso[] cursos = CursoDAO.ObtenerCursosPorNombre(nombre);
+                Curso[] cursos = cursoDAO.ObtenerCursosPorNombre(nombre);
                 if (cursos != null)
                 {
                     var cursosDTO = cursos.Select(c => new CursoDTO
@@ -473,7 +464,7 @@ namespace ServicioContrato
         {
             try
             {
-                Idioma idioma = IdiomaDAO.ObtenerIdiomaPorID(idIdioma);
+                Idioma idioma = idiomaDAO.ObtenerIdiomaPorID(idIdioma);
                 if (idioma != null)
                 {
                     var idiomaDTO = new IdiomaDTO
@@ -510,7 +501,7 @@ namespace ServicioContrato
         {
             try
             {
-                Idioma[] idiomas = IdiomaDAO.ObtenerIdiomas();
+                Idioma[] idiomas = idiomaDAO.ObtenerIdiomas();
                 if (idiomas != null)
                 {
                     var idiomasDTO = idiomas.Select(i => new IdiomaDTO
@@ -644,7 +635,7 @@ namespace ServicioContrato
                     idProfesor = cursoDTO.idProfesor
                 };
 
-                CursoDAO.CrearCurso(curso);
+                cursoDAO.CrearCurso(curso);
                 return true;
             }
             catch (System.Data.Entity.Core.EntityException ex)
@@ -668,7 +659,7 @@ namespace ServicioContrato
         {
             try
             {
-                Curso curso = CursoDAO.ObtenerCursoPorID(cursoDTO.idCurso);
+                Curso curso = cursoDAO.ObtenerCursoPorID(cursoDTO.idCurso);
                 if (curso != null)
                 {
                     curso.nombreCurso = cursoDTO.nombreCurso;
@@ -681,7 +672,7 @@ namespace ServicioContrato
                     curso.idIdioma = cursoDTO.idIdioma;
                     curso.idProfesor = cursoDTO.idProfesor;
 
-                    CursoDAO.ModificarCurso(curso);
+                    cursoDAO.ModificarCurso(curso);
                     return true;
                 }
                 else
@@ -711,7 +702,7 @@ namespace ServicioContrato
         {
             try
             {
-                Curso[] cursos = CursoDAO.ObtenerCursosPorNombreIdioma(nombreIdioma);
+                Curso[] cursos = cursoDAO.ObtenerCursosPorNombreIdioma(nombreIdioma);
                 if (cursos != null)
                 {
                     var cursosDTO = cursos.Select(c => new CursoDTO
@@ -757,7 +748,7 @@ namespace ServicioContrato
         {
             try
             {
-                Curso[] cursos = CursoDAO.ObtenerCursosPorNivel(nivel);
+                Curso[] cursos = cursoDAO.ObtenerCursosPorNivel(nivel);
                 if (cursos != null)
                 {
                     var cursosDTO = cursos.Select(c => new CursoDTO
@@ -803,7 +794,7 @@ namespace ServicioContrato
         {
             try
             {
-                Curso[] cursos = CursoDAO.ObtenerCursosPorNombreProfesor(nombreProfesor);
+                Curso[] cursos = cursoDAO.ObtenerCursosPorNombreProfesor(nombreProfesor);
                 if (cursos != null)
                 {
                     var cursosDTO = cursos.Select(c => new CursoDTO
@@ -843,6 +834,34 @@ namespace ServicioContrato
                 return null;
             }
 
+        }
+
+        public bool RegistrarIdioma(String nombre)
+        {
+            try
+            {
+                Idioma idioma = new Idioma
+                {
+                    nombreIdioma = nombre
+                };
+                idiomaDAO.CrearIdioma(idioma);
+                return true;
+            }
+            catch (System.Data.Entity.Core.EntityException ex)
+            {
+                Console.WriteLine($"Error de Entity Framework: {ex.Message}");
+                return false;
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                Console.WriteLine($"Error de SQL Server: {ex.Message}");
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error inesperado: {ex.Message}");
+                return false;
+            }
         }
     }
 }

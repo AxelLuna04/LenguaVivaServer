@@ -83,6 +83,8 @@
     <Compile Include="Inscripcion.cs">
       <DependentUpon>ModeloDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Interfaces\ICursoDAO.cs" />
+    <Compile Include="Interfaces\IIdiomaDAO.cs" />
     <Compile Include="ModeloDB.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
