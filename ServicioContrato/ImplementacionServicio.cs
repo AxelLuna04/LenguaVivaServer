@@ -16,28 +16,34 @@ namespace ServicioContrato
     { 
         private readonly IIdiomaDAO idiomaDAO;
         private readonly ICursoDAO cursoDAO;
+        private readonly IUsuarioDAO usuarioDAO;
+        private readonly IProfesorDAO profesorDAO;
 
         //Constructor por defecto para la implementacion real
         public ImplementacionServicio()
         {
             idiomaDAO = new IdiomaDAO();
             cursoDAO = new CursoDAO();
+            usuarioDAO = new UsuarioDAO();
+            profesorDAO = new ProfesorDAO();
         }
 
         //Constructor para mockear las pruebas
-        public ImplementacionServicio(IIdiomaDAO idiomaDAO, ICursoDAO cursoDAO)
+        public ImplementacionServicio(IIdiomaDAO idiomaDAO, ICursoDAO cursoDAO, IUsuarioDAO usuarioDAO, IProfesorDAO profesorDAO)
         {
             this.idiomaDAO = idiomaDAO;
             this.cursoDAO = cursoDAO;
+            this.usuarioDAO = usuarioDAO;
+            this.profesorDAO = profesorDAO;
         }
 
         public SesionUsuario IniciarSesion(string correo, string contrasenia)
         {
             SesionUsuario sesionUsuario = new SesionUsuario();
             sesionUsuario.esValido = false;
-            if (UsuarioDAO.ObtenerTipoUsuario(correo) == 1)
+            if (usuarioDAO.ObtenerTipoUsuario(correo) == 1)
             {
-                if (UsuarioDAO.ObtenerAdministradorPorCorreo(correo).contrasenia == contrasenia)
+                if (usuarioDAO.ObtenerAdministradorPorCorreo(correo).contrasenia == contrasenia)
                 {
                     sesionUsuario.esValido = true;
                     sesionUsuario.tipoUsuario = 1;
@@ -45,9 +51,9 @@ namespace ServicioContrato
                 }
             }
 
-            if (UsuarioDAO.ObtenerTipoUsuario(correo) == 2)
+            if (usuarioDAO.ObtenerTipoUsuario(correo) == 2)
             {
-                if (UsuarioDAO.ObtenerProfesorPorCorreo(correo).contrasenia == contrasenia)
+                if (usuarioDAO.ObtenerProfesorPorCorreo(correo).contrasenia == contrasenia)
                 {
                     sesionUsuario.esValido = true;
                     sesionUsuario.tipoUsuario = 2;
@@ -74,7 +80,7 @@ namespace ServicioContrato
                     telefono = administradorDTO.telefono
                 };
 
-                UsuarioDAO.CrearAdministrador(administrador);
+                usuarioDAO.CrearAdministrador(administrador);
                 return true;
             }
             catch (System.Data.Entity.Core.EntityException ex)
@@ -109,7 +115,7 @@ namespace ServicioContrato
                     telefono = profesorDTO.telefono
                 };
 
-                UsuarioDAO.CrearProfesor(profesor);
+                usuarioDAO.CrearProfesor(profesor);
 
                 foreach (var idIdioma in idIdiomas)
                 {
@@ -118,7 +124,7 @@ namespace ServicioContrato
                         idProfesor = profesor.idProfesor,
                         idIdioma = idIdioma
                     };
-                    UsuarioDAO.CrearRelacion(relacion);
+                    usuarioDAO.CrearRelacion(relacion);
                 }
 
                 return true;
@@ -179,7 +185,7 @@ namespace ServicioContrato
                     telefono = alumnoDTO.telefono
                 };
 
-                UsuarioDAO.CrearAlumno(alumno);
+                usuarioDAO.CrearAlumno(alumno);
 
                 foreach (var idiomaNivel in idiomasNivel)
                 {
@@ -189,7 +195,7 @@ namespace ServicioContrato
                         idIdioma = idiomaNivel.idIdioma,
                         nivel = idiomaNivel.nivel 
                     };
-                    UsuarioDAO.CrearRelacionIdiomaAlumno(relacion);
+                    usuarioDAO.CrearRelacionIdiomaAlumno(relacion);
                 }
 
                 return true;
@@ -540,7 +546,7 @@ namespace ServicioContrato
         {
             try
             {
-                Profesor[] profesores = ProfesorDAO.ObtenerProfesoresPorNombre(nombre);
+                Profesor[] profesores = profesorDAO.ObtenerProfesoresPorNombre(nombre);
                 if (profesores != null)
                 {
                     var profesoresDTO = profesores.Select(p => new ProfesorDTO
@@ -581,7 +587,7 @@ namespace ServicioContrato
         {
             try
             {
-                Profesor profesor = ProfesorDAO.ObtenerProfesorPorId(idProfesor);
+                Profesor profesor = profesorDAO.ObtenerProfesorPorId(idProfesor);
                 if (profesor != null)
                 {
                     ProfesorDTO profesorDTO = new ProfesorDTO

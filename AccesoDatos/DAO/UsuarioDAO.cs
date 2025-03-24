@@ -5,12 +5,13 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AccesoDatos.Interfaces;
 
 namespace AccesoDatos.DAO
 {
-    public class UsuarioDAO
+    public class UsuarioDAO : IUsuarioDAO
     {
-        public static void CrearAdministrador(Administrador administrador)
+        public void CrearAdministrador(Administrador administrador)
         {
             using (var contexto = new LenguaVivaDBEntities())
             {
@@ -19,7 +20,7 @@ namespace AccesoDatos.DAO
                 contexto.SaveChanges();
             }
         }
-        public static void CrearProfesor(Profesor profesor)
+        public void CrearProfesor(Profesor profesor)
         {
             using (var contexto = new LenguaVivaDBEntities())
             {
@@ -28,7 +29,7 @@ namespace AccesoDatos.DAO
                 contexto.SaveChanges();
             }
         }
-        public static void CrearRelacion(Idioma_Profesor relacion)
+        public void CrearRelacion(Idioma_Profesor relacion)
         {
             using (var contexto = new LenguaVivaDBEntities())
             {
@@ -37,7 +38,7 @@ namespace AccesoDatos.DAO
             }
         }
 
-        public static void CrearAlumno(Alumno alumno)
+        public void CrearAlumno(Alumno alumno)
         {
             using (var contexto = new LenguaVivaDBEntities())
             {
@@ -47,7 +48,7 @@ namespace AccesoDatos.DAO
             }
         }
 
-        public static void CrearRelacionIdiomaAlumno(Idioma_Alumno relacion)
+        public void CrearRelacionIdiomaAlumno(Idioma_Alumno relacion)
         {
             using (var contexto = new LenguaVivaDBEntities())
             {
@@ -57,7 +58,7 @@ namespace AccesoDatos.DAO
             }
         }
 
-        public static int ObtenerTipoUsuario(string correo)
+        public int ObtenerTipoUsuario(string correo)
         {
             int resultado = 0;
 
@@ -81,7 +82,7 @@ namespace AccesoDatos.DAO
             return resultado;
         }
 
-        public static Administrador ObtenerAdministradorPorCorreo(string correo)
+        public Administrador ObtenerAdministradorPorCorreo(string correo)
         {
             using (var contexto = new LenguaVivaDBEntities())
             {
@@ -90,7 +91,7 @@ namespace AccesoDatos.DAO
             }
         }
 
-        public static Profesor ObtenerProfesorPorCorreo(string correo)
+        public Profesor ObtenerProfesorPorCorreo(string correo)
         {
             using (var contexto = new LenguaVivaDBEntities())
             {

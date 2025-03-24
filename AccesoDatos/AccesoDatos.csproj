@@ -85,6 +85,8 @@
     </Compile>
     <Compile Include="Interfaces\ICursoDAO.cs" />
     <Compile Include="Interfaces\IIdiomaDAO.cs" />
+    <Compile Include="Interfaces\IProfesorDAO.cs" />
+    <Compile Include="Interfaces\IUsuarioDAO.cs" />
     <Compile Include="ModeloDB.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

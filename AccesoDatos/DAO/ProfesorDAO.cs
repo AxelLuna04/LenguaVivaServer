@@ -4,12 +4,13 @@ using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AccesoDatos.Interfaces;
 
 namespace AccesoDatos.DAO
 {
-    public class ProfesorDAO
+    public class ProfesorDAO :IProfesorDAO
     {
-        public static void CrearProfesor(Profesor profesor)
+        public void CrearProfesor(Profesor profesor)
         {
             using (var contexto = new LenguaVivaDBEntities())
             {
@@ -19,7 +20,7 @@ namespace AccesoDatos.DAO
             }
         }
 
-        public static void ModificarProfesor(Profesor profesor)
+        public void ModificarProfesor(Profesor profesor)
         {
             using (var contexto = new LenguaVivaDBEntities())
             {
@@ -29,7 +30,7 @@ namespace AccesoDatos.DAO
             }
         }
 
-        public static void EliminarProfesor(Profesor profesor)
+        public void EliminarProfesor(Profesor profesor)
         {
             using (var contexto = new LenguaVivaDBEntities())
             {
@@ -39,7 +40,7 @@ namespace AccesoDatos.DAO
             }
         }
 
-        public static Profesor[] ObtenerProfesores()
+        public Profesor[] ObtenerProfesores()
         {
             using (var contexto = new LenguaVivaDBEntities())
             {
@@ -49,7 +50,7 @@ namespace AccesoDatos.DAO
 
         }
 
-        public static Profesor ObtenerProfesorPorId(int id)
+        public Profesor ObtenerProfesorPorId(int id)
         {
             using (var contexto = new LenguaVivaDBEntities())
             {
@@ -58,7 +59,7 @@ namespace AccesoDatos.DAO
             }
         }
 
-        public static Profesor ObtenerProfesorPorUsuario(String usuario)
+        public Profesor ObtenerProfesorPorUsuario(String usuario)
         {
             using (var contexto = new LenguaVivaDBEntities())
             {
@@ -67,7 +68,7 @@ namespace AccesoDatos.DAO
             }
         }
 
-        public static Profesor[] ObtenerProfesoresPorNombre(string nombre)
+        public Profesor[] ObtenerProfesoresPorNombre(string nombre)
         {
             using (var contexto = new LenguaVivaDBEntities())
             {
