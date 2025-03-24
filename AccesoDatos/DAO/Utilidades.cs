@@ -30,29 +30,43 @@ namespace AccesoDatos.DAO
             }
         }
 
-        public static bool VerificarContrasena(string contrasena, dynamic usuario)
+        public static bool VerificarContrasenaAdministrador(string contrasena, Administrador administrador)
         {
-            if (usuario == null) return false;
+            var hashContrasena = HashearContrasena(contrasena, administrador.salt);
+            if (hashContrasena == administrador.contrasenia)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 
-            var hashContrasena = HashearContrasena(contrasena, usuario.salt);
-            return hashContrasena == usuario.contrasenia;
+        public static bool VerificarContrasenaProfesor(string contrasena, Profesor profesor)
+        {
+            var hashContrasena = HashearContrasena(contrasena, profesor.salt);
+            if (hashContrasena == profesor.contrasenia)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public static string NormalizarTexto(string texto)
         {
             if (string.IsNullOrEmpty(texto))
                 return texto;
-
-            // Convertir a minúsculas
             texto = texto.ToLower();
 
-            // Reemplazar abreviaturas comunes
             texto = texto.Replace("col.", "colonia")
                          .Replace("av.", "avenida")
                          .Replace("cd.", "ciudad")
                          .Replace("cp.", "código postal");
 
-            // Eliminar caracteres especiales
             texto = new string(texto.Where(c => char.IsLetterOrDigit(c) || char.IsWhiteSpace(c)).ToArray());
 
             return texto;

@@ -1,10 +1,10 @@
 ﻿using AccesoDatos;
 using AccesoDatos.DAO;
-using AccesoDatos.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Core;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
@@ -67,12 +67,14 @@ namespace ServicioContrato
         //Metodos IGestionUsuarios
         public bool RegistrarAdministrador(AdministradorDTO administradorDTO)
         {
+            string salt = Utilidades.GenerarSalt();
             try
             {
                 Administrador administrador = new Administrador
                 {
                     nombreUsuario = administradorDTO.nombreUsuario,
-                    contrasenia = administradorDTO.contrasenia,
+                    contrasenia = Utilidades.HashearContrasena(administradorDTO.contrasenia, salt),
+                    salt = salt,
                     nombre = administradorDTO.nombre,
                     apellidos = administradorDTO.apellidos,
                     direccion = administradorDTO.direccion,
@@ -102,12 +104,14 @@ namespace ServicioContrato
 
         public bool RegistrarProfesor(ProfesorDTO profesorDTO, int[] idIdiomas)
         {
+            string salt = Utilidades.GenerarSalt();
             try
             {
                 Profesor profesor = new Profesor
                 {
                     nombreUsuario = profesorDTO.nombreUsuario,
-                    contrasenia = profesorDTO.contrasenia,
+                    contrasenia = Utilidades.HashearContrasena(profesorDTO.contrasenia, salt),
+                    salt = salt,
                     nombre = profesorDTO.nombre,
                     apellidos = profesorDTO.apellidos,
                     direccion = profesorDTO.direccion,
@@ -150,7 +154,7 @@ namespace ServicioContrato
         {
             try
             {
-                var idiomas = idiomaDAO.CargarIdiomas();
+                var idiomas = IdiomaDAO.CargarIdiomas();
                 if (idiomas != null)
                 {
                     return idiomas.Select(i => new IdiomaDTO
@@ -341,7 +345,7 @@ namespace ServicioContrato
         {
             try
             {
-                Curso curso = cursoDAO.ObtenerCursoPorID(idCurso);
+                Curso curso = CursoDAO.ObtenerCursoPorID(idCurso);
                 if (curso != null)
                 {
                     var cursoDTO = new CursoDTO
@@ -391,7 +395,7 @@ namespace ServicioContrato
         {
             try
             {
-                Curso[] cursos = cursoDAO.ObtenerCursos();
+                Curso[] cursos = CursoDAO.ObtenerCursos();
                 if (cursos != null)
                 {
                     return cursos;
@@ -424,7 +428,7 @@ namespace ServicioContrato
         {
             try
             {
-                Curso[] cursos = cursoDAO.ObtenerCursosPorNombre(nombre);
+                Curso[] cursos = CursoDAO.ObtenerCursosPorNombre(nombre);
                 if (cursos != null)
                 {
                     var cursosDTO = cursos.Select(c => new CursoDTO
@@ -470,7 +474,7 @@ namespace ServicioContrato
         {
             try
             {
-                Idioma idioma = idiomaDAO.ObtenerIdiomaPorID(idIdioma);
+                Idioma idioma = IdiomaDAO.ObtenerIdiomaPorID(idIdioma);
                 if (idioma != null)
                 {
                     var idiomaDTO = new IdiomaDTO
@@ -507,7 +511,7 @@ namespace ServicioContrato
         {
             try
             {
-                Idioma[] idiomas = idiomaDAO.ObtenerIdiomas();
+                Idioma[] idiomas = IdiomaDAO.ObtenerIdiomas();
                 if (idiomas != null)
                 {
                     var idiomasDTO = idiomas.Select(i => new IdiomaDTO
@@ -641,7 +645,7 @@ namespace ServicioContrato
                     idProfesor = cursoDTO.idProfesor
                 };
 
-                cursoDAO.CrearCurso(curso);
+                CursoDAO.CrearCurso(curso);
                 return true;
             }
             catch (System.Data.Entity.Core.EntityException ex)
@@ -665,7 +669,7 @@ namespace ServicioContrato
         {
             try
             {
-                Curso curso = cursoDAO.ObtenerCursoPorID(cursoDTO.idCurso);
+                Curso curso = CursoDAO.ObtenerCursoPorID(cursoDTO.idCurso);
                 if (curso != null)
                 {
                     curso.nombreCurso = cursoDTO.nombreCurso;
@@ -678,7 +682,7 @@ namespace ServicioContrato
                     curso.idIdioma = cursoDTO.idIdioma;
                     curso.idProfesor = cursoDTO.idProfesor;
 
-                    cursoDAO.ModificarCurso(curso);
+                    CursoDAO.ModificarCurso(curso);
                     return true;
                 }
                 else
@@ -708,7 +712,7 @@ namespace ServicioContrato
         {
             try
             {
-                Curso[] cursos = cursoDAO.ObtenerCursosPorNombreIdioma(nombreIdioma);
+                Curso[] cursos = CursoDAO.ObtenerCursosPorNombreIdioma(nombreIdioma);
                 if (cursos != null)
                 {
                     var cursosDTO = cursos.Select(c => new CursoDTO
@@ -754,7 +758,7 @@ namespace ServicioContrato
         {
             try
             {
-                Curso[] cursos = cursoDAO.ObtenerCursosPorNivel(nivel);
+                Curso[] cursos = CursoDAO.ObtenerCursosPorNivel(nivel);
                 if (cursos != null)
                 {
                     var cursosDTO = cursos.Select(c => new CursoDTO
@@ -800,7 +804,7 @@ namespace ServicioContrato
         {
             try
             {
-                Curso[] cursos = cursoDAO.ObtenerCursosPorNombreProfesor(nombreProfesor);
+                Curso[] cursos = CursoDAO.ObtenerCursosPorNombreProfesor(nombreProfesor);
                 if (cursos != null)
                 {
                     var cursosDTO = cursos.Select(c => new CursoDTO
@@ -840,34 +844,6 @@ namespace ServicioContrato
                 return null;
             }
 
-        }
-
-        public bool RegistrarIdioma(String nombre)
-        {
-            try
-            {
-                Idioma idioma = new Idioma
-                {
-                    nombreIdioma = nombre
-                };
-                idiomaDAO.CrearIdioma(idioma);
-                return true;
-            }
-            catch (System.Data.Entity.Core.EntityException ex)
-            {
-                Console.WriteLine($"Error de Entity Framework: {ex.Message}");
-                return false;
-            }
-            catch (System.Data.SqlClient.SqlException ex)
-            {
-                Console.WriteLine($"Error de SQL Server: {ex.Message}");
-                return false;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error inesperado: {ex.Message}");
-                return false;
-            }
         }
     }
 }
