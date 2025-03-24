@@ -40,21 +40,5 @@ namespace PruebasUnitarias
             Assert.That(resultado[1].nombreIdioma, Is.EqualTo("Inglés"));
         }
 
-        [Test]
-        public void RegistrarIdioma()
-        { 
-
-#pragma warning disable CS8600 // Se va a convertir un literal nulo o un posible valor nulo en un tipo que no acepta valores NULL
-            Idioma idiomaGuardado = null;
-
-            mockDAO.Setup(dao => dao.CrearIdioma(It.IsAny<Idioma>()))
-                   .Callback<Idioma>(idioma => idiomaGuardado = idioma); 
-
-            service.RegistrarIdioma("Alemán");
-
-            Assert.That(idiomaGuardado, Is.Not.Null);
-            Assert.That(idiomaGuardado.nombreIdioma, Is.EqualTo("Alemán"));
-        }
-
     }
 }

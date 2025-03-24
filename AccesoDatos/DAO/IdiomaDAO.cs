@@ -45,7 +45,7 @@ namespace AccesoDatos.DAO
             }
         }
 
-        public   Idioma ObtenerIdiomaPorID(int id)
+        public  Idioma ObtenerIdiomaPorID(int id)
         {
             using (var contexto = new LenguaVivaDBEntities())
             {
@@ -54,7 +54,7 @@ namespace AccesoDatos.DAO
             }
         }
 
-        public   Idioma[] CargarIdiomas()
+        public Idioma[] CargarIdiomas()
         {
             using (var contexto = new LenguaVivaDBEntities())
             {

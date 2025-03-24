@@ -8,6 +8,7 @@ using System.Runtime.CompilerServices;
 using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
+using AccesoDatos.Interfaces;
 
 namespace ServicioContrato
 {
@@ -154,7 +155,7 @@ namespace ServicioContrato
         {
             try
             {
-                var idiomas = IdiomaDAO.CargarIdiomas();
+                var idiomas = idiomaDAO.CargarIdiomas();
                 if (idiomas != null)
                 {
                     return idiomas.Select(i => new IdiomaDTO
@@ -345,7 +346,7 @@ namespace ServicioContrato
         {
             try
             {
-                Curso curso = CursoDAO.ObtenerCursoPorID(idCurso);
+                Curso curso = cursoDAO.ObtenerCursoPorID(idCurso);
                 if (curso != null)
                 {
                     var cursoDTO = new CursoDTO
@@ -395,7 +396,7 @@ namespace ServicioContrato
         {
             try
             {
-                Curso[] cursos = CursoDAO.ObtenerCursos();
+                Curso[] cursos = cursoDAO.ObtenerCursos();
                 if (cursos != null)
                 {
                     return cursos;
@@ -428,7 +429,7 @@ namespace ServicioContrato
         {
             try
             {
-                Curso[] cursos = CursoDAO.ObtenerCursosPorNombre(nombre);
+                Curso[] cursos = cursoDAO.ObtenerCursosPorNombre(nombre);
                 if (cursos != null)
                 {
                     var cursosDTO = cursos.Select(c => new CursoDTO
@@ -474,7 +475,7 @@ namespace ServicioContrato
         {
             try
             {
-                Idioma idioma = IdiomaDAO.ObtenerIdiomaPorID(idIdioma);
+                Idioma idioma = idiomaDAO.ObtenerIdiomaPorID(idIdioma);
                 if (idioma != null)
                 {
                     var idiomaDTO = new IdiomaDTO
@@ -511,7 +512,7 @@ namespace ServicioContrato
         {
             try
             {
-                Idioma[] idiomas = IdiomaDAO.ObtenerIdiomas();
+                Idioma[] idiomas = idiomaDAO.ObtenerIdiomas();
                 if (idiomas != null)
                 {
                     var idiomasDTO = idiomas.Select(i => new IdiomaDTO
@@ -645,7 +646,7 @@ namespace ServicioContrato
                     idProfesor = cursoDTO.idProfesor
                 };
 
-                CursoDAO.CrearCurso(curso);
+                cursoDAO.CrearCurso(curso);
                 return true;
             }
             catch (System.Data.Entity.Core.EntityException ex)
@@ -669,7 +670,7 @@ namespace ServicioContrato
         {
             try
             {
-                Curso curso = CursoDAO.ObtenerCursoPorID(cursoDTO.idCurso);
+                Curso curso = cursoDAO.ObtenerCursoPorID(cursoDTO.idCurso);
                 if (curso != null)
                 {
                     curso.nombreCurso = cursoDTO.nombreCurso;
@@ -682,7 +683,7 @@ namespace ServicioContrato
                     curso.idIdioma = cursoDTO.idIdioma;
                     curso.idProfesor = cursoDTO.idProfesor;
 
-                    CursoDAO.ModificarCurso(curso);
+                    cursoDAO.ModificarCurso(curso);
                     return true;
                 }
                 else
@@ -712,7 +713,7 @@ namespace ServicioContrato
         {
             try
             {
-                Curso[] cursos = CursoDAO.ObtenerCursosPorNombreIdioma(nombreIdioma);
+                Curso[] cursos = cursoDAO.ObtenerCursosPorNombreIdioma(nombreIdioma);
                 if (cursos != null)
                 {
                     var cursosDTO = cursos.Select(c => new CursoDTO
@@ -758,7 +759,7 @@ namespace ServicioContrato
         {
             try
             {
-                Curso[] cursos = CursoDAO.ObtenerCursosPorNivel(nivel);
+                Curso[] cursos = cursoDAO.ObtenerCursosPorNivel(nivel);
                 if (cursos != null)
                 {
                     var cursosDTO = cursos.Select(c => new CursoDTO
@@ -804,7 +805,7 @@ namespace ServicioContrato
         {
             try
             {
-                Curso[] cursos = CursoDAO.ObtenerCursosPorNombreProfesor(nombreProfesor);
+                Curso[] cursos = cursoDAO.ObtenerCursosPorNombreProfesor(nombreProfesor);
                 if (cursos != null)
                 {
                     var cursosDTO = cursos.Select(c => new CursoDTO
