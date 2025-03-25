@@ -45,24 +45,22 @@ namespace ServicioContrato
 
             if (usuarioDAO.ObtenerTipoUsuario(correo) == 1)
             {
-                if (usuarioDAO.ObtenerAdministradorPorCorreo(correo).contrasenia == contrasenia)
-                    if (Utilidades.VerificarContrasenaAdministrador(contrasenia, usuarioDAO.ObtenerAdministradorPorCorreo(correo)))
-                    {
-                        sesionUsuario.esValido = true;
-                        sesionUsuario.tipoUsuario = 1;
-                        sesionUsuario.correo = correo;
-                    }
+                if (Utilidades.VerificarContrasenaAdministrador(contrasenia, usuarioDAO.ObtenerAdministradorPorCorreo(correo)))
+                {
+                    sesionUsuario.esValido = true;
+                    sesionUsuario.tipoUsuario = 1;
+                    sesionUsuario.correo = correo;
+                }
             }
 
             if (usuarioDAO.ObtenerTipoUsuario(correo) == 2)
             {
-                if (usuarioDAO.ObtenerProfesorPorCorreo(correo).contrasenia == contrasenia)
-                    if (Utilidades.VerificarContrasenaProfesor(contrasenia, usuarioDAO.ObtenerProfesorPorCorreo(correo)))
-                    {
-                        sesionUsuario.esValido = true;
-                        sesionUsuario.tipoUsuario = 2;
-                        sesionUsuario.correo = correo;
-                    }
+                if (Utilidades.VerificarContrasenaProfesor(contrasenia, usuarioDAO.ObtenerProfesorPorCorreo(correo)))
+                {
+                    sesionUsuario.esValido = true;
+                    sesionUsuario.tipoUsuario = 2;
+                    sesionUsuario.correo = correo;
+                }
             }
             return sesionUsuario;
 
