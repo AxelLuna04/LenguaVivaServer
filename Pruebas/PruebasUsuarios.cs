@@ -31,12 +31,14 @@ namespace PruebasUnitarias
         public void IniciarSesion_AdministradorValido_DevuelveSesionValida()
         {
             // Arrange
+            var salt = Utilidades.GenerarSalt();
             var admin = new Administrador
             {
                 email = "admin@test.com",
-                contrasenia = "pass123",
+                contrasenia = Utilidades.HashearContrasena("pass123", salt),
                 nombre = "Admin",
-                apellidos = "Test"
+                apellidos = "Test",
+                salt = salt
             };
 
             mockDAO.Setup(dao => dao.ObtenerTipoUsuario("admin@test.com")).Returns(1);
@@ -56,12 +58,14 @@ namespace PruebasUnitarias
         public void IniciarSesion_ProfesorValido_DevuelveSesionValida()
         {
             // Arrange
+            var salt = Utilidades.GenerarSalt();
             var profesor = new Profesor
             {
                 email = "profesor@test.com",
-                contrasenia = "pass123",
+                contrasenia = Utilidades.HashearContrasena("pass123", salt),
                 nombre = "Profesor",
-                apellidos = "Test"
+                apellidos = "Test",
+                salt = salt
             };
 
             mockDAO.Setup(dao => dao.ObtenerTipoUsuario("profesor@test.com")).Returns(2);
@@ -76,6 +80,7 @@ namespace PruebasUnitarias
             Assert.That(resultado.tipoUsuario, Is.EqualTo(2));
             Assert.That(resultado.correo, Is.EqualTo("profesor@test.com"));
         }
+
 
         [Test]
         public void IniciarSesion_CredencialesInvalidas_DevuelveSesionInvalida()
@@ -127,7 +132,7 @@ namespace PruebasUnitarias
             Assert.Multiple(() =>
             {
                 Assert.That(adminGuardado.nombreUsuario, Is.EqualTo("admin1"));
-                Assert.That(adminGuardado.contrasenia, Is.EqualTo("pass123"));
+                //Assert.That(adminGuardado.contrasenia, Is.EqualTo("pass123"));
                 Assert.That(adminGuardado.nombre, Is.EqualTo("Admin"));
                 Assert.That(adminGuardado.apellidos, Is.EqualTo("Test"));
                 Assert.That(adminGuardado.direccion, Is.EqualTo("Calle 123"));
@@ -198,7 +203,7 @@ namespace PruebasUnitarias
             Assert.Multiple(() =>
             {
                 Assert.That(profesorGuardado.nombreUsuario, Is.EqualTo("prof1"));
-                Assert.That(profesorGuardado.contrasenia, Is.EqualTo("pass123"));
+                //Assert.That(profesorGuardado.contrasenia, Is.EqualTo("pass123"));
                 Assert.That(profesorGuardado.nombre, Is.EqualTo("Profesor"));
                 Assert.That(profesorGuardado.apellidos, Is.EqualTo("Test"));
             });

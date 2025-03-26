@@ -104,12 +104,22 @@ namespace Pruebas.PruebasIntegracion
         [Test]
         public void CrearRelacion_DeberiaCrearRelacionAlumnoIdiomaCorrectamente()
         {
+            var alumno = new Alumno
+            {
+                nombre = "Angel Osvaldo",
+                apellidos = "Lagunes Hernandez",
+                email = "jp.lh@gmail.com",
+                telefono = "2282569878",
+                direccion = "Xalapa."
+            };
+
+            usuarioDAO.CrearAlumno(alumno);
+
             var relacion = new Idioma_Alumno
             {
+                idAlumno = alumno.idAlumno,
                 idIdioma = 1,
-                idAlumno = 4,
                 nivel = 1
-
             };
 
             Assert.DoesNotThrow(() => usuarioDAO.CrearRelacionIdiomaAlumno(relacion));
