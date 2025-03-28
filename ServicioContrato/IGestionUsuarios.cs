@@ -29,6 +29,8 @@ namespace ServicioContrato
         [OperationContract]
         UsuarioDTO[] BuscarUsuarios(string criterioBusqueda, int tipoUsuario);
 
+        [OperationContract]
+        UsuarioDTO EliminarUsuario(string correo, int tipoUsuario);
     }
 
     [DataContract]
@@ -167,6 +169,8 @@ namespace ServicioContrato
 
         [DataMember]
         public string nivelIdioma { get; set; }
+        [DataMember]
+        public int tipoUsuario { get; set; }
 
     }
 

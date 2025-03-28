@@ -99,5 +99,60 @@ namespace AccesoDatos.DAO
                 return profesor;
             }
         }
+
+        public Alumno ObtenerAlumnoPorCorreo(string correo)
+        {
+            using (var contexto = new LenguaVivaDBEntities())
+            {
+                return contexto.Alumno.FirstOrDefault(a => a.email == correo);
+            }
+        }
+
+        public void EliminarAdministrador(string correo)
+        {
+            using (var contexto = new LenguaVivaDBEntities())
+            {
+                var admin = contexto.Administrador.FirstOrDefault(a => a.email == correo);
+                if (admin != null)
+                {
+                    contexto.Administrador.Remove(admin);
+                    contexto.SaveChanges();
+                }
+            }
+        }
+
+        public void EliminarProfesor(string correo)
+        {
+            using (var contexto = new LenguaVivaDBEntities())
+            {
+                var profesor = contexto.Profesor.FirstOrDefault(p => p.email == correo);
+                if (profesor != null)
+                {
+                    var relaciones = contexto.Idioma_Profesor.Where(r => r.idProfesor == profesor.idProfesor).ToList();
+                    contexto.Idioma_Profesor.RemoveRange(relaciones);
+
+                    contexto.Profesor.Remove(profesor);
+
+                    contexto.SaveChanges();
+                }
+            }
+        }
+
+        public void EliminarAlumno(string correo)
+        {
+            using (var contexto = new LenguaVivaDBEntities())
+            {
+                var alumno = contexto.Alumno.FirstOrDefault(a => a.email == correo);
+                if (alumno != null)
+                {
+                    var relaciones = contexto.Idioma_Alumno.Where(r => r.idAlumno == alumno.idAlumno).ToList();
+                    contexto.Idioma_Alumno.RemoveRange(relaciones);
+
+                    contexto.Alumno.Remove(alumno);
+
+                    contexto.SaveChanges();
+                }
+            }
+        }
     }
 }

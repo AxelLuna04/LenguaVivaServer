@@ -17,6 +17,10 @@ namespace AccesoDatos.Interfaces
         int ObtenerTipoUsuario(string correo);
         Profesor ObtenerProfesorPorCorreo(string correo);
         Administrador ObtenerAdministradorPorCorreo(string correo);
+        Alumno ObtenerAlumnoPorCorreo(string correo);
+        void EliminarAdministrador(string correo);
+        void EliminarProfesor(string correo);
+        void EliminarAlumno(string correo);
 
     }
 }

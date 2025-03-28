@@ -351,5 +351,104 @@ namespace PruebasUnitarias
             // Assert
             Assert.That(resultado, Is.False);
         }
+
+        [Test]
+        public void EliminarUsuario_AdministradorExiste_EliminaCorrectamente()
+        {
+            string correo = "admin@test.com";
+            var admin = new Administrador { nombre = "Juan", apellidos = "Pérez", email = correo, telefono = "123456789", direccion = "Calle 123" };
+            mockDAO.Setup(dao => dao.ObtenerAdministradorPorCorreo(correo)).Returns(admin);
+            mockDAO.Setup(dao => dao.EliminarAdministrador(correo));
+
+            var resultado = service.EliminarUsuario(correo, 1);
+
+            Assert.NotNull(resultado);
+            Assert.That(resultado.nombre, Is.EqualTo("Juan"));
+            mockDAO.Verify(dao => dao.EliminarAdministrador(correo), Times.Once);
+        }
+
+        [Test]
+        public void EliminarUsuario_ProfesorExiste_EliminaCorrectamente()
+        {
+            string correo = "profesor@test.com";
+            var profesor = new Profesor { nombre = "Ana", apellidos = "Gómez", email = correo, telefono = "987654321", direccion = "Avenida 456" };
+            mockDAO.Setup(dao => dao.ObtenerProfesorPorCorreo(correo)).Returns(profesor);
+            mockDAO.Setup(dao => dao.EliminarProfesor(correo));
+
+            var resultado = service.EliminarUsuario(correo, 2);
+
+            Assert.NotNull(resultado);
+            Assert.That(resultado.nombre, Is.EqualTo("Ana"));
+            mockDAO.Verify(dao => dao.EliminarProfesor(correo), Times.Once);
+        }
+
+        [Test]
+        public void EliminarUsuario_AlumnoExiste_EliminaCorrectamente()
+        {
+            string correo = "alumno@test.com";
+            var alumno = new Alumno { nombre = "Pedro", apellidos = "Martínez", email = correo, telefono = "111222333", direccion = "Plaza 789" };
+            mockDAO.Setup(dao => dao.ObtenerAlumnoPorCorreo(correo)).Returns(alumno);
+            mockDAO.Setup(dao => dao.EliminarAlumno(correo));
+
+            var resultado = service.EliminarUsuario(correo, 3);
+
+            Assert.NotNull(resultado);
+            Assert.That(resultado.nombre, Is.EqualTo("Pedro"));
+            mockDAO.Verify(dao => dao.EliminarAlumno(correo), Times.Once);
+        }
+
+        [Test]
+        public void EliminarUsuario_AdministradorNoExiste_RetornaNull()
+        {
+            string correo = "admin@test.com";
+            mockDAO.Setup(dao => dao.ObtenerAdministradorPorCorreo(correo)).Returns((Administrador)null);
+
+            var resultado = service.EliminarUsuario(correo, 1);
+
+            Assert.IsNull(resultado);
+        }
+
+        [Test]
+        public void EliminarUsuario_ProfesorNoExiste_RetornaNull()
+        {
+            string correo = "profesor@test.com";
+            mockDAO.Setup(dao => dao.ObtenerProfesorPorCorreo(correo)).Returns((Profesor)null);
+
+            var resultado = service.EliminarUsuario(correo, 2);
+
+            Assert.IsNull(resultado);
+        }
+
+        [Test]
+        public void EliminarUsuario_AlumnoNoExiste_RetornaNull()
+        {
+            string correo = "alumno@test.com";
+            mockDAO.Setup(dao => dao.ObtenerAlumnoPorCorreo(correo)).Returns((Alumno)null);
+
+            var resultado = service.EliminarUsuario(correo, 3);
+
+            Assert.IsNull(resultado);
+        }
+
+        [Test]
+        public void EliminarUsuario_TipoUsuarioInvalido_RetornaNull()
+        {
+            string correo = "usuario@test.com";
+
+            var resultado = service.EliminarUsuario(correo, 99);
+
+            Assert.IsNull(resultado);
+        }
+
+        [Test]
+        public void EliminarUsuario_ErrorBaseDatos_LanzaExcepcion()
+        {
+            string correo = "admin@test.com";
+            mockDAO.Setup(dao => dao.ObtenerAdministradorPorCorreo(correo)).Throws(new EntityException("Error de base de datos"));
+
+            var resultado = service.EliminarUsuario(correo, 1);
+
+            Assert.IsNull(resultado);
+        }
     }
 }

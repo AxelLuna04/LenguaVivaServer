@@ -178,6 +178,83 @@ namespace Pruebas.PruebasIntegracion
 
             Assert.DoesNotThrow(() => usuarioDAO.CrearRelacion(relacion));
         }
+
+        [Test]
+        public void EliminarAdministrador_DeberiaEliminarAdministradorCorrectamente()
+        {
+            var admin = new Administrador
+            {
+                nombreUsuario = "AdminEliminar",
+                contrasenia = "123456",
+                nombre = "Administrador Eliminar",
+                apellidos = "Prueba",
+                email = "admineliminar@example.com",
+                telefono = "5551234567",
+                direccion = "Dirección Test",
+                salt = Utilidades.GenerarSalt()
+            };
+
+            usuarioDAO.CrearAdministrador(admin);
+
+            Assert.DoesNotThrow(() => usuarioDAO.EliminarAdministrador(admin.email));
+
+            var resultado = usuarioDAO.ObtenerAdministradorPorCorreo("admineliminar@example.com");
+            Assert.IsNull(resultado);
+        }
+
+        [Test]
+        public void EliminarProfesor_DeberiaEliminarProfesorCorrectamente()
+        {
+            var profesor = new Profesor
+            {
+                nombreUsuario = "ProfesorEliminar",
+                contrasenia = "pass123",
+                nombre = "Profesor Eliminar",
+                apellidos = "Prueba",
+                email = "profesoreliminar@example.com",
+                telefono = "5559876543",
+                direccion = "Dirección Test",
+                salt = Utilidades.GenerarSalt()
+            };
+
+            usuarioDAO.CrearProfesor(profesor);
+
+            Assert.DoesNotThrow(() => usuarioDAO.EliminarProfesor(profesor.email));
+
+            var resultado = usuarioDAO.ObtenerProfesorPorCorreo("profesoreliminar@example.com");
+            Assert.IsNull(resultado);
+        }
+
+        [Test]
+        public void EliminarAlumno_DeberiaEliminarAlumnoCorrectamente()
+        {
+            var alumno = new Alumno
+            {
+                nombre = "Alumno Eliminar",
+                apellidos = "Prueba",
+                email = "alumnoeliminar@example.com",
+                telefono = "5556789012",
+                direccion = "Dirección Test"
+            };
+
+            usuarioDAO.CrearAlumno(alumno);
+
+            Assert.DoesNotThrow(() => usuarioDAO.EliminarAlumno(alumno.email));
+
+            var resultado = usuarioDAO.ObtenerAlumnoPorCorreo("alumnoeliminar@example.com");
+            Assert.IsNull(resultado);
+        }
+
+        [Test]
+        public void EliminarUsuario_NoDeberiaFallar_SiUsuarioNoExiste()
+        {
+            Assert.DoesNotThrow(() => usuarioDAO.EliminarAdministrador("noexiste@example.com"));
+            Assert.DoesNotThrow(() => usuarioDAO.EliminarProfesor("noexiste@example.com"));
+            Assert.DoesNotThrow(() => usuarioDAO.EliminarAlumno("noexiste@example.com"));
+        }
+
+
+
     }
 }
 

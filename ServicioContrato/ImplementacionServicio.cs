@@ -225,18 +225,18 @@ namespace ServicioContrato
 
                     if (tipoUsuario == 2)
                     {
-                        Console.WriteLine("Es profe");
-
+                        // Si el filtro indica 2 (por ejemplo, profesor buscando sus alumnos)
+                        Console.WriteLine("Filtrando solo alumnos...");
                         var alumnos = contexto.Alumno
                             .Where(al => al.nombre.ToLower().Contains(criterioNormalizado) ||
                                          al.apellidos.ToLower().Contains(criterioNormalizado) ||
                                          al.direccion.ToLower().Contains(criterioNormalizado) ||
                                          al.email.ToLower().Contains(criterioNormalizado) ||
                                          al.telefono.Contains(criterioNormalizado) ||
-                                         contexto.Idioma_Alumno
+                                         (contexto.Idioma_Alumno
                                             .Where(ia => ia.idAlumno == al.idAlumno)
                                             .Select(ia => ia.nivel.ToString())
-                                            .FirstOrDefault()
+                                            .FirstOrDefault())
                                             .Contains(criterioNormalizado))
                             .Select(al => new UsuarioDTO
                             {
@@ -245,17 +245,18 @@ namespace ServicioContrato
                                 direccion = al.direccion,
                                 correo = al.email,
                                 telefono = al.telefono,
-                                nivelIdioma = contexto.Idioma_Alumno
+                                nivelIdioma = (contexto.Idioma_Alumno
                                     .Where(ia => ia.idAlumno == al.idAlumno)
                                     .Select(ia => ia.nivel.ToString())
-                                    .FirstOrDefault()
+                                    .FirstOrDefault()),
+                                tipoUsuario = 3  // Alumno
                             }).ToList();
 
                         resultados.AddRange(alumnos);
                     }
                     else
                     {
-                        Console.WriteLine("Es admin");
+                        Console.WriteLine("Buscando administradores, profesores y alumnos...");
 
                         var administradores = contexto.Administrador
                             .Where(a => a.nombre.ToLower().Contains(criterioNormalizado) ||
@@ -270,7 +271,8 @@ namespace ServicioContrato
                                 direccion = a.direccion,
                                 correo = a.email,
                                 telefono = a.telefono,
-                                nivelIdioma = null
+                                nivelIdioma = null,
+                                tipoUsuario = 1  
                             }).ToList();
 
                         resultados.AddRange(administradores);
@@ -287,8 +289,9 @@ namespace ServicioContrato
                                 apellidos = p.apellidos,
                                 direccion = p.direccion,
                                 correo = p.email,
-                                telefono= p.telefono,
-                                nivelIdioma = null
+                                telefono = p.telefono,
+                                nivelIdioma = null,
+                                tipoUsuario = 2  
                             }).ToList();
 
                         resultados.AddRange(profesores);
@@ -299,10 +302,10 @@ namespace ServicioContrato
                                          al.direccion.ToLower().Contains(criterioNormalizado) ||
                                          al.email.ToLower().Contains(criterioNormalizado) ||
                                          al.telefono.Contains(criterioNormalizado) ||
-                                         contexto.Idioma_Alumno
+                                         (contexto.Idioma_Alumno
                                             .Where(ia => ia.idAlumno == al.idAlumno)
                                             .Select(ia => ia.nivel.ToString())
-                                            .FirstOrDefault()
+                                            .FirstOrDefault())
                                             .Contains(criterioNormalizado))
                             .Select(al => new UsuarioDTO
                             {
@@ -311,10 +314,11 @@ namespace ServicioContrato
                                 direccion = al.direccion,
                                 correo = al.email,
                                 telefono = al.telefono,
-                                nivelIdioma = contexto.Idioma_Alumno
+                                nivelIdioma = (contexto.Idioma_Alumno
                                     .Where(ia => ia.idAlumno == al.idAlumno)
                                     .Select(ia => ia.nivel.ToString())
-                                    .FirstOrDefault()
+                                    .FirstOrDefault()),
+                                tipoUsuario = 3  
                             }).ToList();
 
                         resultados.AddRange(alumnos);
@@ -327,7 +331,7 @@ namespace ServicioContrato
 
                     foreach (var resultado in resultados)
                     {
-                        Console.WriteLine("Resultados: " + resultado.nombre);
+                        Console.WriteLine("Resultado: " + resultado.nombre + " - Tipo: " + resultado.tipoUsuario);
                     }
 
                     return resultados.ToArray();
@@ -339,6 +343,85 @@ namespace ServicioContrato
                 return null;
             }
         }
+
+
+        public UsuarioDTO EliminarUsuario(string correo, int tipoUsuario)
+        {
+            try
+            {
+                if (tipoUsuario == 1)
+                {
+                    var admin = usuarioDAO.ObtenerAdministradorPorCorreo(correo);
+                    if (admin == null)
+                    {
+                        Console.WriteLine("Administrador no encontrado.");
+                        return null;
+                    }
+                    UsuarioDTO dto = new UsuarioDTO
+                    {
+                        nombre = admin.nombre,
+                        apellidos = admin.apellidos,
+                        correo = admin.email,
+                        telefono = admin.telefono,
+                        direccion = admin.direccion,
+                        tipoUsuario = 1
+                    };
+                    usuarioDAO.EliminarAdministrador(correo);
+                    return dto;
+                }
+                else if (tipoUsuario == 2)
+                {
+                    var profesor = usuarioDAO.ObtenerProfesorPorCorreo(correo);
+                    if (profesor == null)
+                    {
+                        Console.WriteLine("Profesor no encontrado.");
+                        return null;
+                    }
+                    UsuarioDTO dto = new UsuarioDTO
+                    {
+                        nombre = profesor.nombre,
+                        apellidos = profesor.apellidos,
+                        correo = profesor.email,
+                        telefono = profesor.telefono,
+                        direccion = profesor.direccion,
+                        tipoUsuario = 2
+                    };
+                    usuarioDAO.EliminarProfesor(correo);
+                    return dto;
+                }
+                else if (tipoUsuario == 3)
+                {
+                    var alumno = usuarioDAO.ObtenerAlumnoPorCorreo(correo);
+                    if (alumno == null)
+                    {
+                        Console.WriteLine("Alumno no encontrado.");
+                        return null;
+                    }
+                    UsuarioDTO dto = new UsuarioDTO
+                    {
+                        nombre = alumno.nombre,
+                        apellidos = alumno.apellidos,
+                        correo = alumno.email,
+                        telefono = alumno.telefono,
+                        direccion = alumno.direccion,
+                        tipoUsuario = 3
+                    };
+                    usuarioDAO.EliminarAlumno(correo);
+                    return dto;
+                }
+                else
+                {
+                    Console.WriteLine("Tipo de usuario inválido.");
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al eliminar usuario: {ex.Message}");
+                return null;
+            }
+        }
+
 
 
         //Metodos IGestionUsuarios
