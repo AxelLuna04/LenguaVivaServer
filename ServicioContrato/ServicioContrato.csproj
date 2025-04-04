@@ -54,6 +54,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IGestionAlumnos.cs" />
     <Compile Include="IGestionCursos.cs" />
     <Compile Include="ImplementacionServicio.cs" />
     <Compile Include="IGestionUsuarios.cs" />

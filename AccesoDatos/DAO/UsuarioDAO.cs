@@ -154,5 +154,13 @@ namespace AccesoDatos.DAO
                 }
             }
         }
+
+        public Alumno ObtenerAlumnoPorID(int idAlumno)
+        {
+            using (var contexto = new LenguaVivaDBEntities())
+            {
+                return contexto.Alumno.FirstOrDefault(a => a.idAlumno == idAlumno);
+            }
+        }
     }
 }

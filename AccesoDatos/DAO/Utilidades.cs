@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
+using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -70,6 +72,29 @@ namespace AccesoDatos.DAO
             texto = new string(texto.Where(c => char.IsLetterOrDigit(c) || char.IsWhiteSpace(c)).ToArray());
 
             return texto;
+        }
+
+        public static void EnviarCorreo(string correoAlumno, string pdfPath)
+        {
+            try
+            {
+                MailMessage correo = new MailMessage();
+                correo.From = new MailAddress("hunterstrophy01@gmail.com");
+                correo.To.Add(correoAlumno);
+                correo.Subject = "Recibo de Pago - Lengua Viva";
+                correo.Body = "Adjunto encontrarás el recibo de pago correspondiente.";
+                correo.Attachments.Add(new Attachment(pdfPath));
+                correo.IsBodyHtml = true;
+
+                SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
+                smtp.Credentials = new NetworkCredential("hunterstrophy01@gmail.com", "azcx qzqh kzdq ifve");
+                smtp.EnableSsl = true;
+                smtp.Send(correo);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al enviar el correo: " + ex.Message);
+            }
         }
     }
 }

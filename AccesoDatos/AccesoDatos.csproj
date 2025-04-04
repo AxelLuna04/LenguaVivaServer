@@ -65,6 +65,8 @@
     </Compile>
     <Compile Include="DAO\CursoDAO.cs" />
     <Compile Include="DAO\IdiomaDAO.cs" />
+    <Compile Include="DAO\InscripcionDAO.cs" />
+    <Compile Include="DAO\PagoDAO.cs" />
     <Compile Include="DAO\ProfesorDAO.cs" />
     <Compile Include="DAO\UsuarioDAO.cs" />
     <Compile Include="DAO\Utilidades.cs" />

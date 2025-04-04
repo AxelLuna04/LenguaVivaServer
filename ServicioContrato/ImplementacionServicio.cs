@@ -9,11 +9,13 @@ using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 using AccesoDatos.Interfaces;
+using System.Data;
+using System.Data.Entity.Infrastructure;
 
 namespace ServicioContrato
 {
     [ServiceBehavior]
-    public class ImplementacionServicio : IGestionUsuarios, IGestionCursos
+    public class ImplementacionServicio : IGestionUsuarios, IGestionCursos, IGestionAlumnos
     { 
         private readonly IIdiomaDAO idiomaDAO;
         private readonly ICursoDAO cursoDAO;
@@ -927,6 +929,87 @@ namespace ServicioContrato
             {
                 Console.WriteLine($"Error inesperado: {ex.Message}");
                 return null;
+            }
+
+        }
+
+        //IGestionAlumnos
+
+        public bool RegistrarPago(int cantidadPagada, int idInscripcion)
+        {
+            PagoDAO pagoDAO = new PagoDAO();
+            try
+            {
+                Pago pago = new Pago
+                {
+                    cantidad = cantidadPagada,
+                    fechaPago = DateTime.Now,
+                    idInscripcion = idInscripcion
+                };
+
+                pagoDAO.RegistrarPago(pago);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al registrar el pago: {ex.Message}");
+                return false;
+            }
+        }
+
+        public ReciboPago ObtenerReciboPago(int idInscripcion)
+        {
+            PagoDAO pagoDAO= new PagoDAO();
+            InscripcionDAO inscripcionDAO = new InscripcionDAO();
+            CursoDAO cursoDAO = new CursoDAO();
+            UsuarioDAO alumnoDAO = new UsuarioDAO();
+            string curso;
+            string alumno;
+            string fechaPago;
+            string cantidadPagada;
+            DateTime fechaRecuperada;
+
+            try
+            {
+                var pago = pagoDAO.ObetenerPago(idInscripcion);
+                curso = cursoDAO.ObtenerCursoPorID(inscripcionDAO.ObtenerIDCurso(idInscripcion)).nombreCurso;
+                alumno = alumnoDAO.ObtenerAlumnoPorID(inscripcionDAO.ObtenerIDAlumno(idInscripcion)).nombre;
+                fechaRecuperada = pago.fechaPago.GetValueOrDefault();
+                fechaPago = fechaRecuperada.ToString("dd/MM/yyyy");
+                cantidadPagada = pago.cantidad.ToString();
+
+                ReciboPago reciboPago = new ReciboPago
+                {
+                    curso = curso,
+                    alumno = alumno,
+                    fechaPago = fechaPago,
+                    cantidadPagada = cantidadPagada
+                };
+                return reciboPago;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al registrar el pago: {ex.Message}");
+                return null;
+            }
+        }
+
+        public bool EnviarCorreoReciboPago(int idInscripcion, string pdfPath)
+        {
+            try
+            {
+                InscripcionDAO inscripcionDAO = new InscripcionDAO();
+                UsuarioDAO alumnoDAO = new UsuarioDAO();
+                int idAlumno = inscripcionDAO.ObtenerIDAlumno(idInscripcion);
+                Alumno alumno = alumnoDAO.ObtenerAlumnoPorID(idAlumno);
+                string correoAlumno = alumno.email;
+                Utilidades.EnviarCorreo(correoAlumno, pdfPath);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al registrar el pago: {ex.Message}");
+                return false;
             }
 
         }
