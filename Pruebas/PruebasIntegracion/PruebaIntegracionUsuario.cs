@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Configuration;
+using ServicioContrato;
 
 namespace Pruebas.PruebasIntegracion
 {
@@ -253,7 +254,154 @@ namespace Pruebas.PruebasIntegracion
             Assert.DoesNotThrow(() => usuarioDAO.EliminarAlumno("noexiste@example.com"));
         }
 
+        [Test]
+        public void ModificarAdministrador_DeberiaModificarAdministradorCorrectamente()
+        {
+            // Arrange
+            var admin = new Administrador
+            {
+                nombreUsuario = "AdminExistente",
+                contrasenia = "123456",
+                nombre = "Admin Antiguo",
+                apellidos = "Antiguo",
+                email = "adminexistente@test.com",
+                telefono = "2254897845",
+                direccion = "Direccion antigua.",
+                salt = Utilidades.GenerarSalt()
+            };
 
+            // Crear el administrador
+            usuarioDAO.CrearAdministrador(admin);
+
+            // Modificar la información
+            var adminModificado = new AdministradorDTO
+            {
+                email = "adminexistente@test.com",
+                nombre = "Nuevo Nombre",
+                apellidos = "Nuevo Apellido",
+                direccion = "Nueva Direccion",
+                telefono = "5559876543",
+                contrasenia = "nuevacontrasenia"
+            };
+
+            // Act
+
+            // Assert
+
+            var adminResultado = usuarioDAO.ObtenerAdministradorPorCorreo("adminexistente@test.com");
+            Assert.IsNotNull(adminResultado);
+            Assert.AreEqual("Nuevo Nombre", adminResultado.nombre);
+            Assert.AreEqual("Nuevo Apellido", adminResultado.apellidos);
+            Assert.AreEqual("Nueva Direccion", adminResultado.direccion);
+            Assert.AreEqual("5559876543", adminResultado.telefono);
+            Assert.AreNotEqual("123456", adminResultado.contrasenia); // Contraseña modificada
+        }
+
+        [Test]
+        public void ModificarAdministrador_DeberiaRetornarFalseSiNoExisteAdministrador()
+        {
+            // Arrange
+            var adminModificado = new AdministradorDTO
+            {
+                email = "noexiste@test.com", // Este administrador no existe
+                nombre = "Nuevo Nombre",
+                apellidos = "Nuevo Apellido",
+                direccion = "Nueva Direccion",
+                telefono = "5559876543",
+                contrasenia = "nuevacontrasenia"
+            };
+        }
+
+        [Test]
+        public void ModificarAdministrador_DeberiaRetornarFalseSiOcurreError()
+        {
+            // Arrange
+            var adminModificado = new AdministradorDTO
+            {
+                email = "adminexistente@test.com",
+                nombre = "Nuevo Nombre",
+                apellidos = "Nuevo Apellido",
+                direccion = "Nueva Direccion",
+                telefono = "5559876543",
+                contrasenia = "nuevacontrasenia"
+            };
+
+            // Simulamos que ocurre un error en la base de datos al modificar el administrador
+            // Se puede usar un mock para simular una excepción si lo estás haciendo con Mocking en vez de una base de datos real
+            var exceptionMessage = "Error al modificar el administrador";
+      
+
+            // Assert
+        }
+
+        [Test]
+        public void ObtenerAdministradorPorCorreoDeberiaRetornarAdministradorCorrecto()
+        {
+            var admin = new Administrador
+            {
+                nombreUsuario = "adminIntegration",
+                contrasenia = "admin123",
+                nombre = "Carlos",
+                apellidos = "López",
+                email = "adminintegration@test.com",
+                telefono = "1234567890",
+                direccion = "Calle Prueba 123",
+                salt = Utilidades.GenerarSalt()
+            };
+
+            usuarioDAO.CrearAdministrador(admin);
+
+            var resultado = usuarioDAO.ObtenerAdministradorPorCorreo("adminintegration@test.com");
+
+            Assert.IsNotNull(resultado);
+            Assert.AreEqual("Carlos", resultado.nombre);
+            Assert.AreEqual("adminintegration@test.com", resultado.email);
+        }
+
+        [Test]
+        public void ObtenerProfesorPorCorreoDeberiaRetornarProfesorCorrecto()
+        {
+            var profesor = new Profesor
+            {
+                nombreUsuario = "profeIntegration",
+                contrasenia = "profe123",
+                nombre = "Lucía",
+                apellidos = "Ramírez",
+                email = "profeintegration@test.com",
+                telefono = "9988776655",
+                direccion = "Avenida Docente 456",
+                salt = Utilidades.GenerarSalt()
+            };
+
+            usuarioDAO.CrearProfesor(profesor);
+
+            var resultado = usuarioDAO.ObtenerProfesorPorCorreo("profeintegration@test.com");
+
+            Assert.IsNotNull(resultado);
+            Assert.AreEqual("Lucía", resultado.nombre);
+            Assert.AreEqual("profeintegration@test.com", resultado.email);
+        }
+
+        [Test]
+        public void ObtenerAlumnoPorCorreo_DeberiaRetornarAlumnoCorrecto()
+        {
+            var alumno = new Alumno
+            {
+                nombre = "Marco",
+                apellidos = "González",
+                email = "alumnointegration@test.com",
+                telefono = "1122334455",
+                direccion = "Calle Estudiante 789"
+            };
+
+            usuarioDAO.CrearAlumno(alumno);
+
+            var resultado = usuarioDAO.ObtenerAlumnoPorCorreo("alumnointegration@test.com");
+
+            Assert.IsNotNull(resultado);
+            Assert.AreEqual("Marco", resultado.nombre);
+            Assert.AreEqual("alumnointegration@test.com", resultado.email);
+        }
 
     }
 }

@@ -450,5 +450,224 @@ namespace PruebasUnitarias
 
             Assert.IsNull(resultado);
         }
+
+        [Test]
+        public void ModificarAdministrador_AdministradorExistente_DevuelveTrue()
+        {
+            // Arrange
+            var administradorDTO = new AdministradorDTO
+            {
+                email = "admin@test.com",
+                nombre = "Nuevo Nombre",
+                apellidos = "Nuevo Apellido",
+                direccion = "Nueva Direccion",
+                telefono = "5559876543",
+                contrasenia = "nuevaContraseña"
+            };
+
+            var administradorExistente = new Administrador
+            {
+                email = "admin@test.com",
+                nombre = "Admin",
+                apellidos = "Test",
+                direccion = "Calle 123",
+                telefono = "5551234567",
+                contrasenia = "pass123",
+                salt = "salt"
+            };
+
+            mockDAO.Setup(dao => dao.ObtenerAdministradorPorCorreo("admin@test.com")).Returns(administradorExistente);
+            mockDAO.Setup(dao => dao.ModificarAdministrador(It.IsAny<Administrador>())).Verifiable();
+
+            // Act
+            var resultado = service.ModificarAdministrador(administradorDTO);
+
+            // Assert
+            Assert.That(resultado, Is.True);
+            Assert.That(administradorExistente.nombre, Is.EqualTo("Nuevo Nombre"));
+            Assert.That(administradorExistente.apellidos, Is.EqualTo("Nuevo Apellido"));
+            Assert.That(administradorExistente.direccion, Is.EqualTo("Nueva Direccion"));
+            Assert.That(administradorExistente.telefono, Is.EqualTo("5559876543"));
+            Assert.That(administradorExistente.contrasenia, Is.Not.EqualTo("pass123"));
+            mockDAO.Verify(dao => dao.ModificarAdministrador(It.IsAny<Administrador>()), Times.Once);
+        }
+
+        [Test]
+        public void ModificarAdministrador_AdministradorNoExistente_DevuelveFalse()
+        {
+            // Arrange
+            var administradorDTO = new AdministradorDTO
+            {
+                email = "noexiste@test.com",
+                nombre = "Nuevo Nombre",
+                apellidos = "Nuevo Apellido",
+                direccion = "Nueva Direccion",
+                telefono = "5559876543",
+                contrasenia = "nuevaContraseña"
+            };
+
+            mockDAO.Setup(dao => dao.ObtenerAdministradorPorCorreo("noexiste@test.com")).Returns((Administrador)null);
+
+            // Act
+            var resultado = service.ModificarAdministrador(administradorDTO);
+
+            // Assert
+            Assert.That(resultado, Is.False);
+        }
+
+        [Test]
+        public void ModificarAdministrador_ErrorAlModificar_DevuelveFalse()
+        {
+            // Arrange
+            var administradorDTO = new AdministradorDTO
+            {
+                email = "admin@test.com",
+                nombre = "Nuevo Nombre",
+                apellidos = "Nuevo Apellido",
+                direccion = "Nueva Direccion",
+                telefono = "5559876543",
+                contrasenia = "nuevaContraseña"
+            };
+
+            var administradorExistente = new Administrador
+            {
+                email = "admin@test.com",
+                nombre = "Admin",
+                apellidos = "Test",
+                direccion = "Calle 123",
+                telefono = "5551234567",
+                contrasenia = "pass123",
+                salt = "salt"
+            };
+
+            mockDAO.Setup(dao => dao.ObtenerAdministradorPorCorreo("admin@test.com")).Returns(administradorExistente);
+            mockDAO.Setup(dao => dao.ModificarAdministrador(It.IsAny<Administrador>())).Throws(new Exception("Error al modificar"));
+
+            // Act
+            var resultado = service.ModificarAdministrador(administradorDTO);
+
+            // Assert
+            Assert.That(resultado, Is.False);
+        }
+
+        [Test]
+        public void ObtenerAdministradorPorCorreo_ExisteCorreo_DevuelveDTO()
+        {
+            // Arrange
+            var admin = new Administrador
+            {
+                idAdministrador = 1,
+                nombreUsuario = "admin123",
+                nombre = "Carlos",
+                apellidos = "Pérez",
+                direccion = "Calle Falsa 123",
+                email = "admin@test.com",
+                telefono = "1234567890"
+            };
+
+            mockDAO.Setup(dao => dao.ObtenerAdministradorPorCorreo("admin@test.com")).Returns(admin);
+
+            // Act
+            var resultado = service.ObtenerAdministradorPorCorreo("admin@test.com");
+
+            // Assert
+            Assert.That(resultado, Is.Not.Null);
+            Assert.That(resultado.idAdministrador, Is.EqualTo(1));
+            Assert.That(resultado.nombre, Is.EqualTo("Carlos"));
+            Assert.That(resultado.email, Is.EqualTo("admin@test.com"));
+        }
+
+        [Test]
+        public void ObtenerAdministradorPorCorreo_NoExisteCorreo_DevuelveNull()
+        {
+            // Arrange
+            mockDAO.Setup(dao => dao.ObtenerAdministradorPorCorreo("admin@desconocido.com")).Returns((Administrador)null);
+
+            // Act
+            var resultado = service.ObtenerAdministradorPorCorreo("admin@desconocido.com");
+
+            // Assert
+            Assert.That(resultado, Is.Null);
+        }
+
+        [Test]
+        public void ObtenerProfesorPorCorreo_ExisteCorreo_DevuelveDTO()
+        {
+            // Arrange
+            var profesor = new Profesor
+            {
+                idProfesor = 2,
+                nombreUsuario = "profe321",
+                nombre = "Laura",
+                apellidos = "García",
+                direccion = "Av. Universidad 456",
+                email = "profesor@test.com",
+                telefono = "987654321"
+            };
+
+            mockDAO.Setup(dao => dao.ObtenerProfesorPorCorreo("profesor@test.com")).Returns(profesor);
+
+            // Act
+            var resultado = service.ObtenerProfesorPorCorreo("profesor@test.com");
+
+            // Assert
+            Assert.That(resultado, Is.Not.Null);
+            Assert.That(resultado.idProfesor, Is.EqualTo(2));
+            Assert.That(resultado.nombre, Is.EqualTo("Laura"));
+            Assert.That(resultado.email, Is.EqualTo("profesor@test.com"));
+        }
+
+        [Test]
+        public void ObtenerProfesorPorCorreo_NoExisteCorreo_DevuelveNull()
+        {
+            // Arrange
+            mockDAO.Setup(dao => dao.ObtenerProfesorPorCorreo("profesor@desconocido.com")).Returns((Profesor)null);
+
+            // Act
+            var resultado = service.ObtenerProfesorPorCorreo("profesor@desconocido.com");
+
+            // Assert
+            Assert.That(resultado, Is.Null);
+        }
+
+        [Test]
+        public void ObtenerAlumnoPorCorreo_ExisteCorreo_DevuelveDTO()
+        {
+            // Arrange
+            var alumno = new Alumno
+            {
+                idAlumno = 3,
+                nombre = "Ana",
+                apellidos = "Martínez",
+                direccion = "Colonia Centro",
+                email = "alumno@test.com",
+                telefono = "555666777"
+            };
+
+            mockDAO.Setup(dao => dao.ObtenerAlumnoPorCorreo("alumno@test.com")).Returns(alumno);
+
+            // Act
+            var resultado = service.ObtenerAlumnoPorCorreo("alumno@test.com");
+
+            // Assert
+            Assert.That(resultado, Is.Not.Null);
+            Assert.That(resultado.idAlumno, Is.EqualTo(3));
+            Assert.That(resultado.nombre, Is.EqualTo("Ana"));
+            Assert.That(resultado.email, Is.EqualTo("alumno@test.com"));
+        }
+
+        [Test]
+        public void ObtenerAlumnoPorCorreo_NoExisteCorreo_DevuelveNull()
+        {
+            // Arrange
+            mockDAO.Setup(dao => dao.ObtenerAlumnoPorCorreo("alumno@desconocido.com")).Returns((Alumno)null);
+
+            // Act
+            var resultado = service.ObtenerAlumnoPorCorreo("alumno@desconocido.com");
+
+            // Assert
+            Assert.That(resultado, Is.Null);
+        }
+
     }
 }

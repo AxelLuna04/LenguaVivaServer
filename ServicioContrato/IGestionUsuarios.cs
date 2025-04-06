@@ -34,6 +34,15 @@ namespace ServicioContrato
 
         [OperationContract]
         bool ModificarAdministrador(AdministradorDTO administradorDTO);
+
+        [OperationContract]
+        AdministradorDTO ObtenerAdministradorPorCorreo(string correo);
+
+        [OperationContract]
+        ProfesorDTO ObtenerProfesorPorCorreo(string correo);
+
+        [OperationContract]
+        AlumnoDTO ObtenerAlumnoPorCorreo(string correo);
     }
 
     [DataContract]
@@ -157,6 +166,8 @@ namespace ServicioContrato
     {
         [DataMember]
         public string nombre { get; set; }
+        [DataMember] 
+        public int nombreUsuario { get; set; }
 
         [DataMember]
         public string apellidos { get; set; }

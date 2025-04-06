@@ -458,6 +458,80 @@ namespace ServicioContrato
             }
         }
 
+        public AdministradorDTO ObtenerAdministradorPorCorreo(string correo)
+        {
+            try
+            {
+                var adminEntity = usuarioDAO.ObtenerAdministradorPorCorreo(correo);
+
+                if (adminEntity == null) return null;
+
+                return new AdministradorDTO
+                {
+                    idAdministrador = adminEntity.idAdministrador,
+                    nombreUsuario = adminEntity.nombreUsuario,
+                    nombre = adminEntity.nombre,
+                    apellidos = adminEntity.apellidos,
+                    direccion = adminEntity.direccion,
+                    email = adminEntity.email,
+                    telefono = adminEntity.telefono
+                };
+            }
+            catch (Exception ex)
+            {
+                throw new FaultException($"Error obteniendo administrador: {ex.Message}");
+            }
+        }
+
+        public ProfesorDTO ObtenerProfesorPorCorreo(string correo)
+        {
+            try
+            {
+                var profesorEntity = usuarioDAO.ObtenerProfesorPorCorreo(correo);
+
+                if (profesorEntity == null) return null;
+
+                return new ProfesorDTO
+                {
+                    idProfesor = profesorEntity.idProfesor,
+                    nombreUsuario = profesorEntity.nombreUsuario,
+                    nombre = profesorEntity.nombre,
+                    apellidos = profesorEntity.apellidos,
+                    direccion = profesorEntity.direccion,
+                    email = profesorEntity.email,
+                    telefono = profesorEntity.telefono
+                };
+            }
+            catch (Exception ex)
+            {
+                throw new FaultException($"Error obteniendo profesor: {ex.Message}");
+            }
+        }
+
+        public AlumnoDTO ObtenerAlumnoPorCorreo(string correo)
+        {
+            try
+            {
+                var alumnoEntity = usuarioDAO.ObtenerAlumnoPorCorreo(correo);
+
+                if (alumnoEntity == null) return null;
+
+                return new AlumnoDTO
+                {
+                    idAlumno = alumnoEntity.idAlumno,
+                    nombre = alumnoEntity.nombre,
+                    apellidos = alumnoEntity.apellidos,
+                    direccion = alumnoEntity.direccion,
+                    email = alumnoEntity.email,
+                    telefono = alumnoEntity.telefono
+                };
+            }
+            catch (Exception ex)
+            {
+                throw new FaultException($"Error obteniendo alumno: {ex.Message}");
+            }
+        }
+
 
         //Metodos IGestionUsuarios
 
@@ -508,6 +582,9 @@ namespace ServicioContrato
                 return null;
             }
         }
+
+
+
 
         // Metodos de IGestionCursos
 
