@@ -31,6 +31,9 @@ namespace ServicioContrato
 
         [OperationContract]
         UsuarioDTO EliminarUsuario(string correo, int tipoUsuario);
+
+        [OperationContract]
+        bool ModificarAdministrador(AdministradorDTO administradorDTO);
     }
 
     [DataContract]

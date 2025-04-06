@@ -162,5 +162,16 @@ namespace AccesoDatos.DAO
                 return contexto.Alumno.FirstOrDefault(a => a.idAlumno == idAlumno);
             }
         }
+
+        public void ModificarAdministrador(Administrador administradorExistente)
+        {
+            using (var contexto = new LenguaVivaDBEntities())
+            {
+                contexto.Entry(administradorExistente).State = EntityState.Modified;
+                contexto.SaveChanges();
+            }
+        }
+
+
     }
 }

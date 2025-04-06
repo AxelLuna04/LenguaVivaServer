@@ -21,6 +21,6 @@ namespace AccesoDatos.Interfaces
         void EliminarAdministrador(string correo);
         void EliminarProfesor(string correo);
         void EliminarAlumno(string correo);
-
+        void ModificarAdministrador(Administrador administradorExistente);
     }
 }

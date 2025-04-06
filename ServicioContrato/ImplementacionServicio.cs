@@ -424,6 +424,39 @@ namespace ServicioContrato
             }
         }
 
+        public bool ModificarAdministrador(AdministradorDTO administradorDTO)
+        {
+            try
+            {
+                var administradorExistente = usuarioDAO.ObtenerAdministradorPorCorreo(administradorDTO.email);
+
+                if (administradorExistente == null)
+                {
+                    Console.WriteLine("Administrador no encontrado.");
+                    return false;
+                }
+
+                administradorExistente.nombre = administradorDTO.nombre;
+                administradorExistente.apellidos = administradorDTO.apellidos;
+                administradorExistente.direccion = administradorDTO.direccion;
+                administradorExistente.telefono = administradorDTO.telefono;
+
+                if (!string.IsNullOrEmpty(administradorDTO.contrasenia))
+                {
+                    string salt = Utilidades.GenerarSalt();
+                    administradorExistente.contrasenia = Utilidades.HashearContrasena(administradorDTO.contrasenia, salt);
+                    administradorExistente.salt = salt;
+                }
+
+                usuarioDAO.ModificarAdministrador(administradorExistente);
+                return true; 
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al modificar el administrador: {ex.Message}");
+                return false; 
+            }
+        }
 
 
         //Metodos IGestionUsuarios
