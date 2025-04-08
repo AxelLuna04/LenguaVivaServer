@@ -46,6 +46,9 @@ namespace ServicioContrato
 
         [OperationContract]
         bool ModificarProfesor(ProfesorDTO profesorDTO);
+
+        [OperationContract]
+        bool ModificarAlumno(AlumnoDTO alumnoDTO, IdiomaNivelDTO[] idiomasNivel);
     }
 
     [DataContract]
@@ -125,6 +128,9 @@ namespace ServicioContrato
         public string email { get; set; }
         [DataMember]
         public string telefono { get; set; }
+        [DataMember]
+        public IdiomaNivelDTO[] idiomasNivel { get; set; }
+
 
     }
 

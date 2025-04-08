@@ -570,6 +570,31 @@ namespace ServicioContrato
             }
         }
 
+        public bool ModificarAlumno(AlumnoDTO alumnoDTO, IdiomaNivelDTO[] idiomasNivel)
+        {
+            try
+            {
+                var alumno = usuarioDAO.ObtenerAlumnoPorId(alumnoDTO.idAlumno);
+                if (alumno == null) return false;
+
+
+                var relaciones = idiomasNivel?.Select(dto => new Idioma_Alumno
+                {
+                    idAlumno = alumno.idAlumno,
+                    idIdioma = dto.idIdioma,
+                    nivel = dto.nivel
+                }).ToList();
+
+                usuarioDAO.ModificarAlumnoCompleto(alumno, relaciones); 
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al modificar alumno: {ex.Message}");
+                return false;
+            }
+        }
 
 
 

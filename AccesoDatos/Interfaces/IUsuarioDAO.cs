@@ -24,5 +24,8 @@ namespace AccesoDatos.Interfaces
         void ModificarAdministrador(Administrador administradorExistente);
         Profesor ObtenerProfesorPorId(int idProfesor);
         void ModificarProfesorCompleto(Profesor profesorEntity, List<int> idiomasSeleccionados);
+        void ModificarAlumnoCompleto(Alumno alumnoModificado, List<Idioma_Alumno> nuevosIdiomas);
+        Alumno ObtenerAlumnoPorId(int idAlumno);
+
     }
 }

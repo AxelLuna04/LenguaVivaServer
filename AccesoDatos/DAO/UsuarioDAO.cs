@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using AccesoDatos.Interfaces;
 
+
+
 namespace AccesoDatos.DAO
 {
     public class UsuarioDAO : IUsuarioDAO
@@ -216,6 +218,50 @@ namespace AccesoDatos.DAO
             using (var contexto = new LenguaVivaDBEntities())
             {
                 return contexto.Profesor.FirstOrDefault(p => p.idProfesor == id);
+            }
+        }
+
+        public void ModificarAlumnoCompleto(Alumno alumnoModificado, List<Idioma_Alumno> nuevosIdiomas)
+        {
+            using (var contexto = new LenguaVivaDBEntities())
+            {
+                contexto.Entry(alumnoModificado).State = EntityState.Modified;
+
+                var relacionesActuales = contexto.Idioma_Alumno
+                    .Where(ia => ia.idAlumno == alumnoModificado.idAlumno)
+                    .ToList();
+
+                foreach (var nuevo in nuevosIdiomas)
+                {
+                    var existente = relacionesActuales.FirstOrDefault(ra => ra.idIdioma == nuevo.idIdioma);
+                    if (existente != null)
+                    {
+                        existente.nivel = nuevo.nivel;
+                        contexto.Entry(existente).State = EntityState.Modified;
+                    }
+                    else
+                    {
+                        contexto.Idioma_Alumno.Add(nuevo);
+                    }
+                }
+
+                foreach (var actual in relacionesActuales)
+                {
+                    if (!nuevosIdiomas.Any(n => n.idIdioma == actual.idIdioma))
+                    {
+                        contexto.Idioma_Alumno.Remove(actual);
+                    }
+                }
+
+                contexto.SaveChanges();
+            }
+        }
+
+        public Alumno ObtenerAlumnoPorId(int idAlumno)
+        {
+            using (var contexto = new LenguaVivaDBEntities())
+            {
+                return contexto.Alumno.FirstOrDefault(a => a.idAlumno == idAlumno);
             }
         }
 
