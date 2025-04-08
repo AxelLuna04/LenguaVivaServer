@@ -46,6 +46,12 @@ namespace ServicioContrato
         [OperationContract]
         bool ModificarCurso(CursoDTO cursoDTO);
 
+        [OperationContract]
+        bool EliminarCurso(int idCurso);
+
+        [OperationContract]
+        bool TieneAlumnosInscritos(int idCurso);
+
     }
     [DataContract]
     public class CursoDTO

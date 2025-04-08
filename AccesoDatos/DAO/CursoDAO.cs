@@ -30,12 +30,14 @@ namespace AccesoDatos.DAO
             }
         }
 
-        public   void EliminarCurso(Curso curso)
+        public   void EliminarCurso(int idCurso)
         {
             using (var contexto = new LenguaVivaDBEntities())
             {
                 contexto.Database.Log = Console.WriteLine;
-                contexto.Curso.Remove(curso);
+                contexto.Curso
+                    .Remove(contexto.Curso.Find(idCurso));
+                
                 contexto.SaveChanges();
             }
         }
@@ -101,6 +103,23 @@ namespace AccesoDatos.DAO
                 return contexto.Curso
                     .Where(c => c.nivel == nivel)
                     .ToArray();
+            }
+        }
+
+        public bool TieneAlumnosInscritos(int idCurso)
+        {
+            using (var contexto = new LenguaVivaDBEntities())
+            {
+                contexto.Database.Log = Console.WriteLine;
+                if (contexto.Inscripcion
+                    .Any(ec => ec.idCurso == idCurso))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
         }
     }

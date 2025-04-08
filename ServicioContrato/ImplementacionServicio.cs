@@ -930,5 +930,52 @@ namespace ServicioContrato
             }
 
         }
+
+        public bool EliminarCurso(int idCurso)
+        {
+            try
+            {
+                cursoDAO.EliminarCurso(idCurso);
+                return true;
+            } catch (System.Data.Entity.Core.EntityException ex)
+            {
+                Console.WriteLine($"Error de Entity Framework: {ex.Message}");
+                return false;
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                Console.WriteLine($"Error de SQL Server: {ex.Message}");
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error inesperado: {ex.Message}");
+                return false;
+            }
+        }
+
+        public bool TieneAlumnosInscritos(int idCurso)
+        {
+            try
+            {
+                return cursoDAO.TieneAlumnosInscritos(idCurso);
+            }
+            catch (System.Data.Entity.Core.EntityException ex)
+            {
+                Console.WriteLine($"Error de Entity Framework: {ex.Message}");
+                return false;
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                Console.WriteLine($"Error de SQL Server: {ex.Message}");
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error inesperado: {ex.Message}");
+                return false;
+
+            }
+        }
     }
 }
