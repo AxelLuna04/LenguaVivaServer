@@ -102,7 +102,6 @@ namespace ServicioContrato
         public string telefono { get; set; }
 
         [DataMember]
-        public List<int> idiomasDominados { get; set; }
         public List<int> idiomasSeleccionados { get; set; }
 
     }

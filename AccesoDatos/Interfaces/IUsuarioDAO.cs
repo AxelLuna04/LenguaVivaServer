@@ -22,8 +22,7 @@ namespace AccesoDatos.Interfaces
         void EliminarProfesor(string correo);
         void EliminarAlumno(string correo);
         void ModificarAdministrador(Administrador administradorExistente);
-        void ModificarProfesor(Profesor profesorExistente);
-        void ActualizarIdiomasProfesor(int idProfesor, List<int> idiomasSeleccionados);
         Profesor ObtenerProfesorPorId(int idProfesor);
+        void ModificarProfesorCompleto(Profesor profesorEntity, List<int> idiomasSeleccionados);
     }
 }

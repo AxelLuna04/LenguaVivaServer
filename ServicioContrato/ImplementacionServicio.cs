@@ -500,7 +500,7 @@ namespace ServicioContrato
                     direccion = profesorEntity.direccion,
                     email = profesorEntity.email,
                     telefono = profesorEntity.telefono,
-                    idiomasDominados = profesorEntity.Idioma_Profesor.Select(ip => ip.idIdioma).ToList()
+                    idiomasSeleccionados = profesorEntity.Idioma_Profesor.Select(ip => ip.idIdioma).ToList()
 
                 };
             }
@@ -538,32 +538,27 @@ namespace ServicioContrato
         {
             try
             {
-                var profesorExistente = usuarioDAO.ObtenerProfesorPorId(profesorDTO.idProfesor);
-
-                if (profesorExistente == null)
+                var profesorEntity = usuarioDAO.ObtenerProfesorPorId(profesorDTO.idProfesor);
+                if (profesorEntity == null)
                 {
                     Console.WriteLine("Profesor no encontrado.");
                     return false;
                 }
 
-                profesorExistente.nombre = profesorDTO.nombre;
-                profesorExistente.apellidos = profesorDTO.apellidos;
-                profesorExistente.direccion = profesorDTO.direccion;
-                profesorExistente.telefono = profesorDTO.telefono;
+                profesorEntity.nombre = profesorDTO.nombre;
+                profesorEntity.apellidos = profesorDTO.apellidos;
+                profesorEntity.direccion = profesorDTO.direccion;
+                profesorEntity.telefono = profesorDTO.telefono;
 
                 if (!string.IsNullOrEmpty(profesorDTO.contrasenia))
                 {
                     string salt = Utilidades.GenerarSalt();
-                    profesorExistente.contrasenia = Utilidades.HashearContrasena(profesorDTO.contrasenia, salt);
-                    profesorExistente.salt = salt;
+                    profesorEntity.contrasenia = Utilidades.HashearContrasena(profesorDTO.contrasenia, salt);
+                    profesorEntity.salt = salt;
                 }
 
-                Console.WriteLine("Llamando a ModificarProfesor...");
-                usuarioDAO.ModificarProfesor(profesorExistente);
-
-                Console.WriteLine($"IDs recibidos para actualizar: {string.Join(",", profesorDTO.idiomasSeleccionados)}");  
-                Console.WriteLine("Llamando a ActualizarIdiomasProfesor...");
-                usuarioDAO.ActualizarIdiomasProfesor(profesorExistente.idProfesor, profesorDTO.idiomasSeleccionados);
+                Console.WriteLine("Llamando a ModificarProfesorCompleto...");
+                usuarioDAO.ModificarProfesorCompleto(profesorEntity, profesorDTO.idiomasSeleccionados);
 
                 Console.WriteLine("Modificación completada.");
                 return true;
@@ -574,6 +569,7 @@ namespace ServicioContrato
                 return false;
             }
         }
+
 
 
 

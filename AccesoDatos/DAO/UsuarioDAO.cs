@@ -172,47 +172,41 @@ namespace AccesoDatos.DAO
             }
         }
 
-        public void ModificarProfesor(Profesor profesorExistente)
+        public void ModificarProfesorCompleto(Profesor profesorModificado, List<int> idiomasSeleccionados)
         {
             using (var contexto = new LenguaVivaDBEntities())
             {
-                contexto.Entry(profesorExistente).State = EntityState.Modified;
-                contexto.SaveChanges();
-            }
-        }
+                contexto.Entry(profesorModificado).State = EntityState.Modified;
 
-        public void ActualizarIdiomasProfesor(int idProfesor, List<int> nuevosIdiomasIds)
-        {
-            using (var contexto = new LenguaVivaDBEntities())
-            {
+                
                 var relacionesActuales = contexto.Idioma_Profesor
-                    .Where(ip => ip.idProfesor == idProfesor)
+                    .Where(ip => ip.idProfesor == profesorModificado.idProfesor)
                     .ToList();
 
                 var idsActuales = relacionesActuales.Select(ip => ip.idIdioma).ToList();
-
-                var idsNuevosValidos = nuevosIdiomasIds?
-                    .Where(id => contexto.Idioma.Any(i => i.idIdioma == id))
-                    .ToList() ?? new List<int>();
+                var idsNuevos = idiomasSeleccionados ?? new List<int>();
 
                 var aEliminar = relacionesActuales
-                    .Where(ip => !idsNuevosValidos.Contains(ip.idIdioma))
+                    .Where(ip => !idsNuevos.Contains(ip.idIdioma))
                     .ToList();
 
-                contexto.Idioma_Profesor.RemoveRange(aEliminar);
+                var aAgregar = idsNuevos
+                    .Where(id => !idsActuales.Contains(id))
+                    .ToList();
 
-                foreach (var idIdioma in idsNuevosValidos)
+                if (aEliminar.Any())
+                    contexto.Idioma_Profesor.RemoveRange(aEliminar);
+
+                foreach (var idIdioma in aAgregar)
                 {
-                    if (!idsActuales.Contains(idIdioma))
+                    contexto.Idioma_Profesor.Add(new Idioma_Profesor
                     {
-                        contexto.Idioma_Profesor.Add(new Idioma_Profesor
-                        {
-                            idProfesor = idProfesor,
-                            idIdioma = idIdioma
-                        });
-                    }
+                        idProfesor = profesorModificado.idProfesor,
+                        idIdioma = idIdioma
+                    });
                 }
 
+                // 5) Guardar TODO junto
                 contexto.SaveChanges();
             }
         }
