@@ -43,6 +43,9 @@ namespace ServicioContrato
 
         [OperationContract]
         AlumnoDTO ObtenerAlumnoPorCorreo(string correo);
+
+        [OperationContract]
+        bool ModificarProfesor(ProfesorDTO profesorDTO);
     }
 
     [DataContract]
@@ -97,6 +100,11 @@ namespace ServicioContrato
         public string email { get; set; }
         [DataMember]
         public string telefono { get; set; }
+
+        [DataMember]
+        public List<int> idiomasDominados { get; set; }
+        public List<int> idiomasSeleccionados { get; set; }
+
     }
 
     [DataContract]

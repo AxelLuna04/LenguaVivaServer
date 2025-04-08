@@ -499,7 +499,9 @@ namespace ServicioContrato
                     apellidos = profesorEntity.apellidos,
                     direccion = profesorEntity.direccion,
                     email = profesorEntity.email,
-                    telefono = profesorEntity.telefono
+                    telefono = profesorEntity.telefono,
+                    idiomasDominados = profesorEntity.Idioma_Profesor.Select(ip => ip.idIdioma).ToList()
+
                 };
             }
             catch (Exception ex)
@@ -531,6 +533,48 @@ namespace ServicioContrato
                 throw new FaultException($"Error obteniendo alumno: {ex.Message}");
             }
         }
+
+        public bool ModificarProfesor(ProfesorDTO profesorDTO)
+        {
+            try
+            {
+                var profesorExistente = usuarioDAO.ObtenerProfesorPorId(profesorDTO.idProfesor);
+
+                if (profesorExistente == null)
+                {
+                    Console.WriteLine("Profesor no encontrado.");
+                    return false;
+                }
+
+                profesorExistente.nombre = profesorDTO.nombre;
+                profesorExistente.apellidos = profesorDTO.apellidos;
+                profesorExistente.direccion = profesorDTO.direccion;
+                profesorExistente.telefono = profesorDTO.telefono;
+
+                if (!string.IsNullOrEmpty(profesorDTO.contrasenia))
+                {
+                    string salt = Utilidades.GenerarSalt();
+                    profesorExistente.contrasenia = Utilidades.HashearContrasena(profesorDTO.contrasenia, salt);
+                    profesorExistente.salt = salt;
+                }
+
+                Console.WriteLine("Llamando a ModificarProfesor...");
+                usuarioDAO.ModificarProfesor(profesorExistente);
+
+                Console.WriteLine($"IDs recibidos para actualizar: {string.Join(",", profesorDTO.idiomasSeleccionados)}");  
+                Console.WriteLine("Llamando a ActualizarIdiomasProfesor...");
+                usuarioDAO.ActualizarIdiomasProfesor(profesorExistente.idProfesor, profesorDTO.idiomasSeleccionados);
+
+                Console.WriteLine("Modificación completada.");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al modificar el profesor: {ex.Message}");
+                return false;
+            }
+        }
+
 
 
         //Metodos IGestionUsuarios

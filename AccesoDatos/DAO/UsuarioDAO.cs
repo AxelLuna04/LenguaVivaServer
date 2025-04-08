@@ -95,7 +95,7 @@ namespace AccesoDatos.DAO
         {
             using (var contexto = new LenguaVivaDBEntities())
             {
-                var profesor = contexto.Profesor.FirstOrDefault(p => p.email == correo);
+                var profesor = contexto.Profesor.Include(p => p.Idioma_Profesor).FirstOrDefault(p => p.email == correo);
                 return profesor;
             }
         }
@@ -172,6 +172,59 @@ namespace AccesoDatos.DAO
             }
         }
 
-            
+        public void ModificarProfesor(Profesor profesorExistente)
+        {
+            using (var contexto = new LenguaVivaDBEntities())
+            {
+                contexto.Entry(profesorExistente).State = EntityState.Modified;
+                contexto.SaveChanges();
+            }
+        }
+
+        public void ActualizarIdiomasProfesor(int idProfesor, List<int> nuevosIdiomasIds)
+        {
+            using (var contexto = new LenguaVivaDBEntities())
+            {
+                var relacionesActuales = contexto.Idioma_Profesor
+                    .Where(ip => ip.idProfesor == idProfesor)
+                    .ToList();
+
+                var idsActuales = relacionesActuales.Select(ip => ip.idIdioma).ToList();
+
+                var idsNuevosValidos = nuevosIdiomasIds?
+                    .Where(id => contexto.Idioma.Any(i => i.idIdioma == id))
+                    .ToList() ?? new List<int>();
+
+                var aEliminar = relacionesActuales
+                    .Where(ip => !idsNuevosValidos.Contains(ip.idIdioma))
+                    .ToList();
+
+                contexto.Idioma_Profesor.RemoveRange(aEliminar);
+
+                foreach (var idIdioma in idsNuevosValidos)
+                {
+                    if (!idsActuales.Contains(idIdioma))
+                    {
+                        contexto.Idioma_Profesor.Add(new Idioma_Profesor
+                        {
+                            idProfesor = idProfesor,
+                            idIdioma = idIdioma
+                        });
+                    }
+                }
+
+                contexto.SaveChanges();
+            }
+        }
+
+        public Profesor ObtenerProfesorPorId(int id)
+        {
+            using (var contexto = new LenguaVivaDBEntities())
+            {
+                return contexto.Profesor.FirstOrDefault(p => p.idProfesor == id);
+            }
+        }
+
+
     }
 }
