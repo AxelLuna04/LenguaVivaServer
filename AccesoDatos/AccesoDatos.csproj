@@ -64,6 +64,7 @@
       <DependentUpon>ModeloDB.tt</DependentUpon>
     </Compile>
     <Compile Include="DAO\CursoDAO.cs" />
+    <Compile Include="DAO\HorarioDAO.cs" />
     <Compile Include="DAO\IdiomaDAO.cs" />
     <Compile Include="DAO\InscripcionDAO.cs" />
     <Compile Include="DAO\ProfesorDAO.cs" />
@@ -85,6 +86,7 @@
       <DependentUpon>ModeloDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\ICursoDAO.cs" />
+    <Compile Include="Interfaces\IHorarioDAO.cs" />
     <Compile Include="Interfaces\IIdiomaDAO.cs" />
     <Compile Include="Interfaces\IInscripcionDAO.cs" />
     <Compile Include="Interfaces\IProfesorDAO.cs" />

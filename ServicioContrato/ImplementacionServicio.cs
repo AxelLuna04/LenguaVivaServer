@@ -20,6 +20,7 @@ namespace ServicioContrato
         private readonly IUsuarioDAO usuarioDAO;
         private readonly IProfesorDAO profesorDAO;
         private readonly IInscripcionDAO inscripcionDAO;
+        private readonly IHorarioDAO horarioDAO;
 
         //Constructor por defecto para la implementacion real
         public ImplementacionServicio()
@@ -29,16 +30,18 @@ namespace ServicioContrato
             usuarioDAO = new UsuarioDAO();
             profesorDAO = new ProfesorDAO();
             inscripcionDAO = new InscripcionDAO();
+            horarioDAO = new HorarioDAO();
         }
 
         //Constructor para mockear las pruebas
-        public ImplementacionServicio(IIdiomaDAO idiomaDAO, ICursoDAO cursoDAO, IUsuarioDAO usuarioDAO, IProfesorDAO profesorDAO, IInscripcionDAO inscripcionDAO)
+        public ImplementacionServicio(IIdiomaDAO idiomaDAO, ICursoDAO cursoDAO, IUsuarioDAO usuarioDAO, IProfesorDAO profesorDAO, IInscripcionDAO inscripcionDAO, IHorarioDAO horarioDAO)
         {
             this.idiomaDAO = idiomaDAO;
             this.cursoDAO = cursoDAO;
             this.usuarioDAO = usuarioDAO;
             this.profesorDAO = profesorDAO;
             this.inscripcionDAO = inscripcionDAO;
+            this.horarioDAO = horarioDAO;
         }
 
         public SesionUsuario IniciarSesion(string correo, string contrasenia)
@@ -1082,13 +1085,93 @@ namespace ServicioContrato
 
         public bool InscripcionExistente(int idCurso, int idAlumno)
         {
-            if (inscripcionDAO.InscripcionExistente(idCurso, idAlumno))
+            try
             {
-                return true;
+                if (inscripcionDAO.InscripcionExistente(idCurso, idAlumno))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
-            else
+            catch (System.Data.Entity.Core.EntityException ex)
             {
+                Console.WriteLine($"Error de Entity Framework: {ex.Message}");
                 return false;
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                Console.WriteLine($"Error de SQL Server: {ex.Message}");
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error inesperado: {ex.Message}");
+                return false;
+            }
+        }
+
+        public bool AsignarHorario(HorarioDTO horario)
+        {
+            try
+            {
+                Horario h = new Horario
+                {
+                    idCurso = horario.idCurso,
+                    dia = horario.diaSemana,
+                    horaInicio = horario.horaInicio,
+                    horaSalida = horario.horaTermino,
+                };
+
+                return horarioDAO.RegistrarHorario(h);
+            }
+            catch (System.Data.Entity.Core.EntityException ex)
+            {
+                Console.WriteLine($"Error de Entity Framework: {ex.Message}");
+                return false;
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                Console.WriteLine($"Error de SQL Server: {ex.Message}");
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error inesperado: {ex.Message}");
+                return false;
+            }
+        }
+
+        public HorarioDTO[] ObtenerHorariosPorCurso(int idCurso)
+        {
+            try
+            {
+                Horario[] horarios = horarioDAO.RecuperarHorarios(idCurso);
+                var horariosDTO = horarios.Select(h => new HorarioDTO
+                {
+                    idCurso = h.idCurso,
+                    diaSemana = h.dia,
+                    horaInicio = (TimeSpan)h.horaInicio,
+                    horaTermino = (TimeSpan)h.horaSalida
+                }).ToArray();
+                return horariosDTO;
+            }
+            catch (System.Data.Entity.Core.EntityException ex)
+            {
+                Console.WriteLine($"Error de Entity Framework: {ex.Message}");
+                return null;
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                Console.WriteLine($"Error de SQL Server: {ex.Message}");
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error inesperado: {ex.Message}");
+                return null;
             }
         }
     }
