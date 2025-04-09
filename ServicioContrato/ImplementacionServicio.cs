@@ -514,19 +514,33 @@ namespace ServicioContrato
         {
             try
             {
-                var alumnoEntity = usuarioDAO.ObtenerAlumnoPorCorreo(correo);
-
-                if (alumnoEntity == null) return null;
-
-                return new AlumnoDTO
+                using (var contexto = new LenguaVivaDBEntities())
                 {
-                    idAlumno = alumnoEntity.idAlumno,
-                    nombre = alumnoEntity.nombre,
-                    apellidos = alumnoEntity.apellidos,
-                    direccion = alumnoEntity.direccion,
-                    email = alumnoEntity.email,
-                    telefono = alumnoEntity.telefono
-                };
+                    var alumnoEntity = contexto.Alumno
+                        .Include("Idioma_Alumno.Idioma") 
+                        .FirstOrDefault(a => a.email == correo);
+
+                    if (alumnoEntity == null) return null;
+
+                    var alumnoDTO = new AlumnoDTO
+                    {
+                        idAlumno = alumnoEntity.idAlumno,
+                        nombre = alumnoEntity.nombre,
+                        apellidos = alumnoEntity.apellidos,
+                        direccion = alumnoEntity.direccion,
+                        email = alumnoEntity.email,
+                        telefono = alumnoEntity.telefono,
+                        idiomasNivel = alumnoEntity.Idioma_Alumno
+                            .Select(ia => new IdiomaNivelDTO
+                            {
+                                idIdioma = ia.idIdioma,
+                                nivel = ia.nivel,
+                                idiomaNombre = ia.Idioma.nombreIdioma 
+                            }).ToArray()
+                    };
+
+                    return alumnoDTO;
+                }
             }
             catch (Exception ex)
             {
@@ -575,8 +589,7 @@ namespace ServicioContrato
             try
             {
                 var alumno = usuarioDAO.ObtenerAlumnoPorId(alumnoDTO.idAlumno);
-                if (alumno == null) return false;
-
+                if (alumno == null) return false;  
 
                 var relaciones = idiomasNivel?.Select(dto => new Idioma_Alumno
                 {
@@ -585,7 +598,7 @@ namespace ServicioContrato
                     nivel = dto.nivel
                 }).ToList();
 
-                usuarioDAO.ModificarAlumnoCompleto(alumno, relaciones); 
+                usuarioDAO.ModificarAlumnoCompleto(alumno, relaciones);
 
                 return true;
             }
@@ -595,6 +608,8 @@ namespace ServicioContrato
                 return false;
             }
         }
+
+
 
 
 
