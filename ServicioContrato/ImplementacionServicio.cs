@@ -1449,11 +1449,11 @@ namespace ServicioContrato
 
         }
 
-        public CursoAlumno[] ObtenerCursosDeAlumno(int idAlumno)
+        public CursoAlumno[] ObtenerCursosDeAlumno(string correo)
         {
             InscripcionDAO inscripcionDAO = new InscripcionDAO();
             ProfesorDAO profesorDAO = new ProfesorDAO();
-            Curso[] cursos = inscripcionDAO.ObtenerCursosPorAlumno(idAlumno);
+            Curso[] cursos = inscripcionDAO.ObtenerCursosPorAlumno(correo);
             var cursosAlumno = new List<CursoAlumno>();
 
             foreach(var curso in cursos)
@@ -1475,10 +1475,17 @@ namespace ServicioContrato
             return cursosAlumno.ToArray();
         }
 
-        public int ObtenerIDInscripcionPorAlumnoYCurso(int idAlumno, int idCurso)
+        public int ObtenerIDInscripcionPorAlumnoYCurso(string correo, int idCurso)
         {
             InscripcionDAO inscripcionDAO = new InscripcionDAO();
-            var idInscripcion = inscripcionDAO.ObtenerInscripcionPorCursoYAlumno(idAlumno, idCurso).idInscripcion;
+            var idInscripcion = inscripcionDAO.ObtenerInscripcionPorCursoYAlumno(correo, idCurso).idInscripcion;
+            return idInscripcion;
+        }
+
+        public int ObtenerIDInscripcionPorIDAlumnoYCurso(int idAlumno, int idCurso)
+        {
+            InscripcionDAO inscripcionDAO = new InscripcionDAO();
+            var idInscripcion = inscripcionDAO.ObtenerInscripcionPorCursoYIDAlumno(idAlumno, idCurso).idInscripcion;
             return idInscripcion;
         }
 
@@ -1500,8 +1507,8 @@ namespace ServicioContrato
                 {
                     nombreCurso = curso.nombreCurso,
                     dia = horarioCurso.dia,
-                    horaInicio = horarioCurso.horaInicio.GetValueOrDefault().ToString("HH:mm"),
-                    horaSalida = horarioCurso.horaSalida.GetValueOrDefault().ToString("HH:mm"),
+                    horaInicio = horarioCurso.horaInicio.GetValueOrDefault(),
+                    horaSalida = horarioCurso.horaSalida.GetValueOrDefault(),
                 };
                 horariosCursos.Add(cursoHorario);
             }

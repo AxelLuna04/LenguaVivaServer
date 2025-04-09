@@ -62,14 +62,14 @@ namespace AccesoDatos.DAO
             }
         }
 
-        public Curso[] ObtenerCursosPorAlumno(int idAlumno)
+        public Curso[] ObtenerCursosPorAlumno(string correo)
         {
             using (var contexto = new LenguaVivaDBEntities())
             {
                 contexto.Database.Log = Console.WriteLine;
 
                 var cursos = contexto.Inscripcion
-                    .Where(i => i.idAlumno == idAlumno)
+                    .Where(i => i.Alumno.email == correo)
                     .Select(i => i.Curso)
                     .ToArray();
 
@@ -77,7 +77,18 @@ namespace AccesoDatos.DAO
             }
         }
 
-        public Inscripcion ObtenerInscripcionPorCursoYAlumno(int idAlumno, int idCurso)
+        public Inscripcion ObtenerInscripcionPorCursoYAlumno(string correo, int idCurso)
+        {
+            using (var contexto = new LenguaVivaDBEntities())
+            {
+                contexto.Database.Log = Console.WriteLine;
+
+                var inscripcion = contexto.Inscripcion.FirstOrDefault(i => i.Alumno.email == correo && i.idCurso == idCurso);
+                return inscripcion;
+            }
+        }
+
+        public Inscripcion ObtenerInscripcionPorCursoYIDAlumno(int idAlumno, int idCurso)
         {
             using (var contexto = new LenguaVivaDBEntities())
             {

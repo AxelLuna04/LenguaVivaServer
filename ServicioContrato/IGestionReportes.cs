@@ -22,11 +22,11 @@ namespace ServicioContrato
         public string nombreCurso { get; set; }
 
         [DataMember]
-        public string horaInicio { get; set; }
+        public TimeSpan horaInicio { get; set; }
 
         [DataMember]
 
-        public string horaSalida { get; set; }
+        public TimeSpan horaSalida { get; set; }
 
         [DataMember]
         public string dia {  get; set; }
