@@ -24,7 +24,7 @@ namespace PruebasUnitarias
         {
             mockDAO = new Mock<IUsuarioDAO>();
             mockIdiomaDAO = new Mock<IIdiomaDAO>();
-            service = new ImplementacionServicio(mockIdiomaDAO.Object, null, mockDAO.Object, null);
+            service = new ImplementacionServicio(mockIdiomaDAO.Object, null, mockDAO.Object, null, null, null);
         }
 
         [Test]

@@ -19,6 +19,7 @@ namespace AccesoDatos.Interfaces
         Curso[] ObtenerCursosPorNombreProfesor(String nombreProfesor);
         Curso[] ObtenerCursosPorNivel(int nivel);
         bool TieneAlumnosInscritos(int idCurso);
+        bool SubirListaAlumnos(int idCurso, byte[] archivo);
 
     }
 }

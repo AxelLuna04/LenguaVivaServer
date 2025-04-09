@@ -58,6 +58,9 @@ namespace ServicioContrato
         [OperationContract]
         HorarioDTO[] ObtenerHorariosPorCurso(int idCurso);
 
+        [OperationContract]
+        bool SubirListaAlumnos(int idCurso, byte[] archivo);
+
     }
     [DataContract]
     public class HorarioDTO

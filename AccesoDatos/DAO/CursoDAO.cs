@@ -112,5 +112,24 @@ namespace AccesoDatos.DAO
                 }
             }
         }
+
+        public bool SubirListaAlumnos(int idCurso, byte[] archivo)
+        {
+            using (var contexto = new LenguaVivaDBEntities())
+            {
+                var curso = contexto.Curso.Find(idCurso);
+                if (curso == null)
+                {
+                    return false;
+                }
+                else
+                {
+                    curso.listaAsistencia = archivo;
+                    contexto.SaveChanges();
+                    return true;
+                }
+                
+            }
+        }
     }
 }
