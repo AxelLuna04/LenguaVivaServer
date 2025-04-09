@@ -13,8 +13,7 @@ namespace AccesoDatos.DAO
         public void CrearProfesor(Profesor profesor)
         {
             using (var contexto = new LenguaVivaDBEntities())
-            {
-                contexto.Database.Log = Console.WriteLine;
+            { 
                 contexto.Profesor.Add(profesor);
                 contexto.SaveChanges();
             }
@@ -23,8 +22,7 @@ namespace AccesoDatos.DAO
         public void ModificarProfesor(Profesor profesor)
         {
             using (var contexto = new LenguaVivaDBEntities())
-            {
-                contexto.Database.Log = Console.WriteLine;
+            { 
                 contexto.Entry(profesor).State = EntityState.Modified;
                 contexto.SaveChanges();
             }
@@ -33,8 +31,7 @@ namespace AccesoDatos.DAO
         public void EliminarProfesor(Profesor profesor)
         {
             using (var contexto = new LenguaVivaDBEntities())
-            {
-                contexto.Database.Log = Console.WriteLine;
+            { 
                 contexto.Profesor.Remove(profesor);
                 contexto.SaveChanges();
             }
@@ -43,8 +40,7 @@ namespace AccesoDatos.DAO
         public Profesor[] ObtenerProfesores()
         {
             using (var contexto = new LenguaVivaDBEntities())
-            {
-                contexto.Database.Log = Console.WriteLine;
+            { 
                 return contexto.Profesor.ToArray();
             }
 
@@ -53,8 +49,7 @@ namespace AccesoDatos.DAO
         public Profesor ObtenerProfesorPorId(int id)
         {
             using (var contexto = new LenguaVivaDBEntities())
-            {
-                contexto.Database.Log = Console.WriteLine;
+            { 
                 return contexto.Profesor.Find(id);
             }
         }
@@ -62,8 +57,7 @@ namespace AccesoDatos.DAO
         public Profesor ObtenerProfesorPorUsuario(String usuario)
         {
             using (var contexto = new LenguaVivaDBEntities())
-            {
-                contexto.Database.Log = Console.WriteLine;
+            { 
                 return contexto.Profesor.FirstOrDefault(p => p.nombreUsuario == usuario);
             }
         }
@@ -71,8 +65,7 @@ namespace AccesoDatos.DAO
         public Profesor[] ObtenerProfesoresPorNombre(string nombre)
         {
             using (var contexto = new LenguaVivaDBEntities())
-            {
-                contexto.Database.Log = Console.WriteLine;
+            { 
                 return contexto.Profesor
                     .Where(p => p.nombre.Contains(nombre) ||
                     p.apellidos.Contains(nombre))

@@ -13,12 +13,13 @@ using AccesoDatos.Interfaces;
 namespace ServicioContrato
 {
     [ServiceBehavior]
-    public class ImplementacionServicio : IGestionUsuarios, IGestionCursos
-    { 
+    public class ImplementacionServicio : IGestionUsuarios, IGestionCursos, IGestionAlumnos
+    {
         private readonly IIdiomaDAO idiomaDAO;
         private readonly ICursoDAO cursoDAO;
         private readonly IUsuarioDAO usuarioDAO;
         private readonly IProfesorDAO profesorDAO;
+        private readonly IInscripcionDAO inscripcionDAO;
 
         //Constructor por defecto para la implementacion real
         public ImplementacionServicio()
@@ -27,15 +28,17 @@ namespace ServicioContrato
             cursoDAO = new CursoDAO();
             usuarioDAO = new UsuarioDAO();
             profesorDAO = new ProfesorDAO();
+            inscripcionDAO = new InscripcionDAO();
         }
 
         //Constructor para mockear las pruebas
-        public ImplementacionServicio(IIdiomaDAO idiomaDAO, ICursoDAO cursoDAO, IUsuarioDAO usuarioDAO, IProfesorDAO profesorDAO)
+        public ImplementacionServicio(IIdiomaDAO idiomaDAO, ICursoDAO cursoDAO, IUsuarioDAO usuarioDAO, IProfesorDAO profesorDAO, IInscripcionDAO inscripcionDAO)
         {
             this.idiomaDAO = idiomaDAO;
             this.cursoDAO = cursoDAO;
             this.usuarioDAO = usuarioDAO;
             this.profesorDAO = profesorDAO;
+            this.inscripcionDAO = inscripcionDAO;
         }
 
         public SesionUsuario IniciarSesion(string correo, string contrasenia)
@@ -199,7 +202,7 @@ namespace ServicioContrato
                     {
                         idAlumno = alumno.idAlumno,
                         idIdioma = idiomaNivel.idIdioma,
-                        nivel = idiomaNivel.nivel 
+                        nivel = idiomaNivel.nivel
                     };
                     usuarioDAO.CrearRelacionIdiomaAlumno(relacion);
                 }
@@ -272,7 +275,7 @@ namespace ServicioContrato
                                 correo = a.email,
                                 telefono = a.telefono,
                                 nivelIdioma = null,
-                                tipoUsuario = 1  
+                                tipoUsuario = 1
                             }).ToList();
 
                         resultados.AddRange(administradores);
@@ -291,7 +294,7 @@ namespace ServicioContrato
                                 correo = p.email,
                                 telefono = p.telefono,
                                 nivelIdioma = null,
-                                tipoUsuario = 2  
+                                tipoUsuario = 2
                             }).ToList();
 
                         resultados.AddRange(profesores);
@@ -318,7 +321,7 @@ namespace ServicioContrato
                                     .Where(ia => ia.idAlumno == al.idAlumno)
                                     .Select(ia => ia.nivel.ToString())
                                     .FirstOrDefault()),
-                                tipoUsuario = 3  
+                                tipoUsuario = 3
                             }).ToList();
 
                         resultados.AddRange(alumnos);
@@ -937,7 +940,8 @@ namespace ServicioContrato
             {
                 cursoDAO.EliminarCurso(idCurso);
                 return true;
-            } catch (System.Data.Entity.Core.EntityException ex)
+            }
+            catch (System.Data.Entity.Core.EntityException ex)
             {
                 Console.WriteLine($"Error de Entity Framework: {ex.Message}");
                 return false;
@@ -975,6 +979,116 @@ namespace ServicioContrato
                 Console.WriteLine($"Error inesperado: {ex.Message}");
                 return false;
 
+            }
+        }
+
+
+        //Métodos de IGestionAlumnos
+
+        public bool RegistrarInscripcion(InscripcionDTO inscripcionDTO)
+        {
+            try
+            {
+                Inscripcion inscripcion = new Inscripcion
+                {
+                    idCurso = inscripcionDTO.idCurso,
+                    idAlumno = inscripcionDTO.idAlumno,
+                    fechaInscripcion = inscripcionDTO.fechaInscripcion
+                };
+                inscripcionDAO.RegistrarInscripcion(inscripcion);
+                return true;
+
+            }
+            catch (System.Data.Entity.Core.EntityException ex)
+            {
+                Console.WriteLine($"Error de Entity Framework: {ex.Message}");
+                return false;
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                Console.WriteLine($"Error de SQL Server: {ex.Message}");
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error inesperado: {ex.Message}");
+                return false;
+            }
+        }
+
+        public AlumnoDTO[] BuscarAlumnos(string nombre)
+        {
+            try
+            {
+                Alumno[] alumnos = usuarioDAO.ObtenerAlumnosPorNombre(nombre);
+                if (alumnos != null)
+                {
+                    var alumnosDTO = alumnos.Select(a => new AlumnoDTO
+                    {
+                        idAlumno = a.idAlumno,
+                        nombre = a.nombre,
+                        apellidos = a.apellidos,
+                        direccion = a.direccion,
+                        email = a.email,
+                        telefono = a.telefono
+                    }).ToArray();
+                    return alumnosDTO;
+                }
+                else
+                {
+                    Console.WriteLine("No se encontraron alumnos");
+                    return null;
+                }
+            }
+            catch (System.Data.Entity.Core.EntityException ex)
+            {
+                Console.WriteLine($"Error de Entity Framework: {ex.Message}");
+                return null;
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                Console.WriteLine($"Error de SQL Server: {ex.Message}");
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error inesperado: {ex.Message}");
+                return null;
+            }
+        }
+
+        public int ObtenerNumInscripciones(int idCurso)
+        {
+            try
+            {
+                return inscripcionDAO.ObtenerNumInscripciones(idCurso);
+            }
+            catch (System.Data.Entity.Core.EntityException ex)
+            {
+                Console.WriteLine($"Error de Entity Framework: {ex.Message}");
+                return -1;
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                Console.WriteLine($"Error de SQL Server: {ex.Message}");
+                return -1;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error inesperado: {ex.Message}");
+                return -1;
+            }
+        }
+
+        public bool InscripcionExistente(int idCurso, int idAlumno)
+        {
+            if (inscripcionDAO.InscripcionExistente(idCurso, idAlumno))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
     }
