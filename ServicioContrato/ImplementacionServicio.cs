@@ -15,7 +15,7 @@ using System.Data.Entity.Infrastructure;
 namespace ServicioContrato
 {
     [ServiceBehavior]
-    public class ImplementacionServicio : IGestionUsuarios, IGestionCursos, IGestionAlumnos
+    public class ImplementacionServicio : IGestionUsuarios, IGestionCursos, IGestionAlumnos, IGestionReportes
     { 
         private readonly IIdiomaDAO idiomaDAO;
         private readonly ICursoDAO cursoDAO;
@@ -1201,6 +1201,68 @@ namespace ServicioContrato
                 Console.WriteLine($"Error al registrar el pago: {ex.Message}");
                 return false;
             }
+
+        }
+
+        public CursoAlumno[] ObtenerCursosDeAlumno(int idAlumno)
+        {
+            InscripcionDAO inscripcionDAO = new InscripcionDAO();
+            ProfesorDAO profesorDAO = new ProfesorDAO();
+            Curso[] cursos = inscripcionDAO.ObtenerCursosPorAlumno(idAlumno);
+            var cursosAlumno = new List<CursoAlumno>();
+
+            foreach(var curso in cursos)
+            {
+                string apellidos = profesorDAO.ObtenerProfesorPorId(curso.idProfesor).apellidos;
+                string nombre = profesorDAO.ObtenerProfesorPorId(curso.idProfesor).nombre;
+                string nombreCompleto = nombre + " " + apellidos;
+                var cursoAlumno = new CursoAlumno
+                {
+                    idCurso = curso.idCurso,
+                    nombreCurso = curso.nombreCurso,
+                    fechaInicio = curso.fechaInicio.GetValueOrDefault().ToString("dd/MM/yyyy"),
+                    fechaTermino = curso.fechaTermino.GetValueOrDefault().ToString("dd/MM/yyyy"),
+                    nombreProfesor = nombreCompleto
+                };
+                cursosAlumno.Add(cursoAlumno);
+            }
+
+            return cursosAlumno.ToArray();
+        }
+
+        public int ObtenerIDInscripcionPorAlumnoYCurso(int idAlumno, int idCurso)
+        {
+            InscripcionDAO inscripcionDAO = new InscripcionDAO();
+            var idInscripcion = inscripcionDAO.ObtenerInscripcionPorCursoYAlumno(idAlumno, idCurso).idInscripcion;
+            return idInscripcion;
+        }
+
+
+        //IGestion reportes
+        public CursoHorario[] ObtenerHorariosCursos(string correo)
+        {
+            UsuarioDAO usuarioDAO = new UsuarioDAO();
+            CursoDAO cursoDAO = new CursoDAO();
+            HorarioDAO horarioDAO = new HorarioDAO();
+            Profesor profesor = usuarioDAO.ObtenerProfesorPorCorreo(correo);
+            Curso[] cursos = cursoDAO.ObtenerCursosPorIdProfesor(profesor.idProfesor);
+            List<CursoHorario> horariosCursos = new List<CursoHorario>();
+
+            foreach(var curso in cursos)
+            {
+                var horarioCurso = horarioDAO.ObtenerHorario(curso.idCurso);
+                CursoHorario cursoHorario = new CursoHorario
+                {
+                    nombreCurso = curso.nombreCurso,
+                    dia = horarioCurso.dia,
+                    horaInicio = horarioCurso.horaInicio.GetValueOrDefault().ToString("HH:mm"),
+                    horaSalida = horarioCurso.horaSalida.GetValueOrDefault().ToString("HH:mm"),
+                };
+                horariosCursos.Add(cursoHorario);
+            }
+
+            return horariosCursos.ToArray();
+
 
         }
     }

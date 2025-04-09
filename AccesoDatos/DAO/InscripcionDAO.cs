@@ -29,5 +29,32 @@ namespace AccesoDatos.DAO
                 return idAlumno;
             }
         }
+
+        public Curso[] ObtenerCursosPorAlumno(int idAlumno)
+        {
+            using (var contexto = new LenguaVivaDBEntities())
+            {
+                contexto.Database.Log = Console.WriteLine;
+
+                var cursos = contexto.Inscripcion
+                    .Where(i => i.idAlumno == idAlumno)
+                    .Select(i => i.Curso)
+                    .ToArray();
+
+                return cursos;
+            }
+        }
+
+        public Inscripcion ObtenerInscripcionPorCursoYAlumno(int idAlumno, int idCurso)
+        {
+            using (var contexto = new LenguaVivaDBEntities())
+            {
+                contexto.Database.Log = Console.WriteLine;
+
+                var inscripcion = contexto.Inscripcion.FirstOrDefault(i => i.idAlumno == idAlumno && i.idCurso == idCurso);
+                return inscripcion;
+            }
+        }
+
     }
 }

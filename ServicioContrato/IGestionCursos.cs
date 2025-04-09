@@ -84,4 +84,24 @@ namespace ServicioContrato
         public int idProfesor { get; set; }
     }
 
+    [DataContract]
+    public class CursoAlumno
+    {
+        [DataMember]
+        public int idCurso { get; set; }
+
+        [DataMember]
+        public string nombreCurso { get; set; }
+
+        [DataMember]
+        public string nombreProfesor { get; set; }
+
+        [DataMember]
+        public string fechaInicio { get; set; }
+
+        [DataMember]
+        public string fechaTermino { get; set; }
+    }
+
+
 }

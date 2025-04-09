@@ -20,6 +20,12 @@ namespace ServicioContrato
 
         [OperationContract]
         bool EnviarCorreoReciboPago(int idInscripcion, string pdfPath);
+
+        [OperationContract]
+        CursoAlumno[] ObtenerCursosDeAlumno(int idAlumno);
+
+        [OperationContract]
+        int ObtenerIDInscripcionPorAlumnoYCurso(int idAlumno, int idCurso);
         
     }
 

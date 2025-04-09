@@ -103,5 +103,15 @@ namespace AccesoDatos.DAO
                     .ToArray();
             }
         }
+
+        public Curso[] ObtenerCursosPorIdProfesor(int idProfesor)
+        {
+            using(var contexto = new LenguaVivaDBEntities())
+            {
+                return contexto.Curso
+                    .Where(c => c.idProfesor  == idProfesor)
+                    .ToArray();
+            }
+        }
     }
 }
