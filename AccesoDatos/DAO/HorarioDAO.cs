@@ -41,8 +41,9 @@ namespace AccesoDatos.DAO
         {
             using (var contexto = new LenguaVivaDBEntities())
             {
-                return contexto.Horario
-                    .FirstOrDefault(h => h.idCurso == idCurso);
+                var horario = contexto.Horario.FirstOrDefault(h => h.idCurso == idCurso);
+                Console.WriteLine($"Horario obtenido para curso {idCurso}: {(horario != null ? horario.dia : "null")}");
+                return horario;
             }
         }
     }

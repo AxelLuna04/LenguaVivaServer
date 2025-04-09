@@ -1502,7 +1502,7 @@ namespace ServicioContrato
 
             foreach (var curso in cursos)
             {
-                var horarioCurso = horarioDAO.ObtenerHorario(curso.idCurso);
+                Horario horarioCurso = horarioDAO.ObtenerHorario(curso.idCurso);
                 CursoHorario cursoHorario = new CursoHorario
                 {
                     nombreCurso = curso.nombreCurso,
