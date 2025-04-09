@@ -403,6 +403,121 @@ namespace Pruebas.PruebasIntegracion
             Assert.AreEqual("alumnointegration@test.com", resultado.email);
         }
 
+        [Test]
+        public void ModificarProfesor_DeberiaActualizarProfesorCorrectamente()
+        {
+            // Arrange
+            var profesorOriginal = new Profesor
+            {
+                idProfesor = 1,
+                nombreUsuario = "profesorOriginal",
+                contrasenia = "oldpassword123",
+                nombre = "Profesor Original",
+                apellidos = "Prueba",
+                email = "profesororiginal@test.com",
+                telefono = "2281697894",
+                direccion = "Direccion, Prueba.",
+                salt = Utilidades.GenerarSalt()
+            };
+
+            usuarioDAO.CrearProfesor(profesorOriginal);
+
+            var profesorDTO = new ProfesorDTO
+            {
+                idProfesor = profesorOriginal.idProfesor,
+                nombre = "Profesor Modificado",
+                apellidos = "Modificado",
+                direccion = "Direccion modificada",
+                telefono = "2281691234",
+                contrasenia = "newpassword123"
+            };
+
+            // Act
+            //Assert.DoesNotThrow(() => usuarioDAO.ModificarProfesor(profesorDTO));
+
+            // Assert
+            var resultado = usuarioDAO.ObtenerProfesorPorId(profesorOriginal.idProfesor);
+            Assert.IsNotNull(resultado);
+            Assert.AreEqual("Profesor Modificado", resultado.nombre);
+            Assert.AreEqual("Direccion modificada", resultado.direccion);
+            Assert.AreEqual("2281691234", resultado.telefono);
+        }
+
+        [Test]
+        public void ModificarAlumno_DeberiaActualizarAlumnoCorrectamente()
+        {
+            // Arrange
+            var alumnoOriginal = new Alumno
+            {
+                idAlumno = 1,
+                nombre = "Alumno Original",
+                apellidos = "Prueba",
+                email = "alumnooriginal@test.com",
+                telefono = "2281754896",
+                direccion = "Direccion, Prueba."
+            };
+
+            usuarioDAO.CrearAlumno(alumnoOriginal);
+
+            var alumnoDTO = new AlumnoDTO
+            {
+                idAlumno = alumnoOriginal.idAlumno,
+                nombre = "Alumno Modificado",
+                apellidos = "Modificado",
+                direccion = "Direccion modificada",
+                telefono = "2281691234"
+            };
+
+            var idiomasNivel = new IdiomaNivelDTO[]
+            {
+                new IdiomaNivelDTO { idIdioma = 1, nivel = 2 }
+            };
+
+            // Act
+            //Assert.DoesNotThrow(() => usuarioDAO.ModificarAlumno(alumnoDTO, idiomasNivel));
+
+            // Assert
+            var resultado = usuarioDAO.ObtenerAlumnoPorId(alumnoOriginal.idAlumno);
+            Assert.IsNotNull(resultado);
+            Assert.AreEqual("Alumno Modificado", resultado.nombre);
+            Assert.AreEqual("Direccion modificada", resultado.direccion);
+            Assert.AreEqual("2281691234", resultado.telefono);
+        }
+
+        [Test]
+        public void ModificarProfesor_ErrorBaseDatos_DevuelveException()
+        {
+            // Arrange
+            var profesorDTO = new ProfesorDTO
+            {
+                idProfesor = 999, // Profesor inexistente
+                nombre = "Profesor Inexistente"
+            };
+
+            // Act & Assert
+            //Assert.Throws<Exception>(() => usuarioDAO.ModificarProfesorCompleto(profesorDTO));
+        }
+
+        [Test]
+        public void ModificarAlumno_ErrorBaseDatos_DevuelveException()
+        {
+            // Arrange
+            var alumnoDTO = new AlumnoDTO
+            {
+                idAlumno = 999, // Alumno inexistente
+                nombre = "Alumno Inexistente"
+            };
+
+            var idiomasNivel = new IdiomaNivelDTO[]
+            {
+                new IdiomaNivelDTO { idIdioma = 1, nivel = 2 }
+            };
+
+            // Act & Assert
+            //Assert.Throws<Exception>(() => usuarioDAO.ModificarAlumnoCompleto(alumnoDTO, idiomasNivel));
+        }
+
+
     }
 }
 

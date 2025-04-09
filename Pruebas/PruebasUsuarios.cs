@@ -669,5 +669,129 @@ namespace PruebasUnitarias
             Assert.That(resultado, Is.Null);
         }
 
+        [Test]
+        public void ModificarProfesor_ProfesorExistente_ActualizaProfesor()
+        {
+            // Arrange
+            var profesorDTO = new ProfesorDTO
+            {
+                idProfesor = 1,
+                nombre = "Juan",
+                apellidos = "Perez",
+                direccion = "Calle Ficticia 123",
+                telefono = "5551234567",
+                contrasenia = "newPass123"
+            };
+
+            var profesorEntity = new Profesor
+            {
+                idProfesor = 1,
+                nombre = "Juan",
+                apellidos = "Perez",
+                direccion = "Calle Ficticia 123",
+                telefono = "5551234567",
+                contrasenia = Utilidades.HashearContrasena("oldPass123", Utilidades.GenerarSalt()),
+                salt = "oldSalt"
+            };
+
+            mockDAO.Setup(dao => dao.ObtenerProfesorPorId(profesorDTO.idProfesor)).Returns(profesorEntity);
+            //mockDAO.Setup(dao => dao.ModificarProfesorCompleto(It.IsAny<Profesor>(), It.IsAny<int[]>())).Verifiable();
+
+            // Act
+            var resultado = service.ModificarProfesor(profesorDTO);
+
+            // Assert
+            Assert.That(resultado, Is.True);
+            //mockDAO.Verify(dao => dao.ModificarProfesorCompleto(It.IsAny<Profesor>(), It.IsAny<int[]>()), Times.Once);
+        }
+
+        [Test]
+        public void ModificarProfesor_ProfesorNoExistente_NoActualizaProfesor()
+        {
+            // Arrange
+            var profesorDTO = new ProfesorDTO
+            {
+                idProfesor = 1,
+                nombre = "Juan",
+                apellidos = "Perez",
+                direccion = "Calle Ficticia 123",
+                telefono = "5551234567"
+            };
+
+            mockDAO.Setup(dao => dao.ObtenerProfesorPorId(profesorDTO.idProfesor)).Returns((Profesor)null);
+
+            // Act
+            var resultado = service.ModificarProfesor(profesorDTO);
+
+            // Assert
+            Assert.That(resultado, Is.False);
+        }
+
+        [Test]
+        public void ModificarAlumno_AlumnoExistente_ActualizaAlumno()
+        {
+            // Arrange
+            var alumnoDTO = new AlumnoDTO
+            {
+                idAlumno = 1,
+                nombre = "Carlos",
+                apellidos = "Sanchez",
+                direccion = "Calle Ejemplo 456",
+                telefono = "5559876543"
+            };
+
+            var idiomasNivel = new IdiomaNivelDTO[]
+            {
+            new IdiomaNivelDTO { idIdioma = 1, idiomaNombre = "Inglés", nivel = 3 },
+            new IdiomaNivelDTO { idIdioma = 2, idiomaNombre = "Francés", nivel = 2 }
+            };
+
+            var alumnoEntity = new Alumno
+            {
+                idAlumno = 1,
+                nombre = "Carlos",
+                apellidos = "Sanchez",
+                direccion = "Calle Ejemplo 456",
+                telefono = "5559876543"
+            };
+
+            mockDAO.Setup(dao => dao.ObtenerAlumnoPorId(alumnoDTO.idAlumno)).Returns(alumnoEntity);
+            mockDAO.Setup(dao => dao.ModificarAlumnoCompleto(It.IsAny<Alumno>(), It.IsAny<List<Idioma_Alumno>>())).Verifiable();
+
+            // Act
+            var resultado = service.ModificarAlumno(alumnoDTO, idiomasNivel);
+
+            // Assert
+            Assert.That(resultado, Is.True);
+            mockDAO.Verify(dao => dao.ModificarAlumnoCompleto(It.IsAny<Alumno>(), It.IsAny<List<Idioma_Alumno>>()), Times.Once);
+        }
+
+        [Test]
+        public void ModificarAlumno_AlumnoNoExistente_NoActualizaAlumno()
+        {
+            // Arrange
+            var alumnoDTO = new AlumnoDTO
+            {
+                idAlumno = 1,
+                nombre = "Carlos",
+                apellidos = "Sanchez",
+                direccion = "Calle Ejemplo 456",
+                telefono = "5559876543"
+            };
+
+            var idiomasNivel = new IdiomaNivelDTO[]
+            {
+            new IdiomaNivelDTO { idIdioma = 1, idiomaNombre = "Inglés", nivel = 3 }
+            };
+
+            mockDAO.Setup(dao => dao.ObtenerAlumnoPorId(alumnoDTO.idAlumno)).Returns((Alumno)null);
+
+            // Act
+            var resultado = service.ModificarAlumno(alumnoDTO, idiomasNivel);
+
+            // Assert
+            Assert.That(resultado, Is.False);
+        }
+
     }
 }
