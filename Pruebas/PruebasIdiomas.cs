@@ -19,7 +19,7 @@ namespace PruebasUnitarias
         public void Setup()
         {
             mockDAO = new Mock<IIdiomaDAO>();
-            service = new ImplementacionServicio(mockDAO.Object, null, null, null);
+            service = new ImplementacionServicio(mockDAO.Object, null, null, null, null, null);
         }
 
         [Test]

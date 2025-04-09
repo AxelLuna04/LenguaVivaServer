@@ -3,58 +3,41 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AccesoDatos.Interfaces;
 
 namespace AccesoDatos.DAO
 {
-    public class InscripcionDAO
+    public class InscripcionDAO : IInscripcionDAO
     {
-        public int ObtenerIDCurso(int idInscripcion)
+        public void RegistrarInscripcion(Inscripcion inscripcion)
         {
-            int idCurso;
-
             using (var contexto = new LenguaVivaDBEntities())
             {
-                idCurso = contexto.Inscripcion.FirstOrDefault(i => i.idInscripcion == idInscripcion).idCurso;
-                return idCurso;
+                contexto.Inscripcion.Add(inscripcion);
+                contexto.SaveChanges();
             }
         }
 
-        public int ObtenerIDAlumno(int idInscripcion)
-        {
-            int idAlumno;
-
-            using (var contexto = new LenguaVivaDBEntities())
-            {
-                idAlumno = contexto.Inscripcion.FirstOrDefault(i => i.idInscripcion == idInscripcion).idAlumno;
-                return idAlumno;
-            }
-        }
-
-        public Curso[] ObtenerCursosPorAlumno(int idAlumno)
+        public int ObtenerNumInscripciones(int idCurso)
         {
             using (var contexto = new LenguaVivaDBEntities())
             {
-                contexto.Database.Log = Console.WriteLine;
-
-                var cursos = contexto.Inscripcion
-                    .Where(i => i.idAlumno == idAlumno)
-                    .Select(i => i.Curso)
+                Inscripcion[] inscripciones = contexto.Inscripcion
+                    .Where(i => i.idCurso == idCurso)
                     .ToArray();
 
-                return cursos;
+                return inscripciones.Length;
             }
         }
-
-        public Inscripcion ObtenerInscripcionPorCursoYAlumno(int idAlumno, int idCurso)
+        public bool InscripcionExistente(int idCurso, int idAlumno)
         {
             using (var contexto = new LenguaVivaDBEntities())
             {
-                contexto.Database.Log = Console.WriteLine;
+                Inscripcion inscripcion = contexto.Inscripcion
+                    .FirstOrDefault(i => i.idCurso == idCurso && i.idAlumno == idAlumno);
 
-                var inscripcion = contexto.Inscripcion.FirstOrDefault(i => i.idAlumno == idAlumno && i.idCurso == idCurso);
-                return inscripcion;
+                return inscripcion != null;
             }
         }
-
     }
 }

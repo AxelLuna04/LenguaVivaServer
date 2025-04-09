@@ -46,7 +46,41 @@ namespace ServicioContrato
         [OperationContract]
         bool ModificarCurso(CursoDTO cursoDTO);
 
+        [OperationContract]
+        bool EliminarCurso(int idCurso);
+
+        [OperationContract]
+        bool TieneAlumnosInscritos(int idCurso);
+
+        [OperationContract]
+        bool AsignarHorario(HorarioDTO horario);
+
+        [OperationContract]
+        HorarioDTO[] ObtenerHorariosPorCurso(int idCurso);
+
+        [OperationContract]
+        bool SubirListaAlumnos(int idCurso, byte[] archivo);
+
     }
+    [DataContract]
+    public class HorarioDTO
+    {
+        [DataMember]
+        public int idHorario { get; set; }
+
+        [DataMember]
+        public int idCurso { get; set; }
+
+        [DataMember]
+        public string diaSemana { get; set; }
+
+        [DataMember]
+        public TimeSpan horaInicio { get; set; }
+
+        [DataMember]
+        public TimeSpan horaTermino { get; set; }
+    }
+
     [DataContract]
     public class CursoDTO
     {

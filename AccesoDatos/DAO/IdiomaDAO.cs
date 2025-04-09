@@ -12,8 +12,7 @@ namespace AccesoDatos.DAO
         public   void CrearIdioma(Idioma idioma)
         {
             using (var contexto = new LenguaVivaDBEntities())
-            {
-                contexto.Database.Log = Console.WriteLine;
+            { 
                 contexto.Idioma.Add(idioma);
                 contexto.SaveChanges();
             }
@@ -22,8 +21,7 @@ namespace AccesoDatos.DAO
         public   Idioma ObtenerIdiomaPorNombre(String nombreIdioma)
         {
             using (var contexto = new LenguaVivaDBEntities())
-            {
-                contexto.Database.Log = Console.WriteLine;
+            { 
                 return contexto.Idioma.FirstOrDefault(i => i.nombreIdioma == nombreIdioma);
             }
         }
@@ -31,8 +29,7 @@ namespace AccesoDatos.DAO
         public   Idioma[] ObtenerIdiomas()
         {
             using (var contexto = new LenguaVivaDBEntities())
-            {
-                contexto.Database.Log = Console.WriteLine;
+            { 
                 List<Idioma> respuesta = new List<Idioma>();
 
                 foreach (Idioma idioma in contexto.Idioma)
@@ -48,8 +45,7 @@ namespace AccesoDatos.DAO
         public  Idioma ObtenerIdiomaPorID(int id)
         {
             using (var contexto = new LenguaVivaDBEntities())
-            {
-                contexto.Database.Log = Console.WriteLine;
+            { 
                 return contexto.Idioma.Find(id);
             }
         }

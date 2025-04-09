@@ -11,13 +11,15 @@ namespace AccesoDatos.Interfaces
     {
         void CrearCurso(Curso curso);
         void ModificarCurso(Curso curso);
-        void EliminarCurso(Curso curso);
+        void EliminarCurso(int idCurso);
         Curso[] ObtenerCursos();
         Curso[] ObtenerCursosPorNombre(String nombreCurso);
         Curso ObtenerCursoPorID(int id);
         Curso[] ObtenerCursosPorNombreIdioma(String nombreIdioma);
         Curso[] ObtenerCursosPorNombreProfesor(String nombreProfesor);
         Curso[] ObtenerCursosPorNivel(int nivel);
+        bool TieneAlumnosInscritos(int idCurso);
+        bool SubirListaAlumnos(int idCurso, byte[] archivo);
 
     }
 }

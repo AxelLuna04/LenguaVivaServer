@@ -26,6 +26,7 @@ namespace AccesoDatos.Interfaces
         void ModificarProfesorCompleto(Profesor profesorEntity, List<int> idiomasSeleccionados);
         void ModificarAlumnoCompleto(Alumno alumnoModificado, List<Idioma_Alumno> nuevosIdiomas);
         Alumno ObtenerAlumnoPorId(int idAlumno);
+        Alumno[] ObtenerAlumnosPorNombre(string nombre);
 
     }
 }

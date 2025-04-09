@@ -267,4 +267,18 @@ namespace AccesoDatos.DAO
 
 
     }
+             
+        
+
+        public Alumno[] ObtenerAlumnosPorNombre(string nombre)
+        {
+            using (var contexto = new LenguaVivaDBEntities())
+            {
+                return contexto.Alumno
+                    .Where(a => a.nombre.Contains(nombre) ||
+                    a.apellidos.Contains(nombre))
+                    .ToArray();
+            }
+        }
+    }
 }

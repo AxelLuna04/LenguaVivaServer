@@ -13,35 +13,26 @@ namespace ServicioContrato
     public interface IGestionAlumnos
     {
         [OperationContract]
-        bool RegistrarPago(int cantidadPagada, int idInscripcion);
-
+        bool RegistrarInscripcion(InscripcionDTO inscripcionDTO);
         [OperationContract]
-        ReciboPago ObtenerReciboPago(int idInscripcion);
-
+        AlumnoDTO[] BuscarAlumnos(string criterioBusqueda);
         [OperationContract]
-        bool EnviarCorreoReciboPago(int idInscripcion, string pdfPath);
-
+        int ObtenerNumInscripciones(int idCurso);
         [OperationContract]
-        CursoAlumno[] ObtenerCursosDeAlumno(int idAlumno);
+        bool InscripcionExistente(int idCurso, int idAlumno);
 
-        [OperationContract]
-        int ObtenerIDInscripcionPorAlumnoYCurso(int idAlumno, int idCurso);
-        
     }
 
     [DataContract]
-    public class ReciboPago
+    public class InscripcionDTO
     {
         [DataMember]
-        public string curso { get; set; }
-
+        public int idInscripcion { get; set; }
         [DataMember]
-        public string alumno { get; set; }
-
+        public int idCurso { get; set; }
         [DataMember]
-        public string fechaPago { get; set; }
-
+        public int idAlumno { get; set; }
         [DataMember]
-        public string cantidadPagada { get; set; }
+        public DateTime fechaInscripcion { get; set; }
     }
 }
