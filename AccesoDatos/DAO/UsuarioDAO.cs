@@ -265,11 +265,6 @@ namespace AccesoDatos.DAO
             }
         }
 
-
-    }
-             
-        
-
         public Alumno[] ObtenerAlumnosPorNombre(string nombre)
         {
             using (var contexto = new LenguaVivaDBEntities())

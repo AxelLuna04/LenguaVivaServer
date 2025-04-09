@@ -36,5 +36,14 @@ namespace AccesoDatos.DAO
                 }
             }
         }
+
+        public Horario ObtenerHorario(int idCurso)
+        {
+            using (var contexto = new LenguaVivaDBEntities())
+            {
+                return contexto.Horario
+                    .FirstOrDefault(h => h.idCurso == idCurso);
+            }
+        }
     }
 }
