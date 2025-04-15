@@ -20,6 +20,6 @@ namespace AccesoDatos.Interfaces
         Curso[] ObtenerCursosPorNivel(int nivel);
         bool TieneAlumnosInscritos(int idCurso);
         bool SubirListaAlumnos(int idCurso, byte[] archivo);
-
+        Curso[] ObtenerCursosPorIdProfesor(int idProfesor); 
     }
 }

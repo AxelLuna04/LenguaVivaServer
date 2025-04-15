@@ -15,6 +15,6 @@ namespace AccesoDatos.Interfaces
         Profesor ObtenerProfesorPorId(int id);
         Profesor ObtenerProfesorPorUsuario(String usuario);
         Profesor[] ObtenerProfesoresPorNombre(string nombre);
-
+        Profesor[] ObtenerTodos(); // <-- aquí debe coincidir
     }
 }

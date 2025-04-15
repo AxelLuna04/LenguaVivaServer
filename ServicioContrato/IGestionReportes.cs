@@ -13,6 +13,9 @@ namespace ServicioContrato
     {
         [OperationContract]
         CursoHorario[] ObtenerHorariosCursos(string correo);
+
+        [OperationContract]
+        ProfesorReporteDTO[] ObtenerReporteProfesoresActivos();
     }
 
     [DataContract]
@@ -30,5 +33,15 @@ namespace ServicioContrato
 
         [DataMember]
         public string dia {  get; set; }
+    }
+
+    [DataContract]
+    public class ProfesorReporteDTO
+    {
+        [DataMember]
+        public string NombreCompleto { get; set; }
+
+        [DataMember]
+        public int CursosActivos { get; set; }
     }
 }

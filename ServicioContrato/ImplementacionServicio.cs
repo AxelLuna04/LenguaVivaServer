@@ -24,6 +24,7 @@ namespace ServicioContrato
         private readonly IInscripcionDAO inscripcionDAO;
         private readonly IHorarioDAO horarioDAO;
 
+
         //Constructor por defecto para la implementacion real
         public ImplementacionServicio()
         {
@@ -1565,5 +1566,34 @@ namespace ServicioContrato
                 return false;
             }
         }
+
+        public ProfesorReporteDTO[] ObtenerReporteProfesoresActivos()
+        {
+            // 1) Obtener todos los profesores
+            var profesores = profesorDAO.ObtenerTodos(); // Este método debe devolver Profesor[] o IEnumerable<Profesor>
+            var lista = new List<ProfesorReporteDTO>();
+
+            foreach (var prof in profesores)
+            {
+                // 2) Obtener cursos de ese profesor (ajusta según cómo estés asociando cursos con profesor)
+                var cursos = cursoDAO.ObtenerCursosPorIdProfesor(prof.idProfesor);
+                // 3) Contar solo los cursos activos
+                int cantidadActivos = cursos.Count(c => c.estado.Equals("Activo", StringComparison.OrdinalIgnoreCase));
+
+                // 4) Agregar al DTO
+                lista.Add(new ProfesorReporteDTO
+                {
+                    NombreCompleto = $"{prof.nombre} {prof.apellidos}",
+                    CursosActivos = cantidadActivos
+                });
+            }
+
+            // 5) Ordenar por cantidad de cursos activos descendente
+            return lista
+                .OrderByDescending(dto => dto.CursosActivos)
+                .ToArray();
+        }
+
+
     }
 }

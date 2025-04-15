@@ -73,5 +73,14 @@ namespace AccesoDatos.DAO
             }
         }
 
+        public Profesor[] ObtenerTodos()
+        {
+            using (var contexto = new LenguaVivaDBEntities())
+            {
+                return contexto.Profesor.ToArray();
+            }
+        }
+
+
     }
 }
