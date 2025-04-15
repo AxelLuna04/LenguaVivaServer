@@ -615,7 +615,35 @@ namespace ServicioContrato
             }
         }
 
+        public bool RegistrarIdioma(IdiomaDTO idiomaDTO, out string mensaje)
+        {
+            // 1) Validar duplicado
+            var existente = idiomaDAO.ObtenerIdiomaPorNombre(idiomaDTO.nombreIdioma);
+            if (existente != null)
+            {
+                mensaje = "El idioma ya existe en la base de datos.";
+                return false;
+            }
 
+            // 2) Crear y persistir
+            try
+            {
+                var nuevaEntidad = new AccesoDatos.Idioma
+                {
+                    nombreIdioma = idiomaDTO.nombreIdioma.Trim()
+                };
+                idiomaDAO.CrearIdioma(nuevaEntidad);
+
+                mensaje = "Idioma registrado correctamente.";
+                return true;
+            }
+            catch (Exception ex)
+            {
+                // Aquí podrías loguear ex.Message
+                mensaje = $"Error al registrar el idioma: {ex.Message}";
+                return false;
+            }
+        }
 
 
 

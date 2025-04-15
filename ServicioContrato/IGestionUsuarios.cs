@@ -49,6 +49,9 @@ namespace ServicioContrato
 
         [OperationContract]
         bool ModificarAlumno(AlumnoDTO alumnoDTO, IdiomaNivelDTO[] idiomasNivel);
+
+        [OperationContract]
+        bool RegistrarIdioma(IdiomaDTO idiomaDTO, out string mensaje);
     }
 
     [DataContract]
@@ -156,6 +159,7 @@ namespace ServicioContrato
 
         [DataMember]
         public string nombreIdioma { get; set; }
+
         [DataMember]
         public bool IsSelected { get; set; }
 
