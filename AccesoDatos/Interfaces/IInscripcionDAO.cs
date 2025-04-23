@@ -11,5 +11,6 @@ namespace AccesoDatos.Interfaces
         void RegistrarInscripcion(Inscripcion inscripcion);
         int ObtenerNumInscripciones(int idCurso);
         bool InscripcionExistente(int idCurso, int idAlumno);
+        Inscripcion[] ObtenerInscripcionesPorIDCurso(int idCurso);
     }
 }

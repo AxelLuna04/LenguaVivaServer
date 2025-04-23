@@ -23,6 +23,7 @@ namespace ServicioContrato
         private readonly IProfesorDAO profesorDAO;
         private readonly IInscripcionDAO inscripcionDAO;
         private readonly IHorarioDAO horarioDAO;
+        private readonly IPagoDAO pagoDAO;
 
 
         //Constructor por defecto para la implementacion real
@@ -34,10 +35,11 @@ namespace ServicioContrato
             profesorDAO = new ProfesorDAO();
             inscripcionDAO = new InscripcionDAO();
             horarioDAO = new HorarioDAO();
+            pagoDAO = new PagoDAO();
         }
 
         //Constructor para mockear las pruebas
-        public ImplementacionServicio(IIdiomaDAO idiomaDAO, ICursoDAO cursoDAO, IUsuarioDAO usuarioDAO, IProfesorDAO profesorDAO, IInscripcionDAO inscripcionDAO, IHorarioDAO horarioDAO)
+        public ImplementacionServicio(IIdiomaDAO idiomaDAO, ICursoDAO cursoDAO, IUsuarioDAO usuarioDAO, IProfesorDAO profesorDAO, IInscripcionDAO inscripcionDAO, IHorarioDAO horarioDAO, IPagoDAO pagoDAO)
         {
             this.idiomaDAO = idiomaDAO;
             this.cursoDAO = cursoDAO;
@@ -45,6 +47,7 @@ namespace ServicioContrato
             this.profesorDAO = profesorDAO;
             this.inscripcionDAO = inscripcionDAO;
             this.horarioDAO = horarioDAO;
+            this.pagoDAO = pagoDAO;
         }
 
         public SesionUsuario IniciarSesion(string correo, string contrasenia)
@@ -1204,6 +1207,29 @@ namespace ServicioContrato
                 return false;
 
             }
+        }
+
+        public int ObtenerIngresosDeCurso(int idCurso)
+        {
+            int ingresosTotales = 0;
+            var inscripciones = inscripcionDAO.ObtenerInscripcionesPorIDCurso(idCurso);
+            if(inscripciones != null)
+            {
+                foreach (var inscripcion in inscripciones)
+                {
+                    var pago = pagoDAO.ObetenerPago(inscripcion.idInscripcion);
+                    ingresosTotales += (int)pago.cantidad;
+                }
+            }
+            
+            return ingresosTotales;
+        }
+
+        public int ObtenerNumeroAlumnosInscritosACurso(int idCurso)
+        {
+            int alumnosInscritos = 0;
+            alumnosInscritos = inscripcionDAO.ObtenerNumInscripciones(idCurso);
+            return alumnosInscritos;
         }
 
 

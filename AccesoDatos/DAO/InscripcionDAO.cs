@@ -98,5 +98,16 @@ namespace AccesoDatos.DAO
                 return inscripcion;
             }
         }
+
+        public Inscripcion[] ObtenerInscripcionesPorIDCurso(int idCurso)
+        {
+            using (var contexto = new LenguaVivaDBEntities())
+            {
+                contexto.Database.Log = Console.WriteLine;
+                var inscripciones = contexto.Inscripcion
+                    .Where(i => i.idCurso == idCurso) .ToArray();
+                return inscripciones;
+            }
+        }
     }
 }
