@@ -16,6 +16,9 @@ namespace ServicioContrato
 
         [OperationContract]
         ProfesorReporteDTO[] ObtenerReporteProfesoresActivos();
+
+        [OperationContract]
+        AlumnoReporteDTO[] ObtenerReporteAlumnosPorCurso(int idCurso);
     }
 
     [DataContract]
@@ -32,7 +35,7 @@ namespace ServicioContrato
         public TimeSpan horaSalida { get; set; }
 
         [DataMember]
-        public string dia {  get; set; }
+        public string dia { get; set; }
     }
 
     [DataContract]
@@ -43,5 +46,18 @@ namespace ServicioContrato
 
         [DataMember]
         public int CursosActivos { get; set; }
+    }
+
+    [DataContract]
+    public class AlumnoReporteDTO
+    {
+        [DataMember]
+        public string nombreCompleto { get; set; }
+
+        [DataMember]
+        public string correo { get; set; }
+
+        [DataMember]
+        public string fechaInscripcion { get; set; }
     }
 }

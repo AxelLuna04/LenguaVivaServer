@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using AccesoDatos.Interfaces;
 using System.Data;
 using System.Data.Entity.Infrastructure;
+using System.Data.Entity;
 
 namespace ServicioContrato
 {
@@ -1620,6 +1621,44 @@ namespace ServicioContrato
                 .ToArray();
         }
 
+        public AlumnoReporteDTO[] ObtenerReporteAlumnosPorCurso(int idCurso)
+        {
+            try
+            {
+                using (var context = new LenguaVivaDBEntities())
+                {
+                    var inscripciones = context.Inscripcion
+        .Include(i => i.Alumno)
+        .Where(i => i.idCurso == idCurso)
+        .ToList(); // Aquí se ejecuta la consulta y ya estás en memoria
+
+                    return inscripciones.Select(i => new AlumnoReporteDTO
+                    {
+                        nombreCompleto = i.Alumno.nombre + " " + i.Alumno.apellidos,
+                        correo = i.Alumno.email,
+                        fechaInscripcion = i.fechaInscripcion.HasValue
+                            ? i.fechaInscripcion.Value.ToString("dd/MM/yyyy")
+                            : null
+                    }).ToArray();
+                }
+
+            }
+            catch (System.Data.Entity.Core.EntityException ex)
+            {
+                Console.WriteLine($"Error de Entity Framework: {ex.Message}");
+                return null;
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                Console.WriteLine($"Error de SQL Server: {ex.Message}");
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error inesperado: {ex.Message}");
+                return null;
+            }
+        }
 
     }
 }
