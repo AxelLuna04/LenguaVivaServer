@@ -10,5 +10,7 @@ namespace AccesoDatos.Interfaces
     {
         bool RegistrarHorario(Horario horario);
         Horario[] RecuperarHorarios(int idCurso);
+
+        void EliminarHorariosPorCurso(int idCurso);
     }
 }

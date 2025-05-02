@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -46,5 +47,16 @@ namespace AccesoDatos.DAO
                 return horario;
             }
         }
+
+        public void EliminarHorariosPorCurso(int idCurso)
+        {
+            using (var contexto = new LenguaVivaDBEntities())
+            {
+                var horarios = contexto.Horario.Where(h => h.idCurso == idCurso);
+                contexto.Horario.RemoveRange(horarios);
+                contexto.SaveChanges();
+            }
+        }
+
     }
 }

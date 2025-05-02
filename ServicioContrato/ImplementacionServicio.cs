@@ -1166,6 +1166,7 @@ namespace ServicioContrato
         {
             try
             {
+                horarioDAO.EliminarHorariosPorCurso(idCurso);
                 cursoDAO.EliminarCurso(idCurso);
                 return true;
             }
