@@ -757,7 +757,7 @@ namespace ServicioContrato
                         estado = c.estado,
                         fechaInicio = (DateTime)c.fechaInicio,
                         fechaTermino = (DateTime)c.fechaTermino,
-                        listaAsistencia = c.listaAsistencia,
+                        listaAsistencia = null,
                         idIdioma = c.idIdioma,
                         idProfesor = c.idProfesor
                     }).ToArray();
@@ -1041,7 +1041,7 @@ namespace ServicioContrato
                         estado = c.estado,
                         fechaInicio = (DateTime)c.fechaInicio,
                         fechaTermino = (DateTime)c.fechaTermino,
-                        listaAsistencia = c.listaAsistencia,
+                        listaAsistencia = null,
                         idIdioma = c.idIdioma,
                         idProfesor = c.idProfesor
                     }).ToArray();
@@ -1087,7 +1087,7 @@ namespace ServicioContrato
                         estado = c.estado,
                         fechaInicio = (DateTime)c.fechaInicio,
                         fechaTermino = (DateTime)c.fechaTermino,
-                        listaAsistencia = c.listaAsistencia,
+                        listaAsistencia = null,
                         idIdioma = c.idIdioma,
                         idProfesor = c.idProfesor
                     }).ToArray();
@@ -1133,7 +1133,7 @@ namespace ServicioContrato
                         estado = c.estado,
                         fechaInicio = (DateTime)c.fechaInicio,
                         fechaTermino = (DateTime)c.fechaTermino,
-                        listaAsistencia = c.listaAsistencia,
+                        listaAsistencia = null,
                         idIdioma = c.idIdioma,
                         idProfesor = c.idProfesor
                     }).ToArray();
